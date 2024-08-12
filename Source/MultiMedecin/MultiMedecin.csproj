@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<AssemblyName>MultiMedecin</AssemblyName>
+		<RootNamespace>MultiMedecin</RootNamespace>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+	</PropertyGroup>
+	<ItemGroup>
+		<Reference Include="UnityEngine">
+			<HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
+		</Reference>
+		<Reference Include="Assembly-CSharp">
+			<HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+		</Reference>
+		<Reference Include="0Harmony">
+			<HintPath>..\..\..\RimWorldWin64_Data\Managed\0Harmony.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.CoreModule">
+			<HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4104" />
+		<PackageReference Include="Lib.Harmony" Version="2.3.3" />
+		<PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="11.0.3" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Include="MultiMedecin.cs" />
+	</ItemGroup>
+</Project>
