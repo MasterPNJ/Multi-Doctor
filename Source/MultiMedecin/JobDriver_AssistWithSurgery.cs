@@ -9,28 +9,33 @@ namespace MultiMedecin
     {
         public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
-            return true;
+            Log.Message($"[MultiMedecin] {pawn.LabelShort} is trying to assist with surgery.");
+            return this.pawn.Reserve(this.job.GetTarget(TargetIndex.A), this.job, 1, -1, null, errorOnFailed);
         }
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
             this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            this.FailOnDespawnedOrNull(TargetIndex.B);
+            this.FailOnDespawnedOrNull(TargetIndex.C);
 
-            Toil goToBed = Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.OnCell);
-            yield return goToBed;
+            // Go to the bed where the surgery is happening
+            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.Touch);
 
-            Toil assist = new Toil();
-            assist.initAction = () =>
+            // Wait with the surgery in progress
+            Toil wait = Toils_General.WaitWith(TargetIndex.A, 5000, true, true); // 5000 ticks = 5 in-game seconds
+            wait.tickAction = () =>
             {
                 Pawn patient = (Pawn)this.job.GetTarget(TargetIndex.B).Thing;
                 Pawn surgeon = (Pawn)this.job.GetTarget(TargetIndex.C).Thing;
-                Messages.Message($"{this.pawn.LabelShort} is assisting {surgeon.LabelShort} with the surgery on {patient.LabelShort}.", MessageTypeDefOf.PositiveEvent);
+                if (this.pawn.IsHashIntervalTick(1000)) // every in-game second
+                {
+                    // Assist by improving surgery outcome, learning, etc.
+                    this.pawn.skills.Learn(SkillDefOf.Medicine, 0.1f);
+                    Log.Message($"[MultiMedecin] {this.pawn.LabelShort} is assisting {surgeon.LabelShort} with the surgery on {patient.LabelShort}.");
+                }
             };
-            assist.defaultCompleteMode = ToilCompleteMode.Never;
-            assist.WithProgressBarToilDelay(TargetIndex.A, false, -0.5f);
-            yield return assist;
-
-            yield break;
+            yield return wait;
         }
     }
 }

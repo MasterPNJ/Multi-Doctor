@@ -28,5 +28,6 @@
 		<Compile Include="MultiMedecin.cs" />
 		<Compile Include="MultiSurgeonBill.cs" />
 		<Compile Include="JobDriver_AssistWithSurgery.cs" />
+		<Compile Include="JobDriver_DoBill.cs" />
 	</ItemGroup>
 </Project>

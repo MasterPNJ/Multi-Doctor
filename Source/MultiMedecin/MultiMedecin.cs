@@ -45,6 +45,7 @@ namespace MultiMedecin
                                         targetC = pawn
                                     };
                                     colonist.jobs.TryTakeOrderedJob(assistJob, JobTag.Misc);
+                                    Log.Message($"[MultiMedecin] {colonist.LabelShort} will assist with the surgery.");
                                     Messages.Message(colonist.LabelShort + " will assist with the surgery.", MessageTypeDefOf.PositiveEvent, false);
                                 }));
                             }
