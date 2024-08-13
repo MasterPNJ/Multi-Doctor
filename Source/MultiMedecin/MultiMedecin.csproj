@@ -25,9 +25,10 @@
 		<PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="11.0.3" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="MultiMedecin.cs" />
-		<Compile Include="MultiSurgeonBill.cs" />
-		<Compile Include="JobDriver_AssistWithSurgery.cs" />
-		<Compile Include="JobDriver_DoBill.cs" />
+		<Compile Include="Dialog_ConfirmSurgery.cs" />
+		<Compile Include="Patch_TryStartNewDoBillJob.cs" />
+		<Compile Include="Patch_JobDriver_DoBill.cs" />
+		<Compile Include="Patch_BillStack_DoBill.cs" />
+		<Compile Include="HarmonyInit.cs" />
 	</ItemGroup>
 </Project>
