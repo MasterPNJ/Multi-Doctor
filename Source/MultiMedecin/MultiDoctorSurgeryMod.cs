@@ -27,15 +27,12 @@ namespace MultiDoctorSurgery
             Listing_Standard listingStandard = new Listing_Standard();
             listingStandard.Begin(inRect);
 
-            // Curseur pour le multiplicateur de vitesse
             listingStandard.Label($"Multiplicateur de vitesse par médecin assigné: {settings.speedMultiplierPerDoctor:F2}");
-            settings.speedMultiplierPerDoctor = listingStandard.Slider(settings.speedMultiplierPerDoctor, 0f, 2f);
+            settings.speedMultiplierPerDoctor = listingStandard.Slider(settings.speedMultiplierPerDoctor, 0f, 5f);
 
-            // Curseur pour le multiplicateur de taux de réussite
             listingStandard.Label($"Multiplicateur de taux de réussite par médecin assigné: {settings.successRateMultiplier:F2}");
             settings.successRateMultiplier = listingStandard.Slider(settings.successRateMultiplier, 0f, 1f);
 
-            // Curseur pour le nombre maximal de médecins assignables
             listingStandard.Label($"Nombre maximal de médecins assignables: {settings.maxDoctors}");
             settings.maxDoctors = Mathf.RoundToInt(listingStandard.Slider(settings.maxDoctors, 1, 5));
 
@@ -84,49 +81,28 @@ namespace MultiDoctorSurgery
         }
     }
 
-    // Patch pour ajuster la chance de réussite de la chirurgie
-    [HarmonyPatch(typeof(Recipe_Surgery), "CheckSurgeryFail")]
-    public static class Patch_CheckSurgeryFail
+    [HarmonyPatch(typeof(StatWorker), "GetValueUnfinalized")]
+    public static class Patch_WorkSpeedMultiplier
     {
-        public static void Prefix(Pawn surgeon, Pawn patient, List<Thing> ingredients, Bill bill, ref float __state)
+        public static void Postfix(ref float __result, StatRequest req, bool applyPostProcess)
         {
-            var comp = patient.GetComp<CompMultiDoctor>();
-            if (comp != null && comp.assignedDoctors.Count > 1)
+            if (req.Thing is Pawn pawn && pawn.CurJob != null && pawn.CurJob.bill is Bill_Medical medicalBill)
             {
-                // Sauvegarder la valeur de réussite actuelle
-                __state = surgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance);
+                var patient = medicalBill.GiverPawn;
+                var comp = patient.GetComp<CompMultiDoctor>();
 
-                // Calculer la chance de réussite moyenne des médecins assignés
-                float totalSuccessChance = comp.assignedDoctors.Sum(d => d.GetStatValue(StatDefOf.MedicalSurgerySuccessChance, true));
-                float averageSuccessChance = totalSuccessChance / comp.assignedDoctors.Count;
+                if (comp != null && comp.assignedDoctors.Count > 1)
+                {
+                    float speedMultiplier = 1f + ((comp.assignedDoctors.Count - 1) * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor);
+                    __result *= speedMultiplier;
 
-                // Calculer le bonus à appliquer
-                float bonus = averageSuccessChance * MultiDoctorSurgeryMod.settings.successRateMultiplier;
-
-                // Appliquer le bonus temporaire
-                float newSuccessChance = Mathf.Clamp(__state + bonus, 0f, 1f);
-                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(newSuccessChance * 20);
-
-                // Log des informations
-                Log.Message($"[Multi-Doctor Surgery] Chirurgie sur {patient.Name.ToStringShort} par {surgeon.Name.ToStringShort}. Médecins assignés: {comp.assignedDoctors.Count}. Compétence originelle: {__state:P2}. Compétence après ajustement: {newSuccessChance:P2}. Chance de réussite moyenne des médecins: {averageSuccessChance:P2}. Bonus appliqué: {bonus:P2}");
-            }
-        }
-
-        public static void Postfix(Pawn surgeon, Pawn patient, List<Thing> ingredients, Bill bill, float __state)
-        {
-            var comp = patient.GetComp<CompMultiDoctor>();
-            if (comp != null && comp.assignedDoctors.Count > 1)
-            {
-                // Restaurer la valeur de réussite d'origine
-                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(__state * 20);
-
-                // Log des informations
-                Log.Message($"[Multi-Doctor Surgery] Fin de l'opération sur {patient.Name.ToStringShort} par {surgeon.Name.ToStringShort}. Compétence restaurée à : {__state:P2}.");
+                    // Log pour vérifier l'application du multiplicateur de vitesse
+                    Log.Message($"[Multi-Doctor Surgery] Multiplicateur de vitesse appliqué au médecin {pawn.Name.ToStringShort} lors de l'opération sur {patient.Name.ToStringShort}. Multiplicateur: {speedMultiplier:F2}");
+                }
             }
         }
     }
 
-    // Patch pour ajuster la durée de la chirurgie et faire participer les autres médecins
     [HarmonyPatch(typeof(JobDriver_DoBill), "MakeNewToils")]
     public static class Patch_MakeNewToils
     {
@@ -141,27 +117,37 @@ namespace MultiDoctorSurgery
 
                     if (comp != null && comp.assignedDoctors.Count > 1)
                     {
-                        float multiplier = 1f + ((comp.assignedDoctors.Count - 1) * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor);
-                        toil.defaultDuration = Mathf.RoundToInt(toil.defaultDuration / multiplier);
-
-                        // Ajouter une action pour faire participer les autres médecins
-                        toil.AddPreTickAction(() =>
+                        // Ajouter une action pour faire participer les autres médecins en les faisant se positionner autour du patient
+                        toil.AddPreInitAction(() =>
                         {
                             foreach (var doctor in comp.assignedDoctors)
                             {
                                 if (doctor != __instance.pawn)
                                 {
-                                    // S'assurer que chaque médecin assigné se déplace près du lit du patient
-                                    if (!doctor.Position.InHorDistOf(patient.Position, 2f))
-                                    {
-                                        Job job = new Job(JobDefOf.Goto, patient.Position);
-                                        doctor.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
-                                    }
+                                    // Assigner un travail de déplacement vers le patient
+                                    Job gotoJob = new Job(JobDefOf.Goto, patient.Position);
+                                    doctor.jobs.StartJob(gotoJob, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
+                                    Log.Message($"[Multi-Doctor Surgery] Médecin {doctor.Name.ToStringShort} se déplace vers {patient.Name.ToStringShort} pour assister l'opération.");
                                 }
                             }
                         });
 
-                        // Log des informations
+                        // Ajouter une action pour faire rester les médecins assignés autour du lit pendant l'opération
+                        toil.AddPreTickAction(() =>
+                        {
+                            foreach (var doctor in comp.assignedDoctors)
+                            {
+                                if (doctor != __instance.pawn && !doctor.Position.InHorDistOf(patient.Position, 2f))
+                                {
+                                    // Vérifier que le médecin reste autour du lit
+                                    Job gotoJob = new Job(JobDefOf.Goto, patient.Position);
+                                    doctor.jobs.StartJob(gotoJob, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
+                                    Log.Message($"[Multi-Doctor Surgery] Médecin {doctor.Name.ToStringShort} ajuste sa position autour de {patient.Name.ToStringShort} pendant l'opération.");
+                                }
+                            }
+                        });
+
+                        // Log des informations sur la participation des médecins
                         Log.Message($"[Multi-Doctor Surgery] Médecins assignés pour l'opération sur {patient.Name.ToStringShort}: {string.Join(", ", comp.assignedDoctors.Select(d => d.Name.ToStringShort))}");
                     }
                 }
@@ -225,6 +211,9 @@ namespace MultiDoctorSurgery
                     {
                         comp.assignedDoctors.Remove(doctor);
                     }
+
+                    // Log pour indiquer l'ajout ou la suppression d'un médecin
+                    Log.Message($"[Multi-Doctor Surgery] Médecin {(newIsAssigned ? "ajouté" : "retiré")} pour l'opération sur {patient.Name.ToStringShort}: {doctor.Name.ToStringShort}");
                 }
 
                 curY += 35f;
