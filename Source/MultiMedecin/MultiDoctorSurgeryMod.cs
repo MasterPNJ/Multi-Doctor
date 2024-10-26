@@ -76,15 +76,30 @@ namespace MultiDoctorSurgery
                 float totalSuccessChance = comp.assignedDoctors.Sum(d => d.GetStatValue(StatDefOf.MedicalSurgerySuccessChance, true));
                 float averageSuccessChance = totalSuccessChance / comp.assignedDoctors.Count;
 
-                // Ajuster la chance de réussite de la chirurgie
+                // Ajuster la compétence du chirurgien temporairement en fonction du bonus
                 float bonus = averageSuccessChance * MultiDoctorSurgeryMod.settings.successRateMultiplier;
-                float originalChance = surgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance, true);
-                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(originalChance + bonus);
+                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level += Mathf.RoundToInt(bonus);
+
+                // Log des informations
+                Log.Message($"[Multi-Doctor Surgery] Chirurgie sur {patient.Name.ToStringShort} par {surgeon.Name.ToStringShort}. Médecins assignés: {comp.assignedDoctors.Count}. Chance de réussite moyenne des médecins: {averageSuccessChance:P2}. Bonus appliqué: {bonus:P2}");
+            }
+        }
+
+        public static void Postfix(Pawn surgeon, Pawn patient, List<Thing> ingredients, Bill bill)
+        {
+            var comp = patient.GetComp<CompMultiDoctor>();
+            if (comp != null && comp.assignedDoctors.Count > 1)
+            {
+                // Restaurer le niveau de compétence original du chirurgien après l'opération
+                float totalSuccessChance = comp.assignedDoctors.Sum(d => d.GetStatValue(StatDefOf.MedicalSurgerySuccessChance, true));
+                float averageSuccessChance = totalSuccessChance / comp.assignedDoctors.Count;
+                float bonus = averageSuccessChance * MultiDoctorSurgeryMod.settings.successRateMultiplier;
+                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level -= Mathf.RoundToInt(bonus);
             }
         }
     }
 
-    // Patch pour ajuster la durée de la chirurgie
+    // Patch pour ajuster la durée de la chirurgie et faire participer les autres médecins
     [HarmonyPatch(typeof(JobDriver_DoBill), "MakeNewToils")]
     public static class Patch_MakeNewToils
     {
@@ -101,6 +116,26 @@ namespace MultiDoctorSurgery
                     {
                         float multiplier = 1f + ((comp.assignedDoctors.Count - 1) * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor);
                         toil.defaultDuration = Mathf.RoundToInt(toil.defaultDuration / multiplier);
+
+                        // Ajouter une action pour faire participer les autres médecins
+                        toil.AddPreTickAction(() =>
+                        {
+                            foreach (var doctor in comp.assignedDoctors)
+                            {
+                                if (doctor != __instance.pawn)
+                                {
+                                    // S'assurer que chaque médecin assigné se déplace près du lit du patient
+                                    if (!doctor.Position.InHorDistOf(patient.Position, 2f))
+                                    {
+                                        Job job = new Job(JobDefOf.Goto, patient.Position);
+                                        doctor.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
+                                    }
+                                }
+                            }
+                        });
+
+                        // Log des informations
+                        Log.Message($"[Multi-Doctor Surgery] Médecins assignés pour l'opération sur {patient.Name.ToStringShort}: {string.Join(", ", comp.assignedDoctors.Select(d => d.Name.ToStringShort))}");
                     }
                 }
                 yield return toil;
