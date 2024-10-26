@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+	<ThingDef ParentName="Human">
+		<defName>Human</defName>
+		<comps>
+			<li>
+				<compClass>MultiDoctorSurgery.CompMultiDoctor</compClass>
+			</li>
+		</comps>
+	</ThingDef>
+</Defs>

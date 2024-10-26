@@ -25,10 +25,6 @@
 		<PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="11.0.3" />
 	</ItemGroup>
 	<ItemGroup>
-		<Compile Include="Dialog_ConfirmSurgery.cs" />
-		<Compile Include="Patch_TryStartNewDoBillJob.cs" />
-		<Compile Include="Patch_JobDriver_DoBill.cs" />
-		<Compile Include="Patch_BillStack_DoBill.cs" />
-		<Compile Include="HarmonyInit.cs" />
+		<Compile Include="MultiDoctorSurgeryMod.cs" />
 	</ItemGroup>
 </Project>
