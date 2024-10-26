@@ -21,6 +21,27 @@ namespace MultiDoctorSurgery
         }
 
         public override string SettingsCategory() => "Multi-Doctor Surgery";
+
+        public override void DoSettingsWindowContents(Rect inRect)
+        {
+            Listing_Standard listingStandard = new Listing_Standard();
+            listingStandard.Begin(inRect);
+
+            // Curseur pour le multiplicateur de vitesse
+            listingStandard.Label($"Multiplicateur de vitesse par médecin assigné: {settings.speedMultiplierPerDoctor:F2}");
+            settings.speedMultiplierPerDoctor = listingStandard.Slider(settings.speedMultiplierPerDoctor, 0f, 2f);
+
+            // Curseur pour le multiplicateur de taux de réussite
+            listingStandard.Label($"Multiplicateur de taux de réussite par médecin assigné: {settings.successRateMultiplier:F2}");
+            settings.successRateMultiplier = listingStandard.Slider(settings.successRateMultiplier, 0f, 1f);
+
+            // Curseur pour le nombre maximal de médecins assignables
+            listingStandard.Label($"Nombre maximal de médecins assignables: {settings.maxDoctors}");
+            settings.maxDoctors = Mathf.RoundToInt(listingStandard.Slider(settings.maxDoctors, 1, 5));
+
+            listingStandard.End();
+            settings.Write();
+        }
     }
 
     public class Settings : ModSettings
@@ -84,7 +105,7 @@ namespace MultiDoctorSurgery
 
                 // Appliquer le bonus temporaire
                 float newSuccessChance = Mathf.Clamp(__state + bonus, 0f, 1f);
-                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(newSuccessChance * 20); // Multiplication pour refléter les valeurs correctes.
+                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(newSuccessChance * 20);
 
                 // Log des informations
                 Log.Message($"[Multi-Doctor Surgery] Chirurgie sur {patient.Name.ToStringShort} par {surgeon.Name.ToStringShort}. Médecins assignés: {comp.assignedDoctors.Count}. Compétence originelle: {__state:P2}. Compétence après ajustement: {newSuccessChance:P2}. Chance de réussite moyenne des médecins: {averageSuccessChance:P2}. Bonus appliqué: {bonus:P2}");
@@ -97,7 +118,7 @@ namespace MultiDoctorSurgery
             if (comp != null && comp.assignedDoctors.Count > 1)
             {
                 // Restaurer la valeur de réussite d'origine
-                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(__state * 20); // Restauration basée sur la valeur sauvegardée.
+                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(__state * 20);
 
                 // Log des informations
                 Log.Message($"[Multi-Doctor Surgery] Fin de l'opération sur {patient.Name.ToStringShort} par {surgeon.Name.ToStringShort}. Compétence restaurée à : {__state:P2}.");
