@@ -67,34 +67,40 @@ namespace MultiDoctorSurgery
     [HarmonyPatch(typeof(Recipe_Surgery), "CheckSurgeryFail")]
     public static class Patch_CheckSurgeryFail
     {
-        public static void Prefix(Pawn surgeon, Pawn patient, List<Thing> ingredients, Bill bill)
+        public static void Prefix(Pawn surgeon, Pawn patient, List<Thing> ingredients, Bill bill, ref float __state)
         {
             var comp = patient.GetComp<CompMultiDoctor>();
             if (comp != null && comp.assignedDoctors.Count > 1)
             {
+                // Sauvegarder la valeur de réussite actuelle
+                __state = surgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance);
+
                 // Calculer la chance de réussite moyenne des médecins assignés
                 float totalSuccessChance = comp.assignedDoctors.Sum(d => d.GetStatValue(StatDefOf.MedicalSurgerySuccessChance, true));
                 float averageSuccessChance = totalSuccessChance / comp.assignedDoctors.Count;
 
-                // Ajuster la compétence du chirurgien temporairement en fonction du bonus
+                // Calculer le bonus à appliquer
                 float bonus = averageSuccessChance * MultiDoctorSurgeryMod.settings.successRateMultiplier;
-                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level += Mathf.RoundToInt(bonus);
+
+                // Appliquer le bonus temporaire
+                float newSuccessChance = Mathf.Clamp(__state + bonus, 0f, 1f);
+                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(newSuccessChance * 20); // Multiplication pour refléter les valeurs correctes.
 
                 // Log des informations
-                Log.Message($"[Multi-Doctor Surgery] Chirurgie sur {patient.Name.ToStringShort} par {surgeon.Name.ToStringShort}. Médecins assignés: {comp.assignedDoctors.Count}. Chance de réussite moyenne des médecins: {averageSuccessChance:P2}. Bonus appliqué: {bonus:P2}");
+                Log.Message($"[Multi-Doctor Surgery] Chirurgie sur {patient.Name.ToStringShort} par {surgeon.Name.ToStringShort}. Médecins assignés: {comp.assignedDoctors.Count}. Compétence originelle: {__state:P2}. Compétence après ajustement: {newSuccessChance:P2}. Chance de réussite moyenne des médecins: {averageSuccessChance:P2}. Bonus appliqué: {bonus:P2}");
             }
         }
 
-        public static void Postfix(Pawn surgeon, Pawn patient, List<Thing> ingredients, Bill bill)
+        public static void Postfix(Pawn surgeon, Pawn patient, List<Thing> ingredients, Bill bill, float __state)
         {
             var comp = patient.GetComp<CompMultiDoctor>();
             if (comp != null && comp.assignedDoctors.Count > 1)
             {
-                // Restaurer le niveau de compétence original du chirurgien après l'opération
-                float totalSuccessChance = comp.assignedDoctors.Sum(d => d.GetStatValue(StatDefOf.MedicalSurgerySuccessChance, true));
-                float averageSuccessChance = totalSuccessChance / comp.assignedDoctors.Count;
-                float bonus = averageSuccessChance * MultiDoctorSurgeryMod.settings.successRateMultiplier;
-                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level -= Mathf.RoundToInt(bonus);
+                // Restaurer la valeur de réussite d'origine
+                surgeon.skills.GetSkill(SkillDefOf.Medicine).Level = Mathf.RoundToInt(__state * 20); // Restauration basée sur la valeur sauvegardée.
+
+                // Log des informations
+                Log.Message($"[Multi-Doctor Surgery] Fin de l'opération sur {patient.Name.ToStringShort} par {surgeon.Name.ToStringShort}. Compétence restaurée à : {__state:P2}.");
             }
         }
     }
