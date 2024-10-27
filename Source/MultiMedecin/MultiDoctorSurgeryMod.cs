@@ -184,7 +184,8 @@ namespace MultiDoctorSurgery
         private RecipeDef recipe;
         private BillMedicalEx bill;
         private List<Pawn> availableDoctors;
-        private Vector2 scrollPosition;
+        private Vector2 surgeonScrollPosition;
+        private Vector2 assistantScrollPosition;
         private Pawn selectedSurgeon; // Chirurgien principal sélectionné
 
         public Dialog_AssignDoctors(Pawn patient, RecipeDef recipe, BillMedicalEx bill)
@@ -216,9 +217,6 @@ namespace MultiDoctorSurgery
 
         public override void DoWindowContents(Rect inRect)
         {
-            // Votre code pour l'interface, avec les modifications nécessaires
-            // Remplacer comp.assignedDoctors par bill.assignedDoctors
-
             // Titre
             Text.Font = GameFont.Medium;
             Widgets.Label(new Rect(0, 0, inRect.width, 30f), "Assigner les médecins pour " + patient.Name.ToStringShort);
@@ -233,7 +231,7 @@ namespace MultiDoctorSurgery
             Rect surgeonOutRect = new Rect(0f, curY, inRect.width, 100f);
             Rect surgeonViewRect = new Rect(0f, 0f, inRect.width - 16f, availableDoctors.Count * 35f);
 
-            Widgets.BeginScrollView(surgeonOutRect, ref scrollPosition, surgeonViewRect);
+            Widgets.BeginScrollView(surgeonOutRect, ref surgeonScrollPosition, surgeonViewRect);
 
             float surgeonY = 0f;
             foreach (var doctor in availableDoctors)
@@ -266,7 +264,7 @@ namespace MultiDoctorSurgery
             Rect assistantOutRect = new Rect(0f, curY, inRect.width, inRect.height - curY - 70f);
             Rect assistantViewRect = new Rect(0f, 0f, inRect.width - 16f, (availableDoctors.Count - 1) * 35f); // -1 pour ne pas compter le chirurgien principal
 
-            Widgets.BeginScrollView(assistantOutRect, ref scrollPosition, assistantViewRect);
+            Widgets.BeginScrollView(assistantOutRect, ref assistantScrollPosition, assistantViewRect);
 
             float assistantY = 0f;
             foreach (var doctor in availableDoctors)
