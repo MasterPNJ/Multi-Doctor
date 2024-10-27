@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<!-- Main Button -->
+	<OperationsTab_Label>手術</OperationsTab_Label>
+	<OperationsTab_Description>予定された手術を表示および管理します。</OperationsTab_Description>
+
+	<!-- Dialog Assign Doctors -->
+	<AssignDoctors_Title>{0}の医師を割り当てる</AssignDoctors_Title>
+	<AssignDoctors_SelectSurgeon>主要な外科医を選択してください：</AssignDoctors_SelectSurgeon>
+	<AssignDoctors_SelectAssistants>助手の医師を選択してください：</AssignDoctors_SelectAssistants>
+	<AssignDoctors_DoctorEntry>{0}（医療スキル：{1}）</AssignDoctors_DoctorEntry>
+	<AssignDoctors_Confirm>確認</AssignDoctors_Confirm>
+	<AssignDoctors_Cancel>キャンセル</AssignDoctors_Cancel>
+
+	<!-- Main Tab Window Operations -->
+	<OperationsTab_Patient>患者</OperationsTab_Patient>
+	<OperationsTab_Operation>手術</OperationsTab_Operation>
+	<OperationsTab_Surgeon>外科医</OperationsTab_Surgeon>
+	<OperationsTab_Doctors>医師</OperationsTab_Doctors>
+	<OperationsTab_ViewEdit>表示/編集</OperationsTab_ViewEdit>
+	<OperationsTab_None>なし</OperationsTab_None>
+
+	<!-- Settings -->
+	<MultiDoctorSurgery_SettingsCategory>複数医師の手術</MultiDoctorSurgery_SettingsCategory>
+	<MultiDoctorSurgery_SpeedMultiplier>割り当てられた医師1人あたりの速度倍率：{0:F2}</MultiDoctorSurgery_SpeedMultiplier>
+	<MultiDoctorSurgery_SuccessMultiplier>割り当てられた医師1人あたりの成功率倍率：{0:F2}</MultiDoctorSurgery_SuccessMultiplier>
+	<MultiDoctorSurgery_MaxDoctors>割り当て可能な医師の最大数：{0}</MultiDoctorSurgery_MaxDoctors>
+</LanguageData>

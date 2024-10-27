@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<!-- Main Button -->
+	<OperationsTab_Label>手术</OperationsTab_Label>
+	<OperationsTab_Description>查看和管理计划的手术。</OperationsTab_Description>
+
+	<!-- Dialog Assign Doctors -->
+	<AssignDoctors_Title>为 {0} 分配医生</AssignDoctors_Title>
+	<AssignDoctors_SelectSurgeon>选择主刀医生：</AssignDoctors_SelectSurgeon>
+	<AssignDoctors_SelectAssistants>选择助理医生：</AssignDoctors_SelectAssistants>
+	<AssignDoctors_DoctorEntry>{0}（医术：{1}）</AssignDoctors_DoctorEntry>
+	<AssignDoctors_Confirm>确认</AssignDoctors_Confirm>
+	<AssignDoctors_Cancel>取消</AssignDoctors_Cancel>
+
+	<!-- Main Tab Window Operations -->
+	<OperationsTab_Patient>患者</OperationsTab_Patient>
+	<OperationsTab_Operation>手术</OperationsTab_Operation>
+	<OperationsTab_Surgeon>外科医生</OperationsTab_Surgeon>
+	<OperationsTab_Doctors>医生</OperationsTab_Doctors>
+	<OperationsTab_ViewEdit>查看/编辑</OperationsTab_ViewEdit>
+	<OperationsTab_None>无</OperationsTab_None>
+
+	<!-- Settings -->
+	<MultiDoctorSurgery_SettingsCategory>多医生手术</MultiDoctorSurgery_SettingsCategory>
+	<MultiDoctorSurgery_SpeedMultiplier>每分配一名医生的速度倍率：{0:F2}</MultiDoctorSurgery_SpeedMultiplier>
+	<MultiDoctorSurgery_SuccessMultiplier>每分配一名医生的成功率倍率：{0:F2}</MultiDoctorSurgery_SuccessMultiplier>
+	<MultiDoctorSurgery_MaxDoctors>可分配的医生最大数量：{0}</MultiDoctorSurgery_MaxDoctors>
+</LanguageData>

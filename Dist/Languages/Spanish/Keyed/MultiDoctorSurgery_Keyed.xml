@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<!-- Main Button -->
+	<OperationsTab_Label>Operaciones</OperationsTab_Label>
+	<OperationsTab_Description>Ver y gestionar las operaciones programadas.</OperationsTab_Description>
+
+	<!-- Dialog Assign Doctors -->
+	<AssignDoctors_Title>Asignar médicos para {0}</AssignDoctors_Title>
+	<AssignDoctors_SelectSurgeon>Seleccionar el cirujano principal:</AssignDoctors_SelectSurgeon>
+	<AssignDoctors_SelectAssistants>Seleccionar médicos asistentes:</AssignDoctors_SelectAssistants>
+	<AssignDoctors_DoctorEntry>{0} (Medicina: {1})</AssignDoctors_DoctorEntry>
+	<AssignDoctors_Confirm>Confirmar</AssignDoctors_Confirm>
+	<AssignDoctors_Cancel>Cancelar</AssignDoctors_Cancel>
+
+	<!-- Main Tab Window Operations -->
+	<OperationsTab_Patient>Paciente</OperationsTab_Patient>
+	<OperationsTab_Operation>Operación</OperationsTab_Operation>
+	<OperationsTab_Surgeon>Cirujano</OperationsTab_Surgeon>
+	<OperationsTab_Doctors>Médicos</OperationsTab_Doctors>
+	<OperationsTab_ViewEdit>Ver/Editar</OperationsTab_ViewEdit>
+	<OperationsTab_None>Ninguno</OperationsTab_None>
+
+	<!-- Settings -->
+	<MultiDoctorSurgery_SettingsCategory>Cirugía Multi-Médico</MultiDoctorSurgery_SettingsCategory>
+	<MultiDoctorSurgery_SpeedMultiplier>Multiplicador de velocidad por médico asignado: {0:F2}</MultiDoctorSurgery_SpeedMultiplier>
+	<MultiDoctorSurgery_SuccessMultiplier>Multiplicador de tasa de éxito por médico asignado: {0:F2}</MultiDoctorSurgery_SuccessMultiplier>
+	<MultiDoctorSurgery_MaxDoctors>Número máximo de médicos asignables: {0}</MultiDoctorSurgery_MaxDoctors>
+</LanguageData>

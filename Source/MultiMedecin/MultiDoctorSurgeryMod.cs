@@ -21,20 +21,20 @@ namespace MultiDoctorSurgery
             harmony.PatchAll();
         }
 
-        public override string SettingsCategory() => "Multi-Doctor Surgery";
+        public override string SettingsCategory() => "MultiDoctorSurgery_SettingsCategory".Translate();
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
             Listing_Standard listingStandard = new Listing_Standard();
             listingStandard.Begin(inRect);
 
-            listingStandard.Label($"Multiplicateur de vitesse par médecin assigné: {settings.speedMultiplierPerDoctor:F2}");
+            listingStandard.Label("MultiDoctorSurgery_SpeedMultiplier".Translate(settings.speedMultiplierPerDoctor));
             settings.speedMultiplierPerDoctor = listingStandard.Slider(settings.speedMultiplierPerDoctor, 0f, 5f);
 
-            listingStandard.Label($"Multiplicateur de taux de réussite par médecin assigné: {settings.successRateMultiplier:F2}");
+            listingStandard.Label("MultiDoctorSurgery_SuccessMultiplier".Translate(settings.successRateMultiplier));
             settings.successRateMultiplier = listingStandard.Slider(settings.successRateMultiplier, 0f, 1f);
 
-            listingStandard.Label($"Nombre maximal de médecins assignables: {settings.maxDoctors}");
+            listingStandard.Label("MultiDoctorSurgery_MaxDoctors".Translate(settings.maxDoctors));
             settings.maxDoctors = Mathf.RoundToInt(listingStandard.Slider(settings.maxDoctors, 1, 5));
 
             listingStandard.End();
@@ -235,13 +235,13 @@ namespace MultiDoctorSurgery
         {
             // Titre
             Text.Font = GameFont.Medium;
-            Widgets.Label(new Rect(0, 0, inRect.width, 30f), "Assigner les médecins pour " + patient.Name.ToStringShort);
+            Widgets.Label(new Rect(0, 0, inRect.width, 30f), "AssignDoctors_Title".Translate(patient.Name.ToStringShort));
             Text.Font = GameFont.Small;
 
             float curY = 40f;
 
             // Sélection du chirurgien principal
-            Widgets.Label(new Rect(0, curY, inRect.width, 25f), "Sélectionner le chirurgien principal :");
+            Widgets.Label(new Rect(0, curY, inRect.width, 25f), "AssignDoctors_SelectSurgeon".Translate());
             curY += 30f;
 
             Rect surgeonOutRect = new Rect(0f, curY, inRect.width, 100f);
@@ -255,7 +255,8 @@ namespace MultiDoctorSurgery
                 Rect rowRect = new Rect(0, surgeonY, surgeonViewRect.width, 30f);
 
                 bool isSelected = doctor == selectedSurgeon;
-                if (Widgets.RadioButtonLabeled(rowRect, $"{doctor.Name.ToStringShort} (Médecine: {doctor.skills.GetSkill(SkillDefOf.Medicine).Level})", isSelected))
+                string label = "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(SkillDefOf.Medicine).Level);
+                if (Widgets.RadioButtonLabeled(rowRect, label, isSelected))
                 {
                     selectedSurgeon = doctor;
 
@@ -274,7 +275,7 @@ namespace MultiDoctorSurgery
             curY += 110f;
 
             // Sélection des médecins assistants
-            Widgets.Label(new Rect(0, curY, inRect.width, 25f), "Sélectionner les médecins assistants :");
+            Widgets.Label(new Rect(0, curY, inRect.width, 25f), "AssignDoctors_SelectAssistants".Translate());
             curY += 30f;
 
             Rect assistantOutRect = new Rect(0f, curY, inRect.width, inRect.height - curY - 70f);
@@ -295,9 +296,8 @@ namespace MultiDoctorSurgery
                 Rect rowRect = new Rect(0, assistantY, assistantViewRect.width, 30f);
 
                 bool newIsAssigned = isAssigned;
-                Widgets.CheckboxLabeled(rowRect,
-                    $"{doctor.Name.ToStringShort} (Médecine: {doctor.skills.GetSkill(SkillDefOf.Medicine).Level})",
-                    ref newIsAssigned);
+                string label = "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(SkillDefOf.Medicine).Level);
+                Widgets.CheckboxLabeled(rowRect, label, ref newIsAssigned);
 
                 if (newIsAssigned != isAssigned)
                 {
@@ -318,7 +318,7 @@ namespace MultiDoctorSurgery
             Widgets.EndScrollView();
 
             // Boutons en bas
-            if (Widgets.ButtonText(new Rect(0, inRect.height - 35f, inRect.width / 2f, 35f), "Confirmer"))
+            if (Widgets.ButtonText(new Rect(0, inRect.height - 35f, inRect.width / 2f, 35f), "AssignDoctors_Confirm".Translate()))
             {
                 // Annuler les travaux en cours des chirurgiens et médecins précédents
                 CancelOngoingJobs();
@@ -338,7 +338,7 @@ namespace MultiDoctorSurgery
                 Close();
             }
 
-            if (Widgets.ButtonText(new Rect(inRect.width / 2f, inRect.height - 35f, inRect.width / 2f, 35f), "Annuler"))
+            if (Widgets.ButtonText(new Rect(inRect.width / 2f, inRect.height - 35f, inRect.width / 2f, 35f), "AssignDoctors_Cancel".Translate()))
             {
                 // Annuler l'opération en supprimant le bill
                 patient.BillStack.Bills.Remove(bill);
@@ -398,10 +398,10 @@ namespace MultiDoctorSurgery
             // En-tête des colonnes
             Rect headerRect = new Rect(0f, curY, scrollRect.width, rowHeight);
             Text.Anchor = TextAnchor.MiddleCenter;
-            Widgets.Label(new Rect(headerRect.x, headerRect.y, headerRect.width / 4f, headerRect.height), "Patient");
-            Widgets.Label(new Rect(headerRect.x + headerRect.width / 4f, headerRect.y, headerRect.width / 4f, headerRect.height), "Opération");
-            Widgets.Label(new Rect(headerRect.x + headerRect.width / 2f, headerRect.y, headerRect.width / 4f, headerRect.height), "Chirurgien");
-            Widgets.Label(new Rect(headerRect.x + 3 * headerRect.width / 4f, headerRect.y, headerRect.width / 4f, headerRect.height), "Médecins");
+            Widgets.Label(new Rect(headerRect.x, headerRect.y, headerRect.width / 4f, headerRect.height), "OperationsTab_Patient".Translate());
+            Widgets.Label(new Rect(headerRect.x + headerRect.width / 4f, headerRect.y, headerRect.width / 4f, headerRect.height), "OperationsTab_Operation".Translate());
+            Widgets.Label(new Rect(headerRect.x + headerRect.width / 2f, headerRect.y, headerRect.width / 4f, headerRect.height), "OperationsTab_Surgeon".Translate());
+            Widgets.Label(new Rect(headerRect.x + 3 * headerRect.width / 4f, headerRect.y, headerRect.width / 4f, headerRect.height), "OperationsTab_Doctors".Translate());
             Text.Anchor = TextAnchor.UpperLeft;
 
             curY += rowHeight;
@@ -441,7 +441,7 @@ namespace MultiDoctorSurgery
 
             // Chirurgien
             Rect surgeonRect = new Rect(x, rect.y, width, rect.height);
-            string surgeonName = bill.surgeon != null ? bill.surgeon.Name.ToStringShort : "Aucun";
+            string surgeonName = bill.surgeon != null ? bill.surgeon.Name.ToStringShort : "OperationsTab_None".Translate().ToString();
             if (Widgets.ButtonText(surgeonRect, surgeonName))
             {
                 List<FloatMenuOption> options = GetSurgeonOptions(bill);
@@ -452,7 +452,7 @@ namespace MultiDoctorSurgery
 
             // Médecins assignés
             Rect doctorsRect = new Rect(x, rect.y, width, rect.height);
-            if (Widgets.ButtonText(doctorsRect, "Voir/Modifier"))
+            if (Widgets.ButtonText(doctorsRect, "OperationsTab_ViewEdit".Translate()))
             {
                 Find.WindowStack.Add(new Dialog_AssignDoctors(bill.GiverPawn, bill.recipe, bill));
             }
@@ -470,33 +470,35 @@ namespace MultiDoctorSurgery
 
             foreach (var doctor in availableDoctors)
             {
-                options.Add(new FloatMenuOption($"{doctor.Name.ToStringShort} (Médecine: {doctor.skills.GetSkill(SkillDefOf.Medicine).Level})", () =>
-                {
-                    // Stocker le chirurgien précédent
-                    var previousSurgeon = bill.surgeon;
-
-                    // Mettre à jour le chirurgien
-                    bill.surgeon = doctor;
-                    bill.SetPawnRestriction(doctor);
-
-                    // S'assurer que le nouveau chirurgien est dans les médecins assignés
-                    if (!bill.assignedDoctors.Contains(doctor))
+                options.Add(new FloatMenuOption(
+                    "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(SkillDefOf.Medicine).Level),
+                    () =>
                     {
-                        bill.assignedDoctors.Add(doctor);
-                    }
+                        // Stocker le chirurgien précédent
+                        var previousSurgeon = bill.surgeon;
 
-                    // Annuler le travail du chirurgien précédent
-                    if (previousSurgeon != null && previousSurgeon != doctor && previousSurgeon.CurJob != null && previousSurgeon.CurJob.bill == bill)
-                    {
-                        previousSurgeon.jobs.EndCurrentJob(JobCondition.InterruptForced);
-                    }
+                        // Mettre à jour le chirurgien
+                        bill.surgeon = doctor;
+                        bill.SetPawnRestriction(doctor);
 
-                    // Annuler le travail du nouveau chirurgien au cas où il serait déjà engagé dans un autre travail
-                    if (doctor.CurJob != null && doctor.CurJob.bill == bill)
-                    {
-                        doctor.jobs.EndCurrentJob(JobCondition.InterruptForced);
-                    }
-                }));
+                        // S'assurer que le nouveau chirurgien est dans les médecins assignés
+                        if (!bill.assignedDoctors.Contains(doctor))
+                        {
+                            bill.assignedDoctors.Add(doctor);
+                        }
+
+                        // Annuler le travail du chirurgien précédent
+                        if (previousSurgeon != null && previousSurgeon != doctor && previousSurgeon.CurJob != null && previousSurgeon.CurJob.bill == bill)
+                        {
+                            previousSurgeon.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                        }
+
+                        // Annuler le travail du nouveau chirurgien au cas où il serait déjà engagé dans un autre travail
+                        if (doctor.CurJob != null && doctor.CurJob.bill == bill)
+                        {
+                            doctor.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                        }
+                    }));
             }
 
             return options;

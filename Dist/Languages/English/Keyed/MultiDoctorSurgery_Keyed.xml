@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<!-- Main Button -->
+	<OperationsTab_Label>Operations</OperationsTab_Label>
+	<OperationsTab_Description>View and manage scheduled operations.</OperationsTab_Description>
+
+	<!-- Dialog Assign Doctors -->
+	<AssignDoctors_Title>Assign doctors for {0}</AssignDoctors_Title>
+	<AssignDoctors_SelectSurgeon>Select the primary surgeon:</AssignDoctors_SelectSurgeon>
+	<AssignDoctors_SelectAssistants>Select assistant doctors:</AssignDoctors_SelectAssistants>
+	<AssignDoctors_DoctorEntry>{0} (Medicine: {1})</AssignDoctors_DoctorEntry>
+	<AssignDoctors_Confirm>Confirm</AssignDoctors_Confirm>
+	<AssignDoctors_Cancel>Cancel</AssignDoctors_Cancel>
+
+	<!-- Main Tab Window Operations -->
+	<OperationsTab_Patient>Patient</OperationsTab_Patient>
+	<OperationsTab_Operation>Operation</OperationsTab_Operation>
+	<OperationsTab_Surgeon>Surgeon</OperationsTab_Surgeon>
+	<OperationsTab_Doctors>Doctors</OperationsTab_Doctors>
+	<OperationsTab_ViewEdit>View/Edit</OperationsTab_ViewEdit>
+	<OperationsTab_None>None</OperationsTab_None>
+
+	<!-- Settings -->
+	<MultiDoctorSurgery_SettingsCategory>Multi-Doctor Surgery</MultiDoctorSurgery_SettingsCategory>
+	<MultiDoctorSurgery_SpeedMultiplier>Speed multiplier per assigned doctor: {0:F2}</MultiDoctorSurgery_SpeedMultiplier>
+	<MultiDoctorSurgery_SuccessMultiplier>Success rate multiplier per assigned doctor: {0:F2}</MultiDoctorSurgery_SuccessMultiplier>
+	<MultiDoctorSurgery_MaxDoctors>Maximum number of assignable doctors: {0}</MultiDoctorSurgery_MaxDoctors>
+</LanguageData>
