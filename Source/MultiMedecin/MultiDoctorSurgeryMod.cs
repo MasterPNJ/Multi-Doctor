@@ -188,6 +188,10 @@ namespace MultiDoctorSurgery
         private Vector2 assistantScrollPosition;
         private Pawn selectedSurgeon; // Chirurgien principal sélectionné
 
+        // Variables pour stocker les assignations précédentes
+        private Pawn previousSurgeon;
+        private List<Pawn> previousAssignedDoctors;
+
         public Dialog_AssignDoctors(Pawn patient, RecipeDef recipe, BillMedicalEx bill)
         {
             this.patient = patient;
@@ -197,6 +201,10 @@ namespace MultiDoctorSurgery
             this.availableDoctors = patient.Map.mapPawns.FreeColonistsSpawned
                 .Where(p => p != patient && !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
                 .ToList();
+
+            // Stocker les assignations précédentes
+            this.previousSurgeon = bill.surgeon;
+            this.previousAssignedDoctors = new List<Pawn>(bill.assignedDoctors);
 
             // Si un chirurgien est déjà assigné, le sélectionner, sinon choisir le meilleur
             if (bill.surgeon != null && availableDoctors.Contains(bill.surgeon))
@@ -312,6 +320,9 @@ namespace MultiDoctorSurgery
             // Boutons en bas
             if (Widgets.ButtonText(new Rect(0, inRect.height - 35f, inRect.width / 2f, 35f), "Confirmer"))
             {
+                // Annuler les travaux en cours des chirurgiens et médecins précédents
+                CancelOngoingJobs();
+
                 // Stocker le chirurgien principal dans le bill
                 bill.surgeon = selectedSurgeon;
 
@@ -332,6 +343,27 @@ namespace MultiDoctorSurgery
                 // Annuler l'opération en supprimant le bill
                 patient.BillStack.Bills.Remove(bill);
                 Close();
+            }
+        }
+
+        private void CancelOngoingJobs()
+        {
+            // Annuler le travail du chirurgien précédent s'il est en train d'opérer
+            if (previousSurgeon != null && previousSurgeon.CurJob != null && previousSurgeon.CurJob.bill == bill)
+            {
+                previousSurgeon.jobs.EndCurrentJob(JobCondition.InterruptForced);
+            }
+
+            // Annuler les travaux des médecins précédemment assignés
+            if (previousAssignedDoctors != null)
+            {
+                foreach (var doctor in previousAssignedDoctors)
+                {
+                    if (doctor != previousSurgeon && doctor.CurJob != null && doctor.CurJob.targetA != null && doctor.CurJob.targetA.Thing == patient)
+                    {
+                        doctor.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                    }
+                }
             }
         }
     }
@@ -440,12 +472,29 @@ namespace MultiDoctorSurgery
             {
                 options.Add(new FloatMenuOption($"{doctor.Name.ToStringShort} (Médecine: {doctor.skills.GetSkill(SkillDefOf.Medicine).Level})", () =>
                 {
+                    // Stocker le chirurgien précédent
+                    var previousSurgeon = bill.surgeon;
+
+                    // Mettre à jour le chirurgien
                     bill.surgeon = doctor;
                     bill.SetPawnRestriction(doctor);
 
+                    // S'assurer que le nouveau chirurgien est dans les médecins assignés
                     if (!bill.assignedDoctors.Contains(doctor))
                     {
                         bill.assignedDoctors.Add(doctor);
+                    }
+
+                    // Annuler le travail du chirurgien précédent
+                    if (previousSurgeon != null && previousSurgeon != doctor && previousSurgeon.CurJob != null && previousSurgeon.CurJob.bill == bill)
+                    {
+                        previousSurgeon.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                    }
+
+                    // Annuler le travail du nouveau chirurgien au cas où il serait déjà engagé dans un autre travail
+                    if (doctor.CurJob != null && doctor.CurJob.bill == bill)
+                    {
+                        doctor.jobs.EndCurrentJob(JobCondition.InterruptForced);
                     }
                 }));
             }
