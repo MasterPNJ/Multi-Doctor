@@ -3,6 +3,7 @@ using Verse;
 using Verse.AI;
 using UnityEngine;
 using HarmonyLib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,6 +19,7 @@ namespace MultiDoctorSurgery
             settings = GetSettings<Settings>();
             var harmony = new Harmony("com.multidoctor.surgery");
             harmony.PatchAll();
+            Harmony.DEBUG = true;
         }
 
         public override string SettingsCategory() => "Multi-Doctor Surgery";
@@ -56,6 +58,14 @@ namespace MultiDoctorSurgery
         }
     }
 
+    public class CompProperties_MultiDoctor : CompProperties
+    {
+        public CompProperties_MultiDoctor()
+        {
+            this.compClass = typeof(CompMultiDoctor);
+        }
+    }
+
     public class CompMultiDoctor : ThingComp
     {
         public List<Pawn> assignedDoctors = new List<Pawn>();
@@ -65,21 +75,20 @@ namespace MultiDoctorSurgery
             Scribe_Collections.Look(ref assignedDoctors, "assignedDoctors", LookMode.Reference);
             base.PostExposeData();
         }
+    }
 
-        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+    [HarmonyPatch(typeof(HealthCardUtility), "CreateSurgeryBill")]
+    public static class Patch_HealthCardUtility_CreateSurgeryBill
+    {
+        public static void Postfix(Pawn medPawn, RecipeDef recipe)
         {
-            if (this.parent is Pawn patient && patient.IsColonistPlayerControlled)
+            if (recipe.Worker is Recipe_Surgery)
             {
-                yield return new Command_Action
-                {
-                    defaultLabel = "Assigner des médecins",
-                    defaultDesc = "Sélectionnez plusieurs médecins pour l'opération de ce patient.",
-                    icon = ContentFinder<Texture2D>.Get("UI/Commands/AssignDoctors", true),
-                    action = () => Find.WindowStack.Add(new Dialog_AssignDoctors(patient))
-                };
+                Find.WindowStack.Add(new Dialog_AssignDoctors(medPawn, recipe));
             }
         }
     }
+
 
     [HarmonyPatch(typeof(StatWorker), "GetValueUnfinalized")]
     public static class Patch_WorkSpeedMultiplier
@@ -97,7 +106,7 @@ namespace MultiDoctorSurgery
                     __result *= speedMultiplier;
 
                     // Log pour vérifier l'application du multiplicateur de vitesse
-                    Log.Message($"[Multi-Doctor Surgery] Multiplicateur de vitesse appliqué au médecin {pawn.Name.ToStringShort} lors de l'opération sur {patient.Name.ToStringShort}. Multiplicateur: {speedMultiplier:F2}");
+                    //Log.Message($"[Multi-Doctor Surgery] Multiplicateur de vitesse appliqué au médecin {pawn.Name.ToStringShort} lors de l'opération sur {patient.Name.ToStringShort}. Multiplicateur: {speedMultiplier:F2}");
                 }
             }
         }
@@ -117,7 +126,7 @@ namespace MultiDoctorSurgery
 
                     if (comp != null && comp.assignedDoctors.Count > 1)
                     {
-                        // Ajouter une action pour faire participer les autres médecins en les faisant se positionner autour du patient
+                        // Ajouter une action pour faire participer les autres médecins
                         toil.AddPreInitAction(() =>
                         {
                             foreach (var doctor in comp.assignedDoctors)
@@ -127,7 +136,7 @@ namespace MultiDoctorSurgery
                                     // Assigner un travail de déplacement vers le patient
                                     Job gotoJob = new Job(JobDefOf.Goto, patient.Position);
                                     doctor.jobs.StartJob(gotoJob, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
-                                    Log.Message($"[Multi-Doctor Surgery] Médecin {doctor.Name.ToStringShort} se déplace vers {patient.Name.ToStringShort} pour assister l'opération.");
+                                    // Log.Message($"[Multi-Doctor Surgery] Médecin {doctor.Name.ToStringShort} se déplace vers {patient.Name.ToStringShort} pour assister l'opération.");
                                 }
                             }
                         });
@@ -142,7 +151,7 @@ namespace MultiDoctorSurgery
                                     // Vérifier que le médecin reste autour du lit
                                     Job gotoJob = new Job(JobDefOf.Goto, patient.Position);
                                     doctor.jobs.StartJob(gotoJob, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
-                                    Log.Message($"[Multi-Doctor Surgery] Médecin {doctor.Name.ToStringShort} ajuste sa position autour de {patient.Name.ToStringShort} pendant l'opération.");
+                                    //Log.Message($"[Multi-Doctor Surgery] Médecin {doctor.Name.ToStringShort} ajuste sa position autour de {patient.Name.ToStringShort} pendant l'opération.");
                                 }
                             }
                         });
@@ -159,19 +168,32 @@ namespace MultiDoctorSurgery
     public class Dialog_AssignDoctors : Window
     {
         private Pawn patient;
+        private RecipeDef recipe;
+        private Bill_Medical bill;
         private List<Pawn> availableDoctors;
         private Vector2 scrollPosition;
 
-        public Dialog_AssignDoctors(Pawn patient)
+        public Dialog_AssignDoctors(Pawn patient, RecipeDef recipe)
         {
             this.patient = patient;
+            this.recipe = recipe;
+            this.bill = patient.BillStack.Bills.Last() as Bill_Medical;
+
+            var comp = patient.GetComp<CompMultiDoctor>();
+            if (comp == null)
+            {
+                comp = new CompMultiDoctor();
+                patient.AllComps.Add(comp);
+            }
+
             this.availableDoctors = patient.Map.mapPawns.FreeColonistsSpawned
                 .Where(p => p != patient && !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
                 .ToList();
 
             this.doCloseX = true;
             this.absorbInputAroundWindow = true;
-            this.closeOnClickedOutside = true;
+            this.closeOnClickedOutside = false;
+            this.forcePause = true;
         }
 
         public override Vector2 InitialSize => new Vector2(400f, 600f);
@@ -183,7 +205,7 @@ namespace MultiDoctorSurgery
             Widgets.Label(new Rect(0, 0, inRect.width, 30f),
                 "Sélectionner les médecins pour " + patient.Name.ToStringShort);
 
-            Rect outRect = new Rect(0f, 40f, inRect.width, inRect.height - 40f);
+            Rect outRect = new Rect(0f, 40f, inRect.width, inRect.height - 80f);
             Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, availableDoctors.Count * 35f);
 
             Widgets.BeginScrollView(outRect, ref scrollPosition, viewRect);
@@ -220,6 +242,20 @@ namespace MultiDoctorSurgery
             }
 
             Widgets.EndScrollView();
+
+            // Bouton "Confirmer"
+            if (Widgets.ButtonText(new Rect(0, inRect.height - 35f, inRect.width / 2f, 35f), "Confirmer"))
+            {
+                Close();
+            }
+
+            // Bouton "Annuler"
+            if (Widgets.ButtonText(new Rect(inRect.width / 2f, inRect.height - 35f, inRect.width / 2f, 35f), "Annuler"))
+            {
+                // Annuler l'opération en supprimant le bill
+                patient.BillStack.Bills.Remove(bill);
+                Close();
+            }
         }
     }
 }
