@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<MainButtonDef>
+		<defName>OperationsTab</defName>
+		<label>Opérations</label>
+		<description>Voir et gérer les opérations programmées.</description>
+		<buttonVisible>true</buttonVisible>
+		<order>700</order>
+		<tabWindowClass>MultiDoctorSurgery.MainTabWindow_Operations</tabWindowClass>
+		<validWithoutMap>false</validWithoutMap>
+		<iconPath>UI/Commands/AssignDoctors</iconPath>
+	</MainButtonDef>
+</Defs>

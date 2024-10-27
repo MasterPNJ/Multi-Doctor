@@ -170,7 +170,7 @@ namespace MultiDoctorSurgery
                         });
 
                         // Log des informations sur la participation des médecins
-                        Log.Message($"[Multi-Doctor Surgery] Chirurgien principal: {__instance.pawn.Name.ToStringShort}. Médecins assistants pour l'opération sur {patient.Name.ToStringShort}: {string.Join(", ", assignedDoctors.Where(d => d != __instance.pawn).Select(d => d.Name.ToStringShort))}");
+                        // Log.Message($"[Multi-Doctor Surgery] Chirurgien principal: {__instance.pawn.Name.ToStringShort}. Médecins assistants pour l'opération sur {patient.Name.ToStringShort}: {string.Join(", ", assignedDoctors.Where(d => d != __instance.pawn).Select(d => d.Name.ToStringShort))}");
                     }
                 }
                 yield return toil;
@@ -198,11 +198,19 @@ namespace MultiDoctorSurgery
                 .Where(p => p != patient && !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
                 .ToList();
 
-            // Par défaut, sélectionner le médecin avec la meilleure compétence
-            this.selectedSurgeon = availableDoctors.OrderByDescending(d => d.skills.GetSkill(SkillDefOf.Medicine).Level).FirstOrDefault();
+            // Si un chirurgien est déjà assigné, le sélectionner, sinon choisir le meilleur
+            if (bill.surgeon != null && availableDoctors.Contains(bill.surgeon))
+            {
+                selectedSurgeon = bill.surgeon;
+            }
+            else
+            {
+                // Par défaut, sélectionner le médecin avec la meilleure compétence
+                selectedSurgeon = availableDoctors.OrderByDescending(d => d.skills.GetSkill(SkillDefOf.Medicine).Level).FirstOrDefault();
+            }
 
             // Ajouter le chirurgien principal à la liste des médecins assignés s'il n'y est pas déjà
-            if (!bill.assignedDoctors.Contains(selectedSurgeon))
+            if (selectedSurgeon != null && !bill.assignedDoctors.Contains(selectedSurgeon))
             {
                 bill.assignedDoctors.Add(selectedSurgeon);
             }
@@ -325,6 +333,124 @@ namespace MultiDoctorSurgery
                 patient.BillStack.Bills.Remove(bill);
                 Close();
             }
+        }
+    }
+
+    public class MainTabWindow_Operations : MainTabWindow
+    {
+        private Vector2 scrollPosition;
+
+        public override void PreOpen()
+        {
+            base.PreOpen();
+            this.scrollPosition = Vector2.zero;
+        }
+
+        public override void DoWindowContents(Rect inRect)
+        {
+            // Ne pas appeler base.DoWindowContents(inRect);
+
+            List<BillMedicalEx> scheduledOperations = Find.Maps.SelectMany(map => map.mapPawns.FreeColonistsSpawned)
+                .SelectMany(pawn => pawn.BillStack.Bills)
+                .OfType<BillMedicalEx>()
+                .ToList();
+
+            float rowHeight = 30f;
+            float contentHeight = scheduledOperations.Count * rowHeight;
+
+            Rect scrollRect = new Rect(0f, 0f, inRect.width - 16f, contentHeight);
+            Widgets.BeginScrollView(inRect, ref scrollPosition, scrollRect);
+
+            float curY = 0f;
+
+            // En-tête des colonnes
+            Rect headerRect = new Rect(0f, curY, scrollRect.width, rowHeight);
+            Text.Anchor = TextAnchor.MiddleCenter;
+            Widgets.Label(new Rect(headerRect.x, headerRect.y, headerRect.width / 4f, headerRect.height), "Patient");
+            Widgets.Label(new Rect(headerRect.x + headerRect.width / 4f, headerRect.y, headerRect.width / 4f, headerRect.height), "Opération");
+            Widgets.Label(new Rect(headerRect.x + headerRect.width / 2f, headerRect.y, headerRect.width / 4f, headerRect.height), "Chirurgien");
+            Widgets.Label(new Rect(headerRect.x + 3 * headerRect.width / 4f, headerRect.y, headerRect.width / 4f, headerRect.height), "Médecins");
+            Text.Anchor = TextAnchor.UpperLeft;
+
+            curY += rowHeight;
+
+            foreach (var bill in scheduledOperations)
+            {
+                Rect rowRect = new Rect(0f, curY, scrollRect.width, rowHeight);
+
+                DrawOperationRow(rowRect, bill);
+
+                curY += rowHeight;
+            }
+
+            Widgets.EndScrollView();
+        }
+
+        private void DrawOperationRow(Rect rect, BillMedicalEx bill)
+        {
+            Widgets.DrawHighlightIfMouseover(rect);
+
+            Text.Anchor = TextAnchor.MiddleLeft;
+
+            float x = rect.x;
+            float width = rect.width / 4f;
+
+            // Patient
+            Rect patientRect = new Rect(x, rect.y, width, rect.height);
+            Widgets.Label(patientRect, bill.GiverPawn.Name.ToStringShort);
+
+            x += width;
+
+            // Opération
+            Rect operationRect = new Rect(x, rect.y, width, rect.height);
+            Widgets.Label(operationRect, bill.recipe.LabelCap);
+
+            x += width;
+
+            // Chirurgien
+            Rect surgeonRect = new Rect(x, rect.y, width, rect.height);
+            string surgeonName = bill.surgeon != null ? bill.surgeon.Name.ToStringShort : "Aucun";
+            if (Widgets.ButtonText(surgeonRect, surgeonName))
+            {
+                List<FloatMenuOption> options = GetSurgeonOptions(bill);
+                Find.WindowStack.Add(new FloatMenu(options));
+            }
+
+            x += width;
+
+            // Médecins assignés
+            Rect doctorsRect = new Rect(x, rect.y, width, rect.height);
+            if (Widgets.ButtonText(doctorsRect, "Voir/Modifier"))
+            {
+                Find.WindowStack.Add(new Dialog_AssignDoctors(bill.GiverPawn, bill.recipe, bill));
+            }
+
+            Text.Anchor = TextAnchor.UpperLeft;
+        }
+
+        private List<FloatMenuOption> GetSurgeonOptions(BillMedicalEx bill)
+        {
+            List<FloatMenuOption> options = new List<FloatMenuOption>();
+
+            var availableDoctors = bill.GiverPawn.Map.mapPawns.FreeColonistsSpawned
+                .Where(p => p != bill.GiverPawn && !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
+                .OrderByDescending(d => d.skills.GetSkill(SkillDefOf.Medicine).Level);
+
+            foreach (var doctor in availableDoctors)
+            {
+                options.Add(new FloatMenuOption($"{doctor.Name.ToStringShort} (Médecine: {doctor.skills.GetSkill(SkillDefOf.Medicine).Level})", () =>
+                {
+                    bill.surgeon = doctor;
+                    bill.SetPawnRestriction(doctor);
+
+                    if (!bill.assignedDoctors.Contains(doctor))
+                    {
+                        bill.assignedDoctors.Add(doctor);
+                    }
+                }));
+            }
+
+            return options;
         }
     }
 }
