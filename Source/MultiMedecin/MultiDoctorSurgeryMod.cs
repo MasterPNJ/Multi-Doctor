@@ -28,10 +28,10 @@ namespace MultiDoctorSurgery
             Listing_Standard listingStandard = new Listing_Standard();
             listingStandard.Begin(inRect);
 
-            listingStandard.Label("MultiDoctorSurgery_SpeedMultiplier".Translate(settings.speedMultiplierPerDoctor));
+            listingStandard.Label("MultiDoctorSurgery_SpeedMultiplier".Translate(settings.speedMultiplierPerDoctor.ToString("F2")));
             settings.speedMultiplierPerDoctor = listingStandard.Slider(settings.speedMultiplierPerDoctor, 0f, 5f);
 
-            listingStandard.Label("MultiDoctorSurgery_SuccessMultiplier".Translate(settings.successRateMultiplier));
+            listingStandard.Label("MultiDoctorSurgery_SuccessMultiplier".Translate(settings.successRateMultiplier.ToString("F2")));
             settings.successRateMultiplier = listingStandard.Slider(settings.successRateMultiplier, 0f, 1f);
 
             listingStandard.Label("MultiDoctorSurgery_MaxDoctors".Translate(settings.maxDoctors));
@@ -241,7 +241,14 @@ namespace MultiDoctorSurgery
             float curY = 40f;
 
             // Sélection du chirurgien principal
-            Widgets.Label(new Rect(0, curY, inRect.width, 25f), "AssignDoctors_SelectSurgeon".Translate());
+            Text.Font = GameFont.Medium;
+            string surgeonLabel = "AssignDoctors_SelectSurgeon".Translate();
+            Rect surgeonLabelRect = new Rect(0, curY, inRect.width, 25f);
+            Widgets.Label(surgeonLabelRect, surgeonLabel);
+            // Dessiner la ligne sous le texte
+            GUI.color = Color.white;
+            Widgets.DrawLineHorizontal(surgeonLabelRect.x, surgeonLabelRect.yMax - 2f, Text.CalcSize(surgeonLabel).x);
+            Text.Font = GameFont.Small;
             curY += 30f;
 
             Rect surgeonOutRect = new Rect(0f, curY, inRect.width, 100f);
@@ -275,7 +282,13 @@ namespace MultiDoctorSurgery
             curY += 110f;
 
             // Sélection des médecins assistants
-            Widgets.Label(new Rect(0, curY, inRect.width, 25f), "AssignDoctors_SelectAssistants".Translate());
+            Text.Font = GameFont.Medium;
+            string assistantsLabel = "AssignDoctors_SelectAssistants".Translate();
+            Rect assistantsLabelRect = new Rect(0, curY, inRect.width, 25f);
+            Widgets.Label(assistantsLabelRect, assistantsLabel);
+            // Dessiner la ligne sous le texte
+            Widgets.DrawLineHorizontal(assistantsLabelRect.x, assistantsLabelRect.yMax - 2f, Text.CalcSize(assistantsLabel).x);
+            Text.Font = GameFont.Small;
             curY += 30f;
 
             Rect assistantOutRect = new Rect(0f, curY, inRect.width, inRect.height - curY - 70f);

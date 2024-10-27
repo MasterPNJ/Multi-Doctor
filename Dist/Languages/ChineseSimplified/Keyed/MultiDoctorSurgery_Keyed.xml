@@ -22,7 +22,7 @@
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>多医生手术</MultiDoctorSurgery_SettingsCategory>
-	<MultiDoctorSurgery_SpeedMultiplier>每分配一名医生的速度倍率：{0:F2}</MultiDoctorSurgery_SpeedMultiplier>
-	<MultiDoctorSurgery_SuccessMultiplier>每分配一名医生的成功率倍率：{0:F2}</MultiDoctorSurgery_SuccessMultiplier>
+	<MultiDoctorSurgery_SpeedMultiplier>每分配一名医生的速度倍率：{0}</MultiDoctorSurgery_SpeedMultiplier>
+	<MultiDoctorSurgery_SuccessMultiplier>每分配一名医生的成功率倍率：{0}</MultiDoctorSurgery_SuccessMultiplier>
 	<MultiDoctorSurgery_MaxDoctors>可分配的医生最大数量：{0}</MultiDoctorSurgery_MaxDoctors>
 </LanguageData>

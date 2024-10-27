@@ -22,7 +22,7 @@
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>複数医師の手術</MultiDoctorSurgery_SettingsCategory>
-	<MultiDoctorSurgery_SpeedMultiplier>割り当てられた医師1人あたりの速度倍率：{0:F2}</MultiDoctorSurgery_SpeedMultiplier>
-	<MultiDoctorSurgery_SuccessMultiplier>割り当てられた医師1人あたりの成功率倍率：{0:F2}</MultiDoctorSurgery_SuccessMultiplier>
+	<MultiDoctorSurgery_SpeedMultiplier>割り当てられた医師1人あたりの速度倍率：{0}</MultiDoctorSurgery_SpeedMultiplier>
+	<MultiDoctorSurgery_SuccessMultiplier>割り当てられた医師1人あたりの成功率倍率：{0}</MultiDoctorSurgery_SuccessMultiplier>
 	<MultiDoctorSurgery_MaxDoctors>割り当て可能な医師の最大数：{0}</MultiDoctorSurgery_MaxDoctors>
 </LanguageData>

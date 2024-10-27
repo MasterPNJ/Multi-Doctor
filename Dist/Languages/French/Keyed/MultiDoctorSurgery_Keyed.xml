@@ -22,7 +22,7 @@
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>Chirurgie Multi-Médecins</MultiDoctorSurgery_SettingsCategory>
-	<MultiDoctorSurgery_SpeedMultiplier>Multiplicateur de vitesse par médecin assigné : {0:F2}</MultiDoctorSurgery_SpeedMultiplier>
-	<MultiDoctorSurgery_SuccessMultiplier>Multiplicateur de taux de réussite par médecin assigné : {0:F2}</MultiDoctorSurgery_SuccessMultiplier>
+	<MultiDoctorSurgery_SpeedMultiplier>Multiplicateur de vitesse par médecin assigné : {0}</MultiDoctorSurgery_SpeedMultiplier>
+	<MultiDoctorSurgery_SuccessMultiplier>Multiplicateur de taux de réussite par médecin assigné : {0}</MultiDoctorSurgery_SuccessMultiplier>
 	<MultiDoctorSurgery_MaxDoctors>Nombre maximal de médecins assignables : {0}</MultiDoctorSurgery_MaxDoctors>
 </LanguageData>
