@@ -26,5 +26,14 @@
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="MultiDoctorSurgeryMod.cs" />
+		<Compile Include="JobDriver_AssistSurgeryLoop.cs" />
+		<Compile Include="Settings.cs" />
+		<Compile Include="MyCustomJobDefs.cs" />
+		<Compile Include="BillMedicalEx.cs" />
+		<Compile Include="UI/Dialog_AssignDoctors.cs" />
+		<Compile Include="UI/MainTabWindow_Operations.cs" />
+		<Compile Include="Patches/Patch_HealthCardUtility_CreateSurgeryBill.cs" />
+		<Compile Include="Patches/Patch_MakeNewToils.cs" />
+		<Compile Include="Patches/Patch_WorkSpeedMultiplier.cs" />
 	</ItemGroup>
 </Project>

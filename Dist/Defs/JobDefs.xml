@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+	<!-- Définition du JobDef personnalisé -->
+	<JobDef>
+		<defName>AssistSurgeryLoop</defName>
+		<driverClass>MultiDoctorSurgery.JobDriver_AssistSurgeryLoop</driverClass>
+		<reportString>Assisting with surgery.</reportString>
+		<label>Assist Surgery</label>
+		<playerInterruptible>false</playerInterruptible>
+	</JobDef>
+</Defs>
