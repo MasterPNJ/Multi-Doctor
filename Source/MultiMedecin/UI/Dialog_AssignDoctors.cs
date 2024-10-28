@@ -201,8 +201,9 @@ namespace MultiDoctorSurgery.UI
             {
                 foreach (var doctor in previousAssignedDoctors)
                 {
-                    if (doctor != previousSurgeon && doctor.CurJob != null && doctor.CurJob.targetA != null && doctor.CurJob.targetA.Thing == patient)
+                    if (doctor != previousSurgeon && doctor.CurJob != null && doctor.CurJob.def == MyCustomJobDefs.AssistSurgeryLoop)
                     {
+                        // Terminer le travail si c'est l'assistant
                         doctor.jobs.EndCurrentJob(JobCondition.InterruptForced);
                     }
                 }
