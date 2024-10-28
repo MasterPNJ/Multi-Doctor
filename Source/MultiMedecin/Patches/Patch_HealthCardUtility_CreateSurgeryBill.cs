@@ -12,20 +12,20 @@ namespace MultiDoctorSurgery.Patches
         {
             if (recipe.Worker is Recipe_Surgery)
             {
-                // Créer notre bill personnalisé
+                // Create our personalised bill
                 var bill = new BillMedicalEx(recipe, uniqueIngredients);
                 bill.Part = part;
 
                 medPawn.BillStack.AddBill(bill);
 
-                // Afficher l'interface pour assigner les médecins
+                // Display the interface for assigning doctors
                 Find.WindowStack.Add(new UI.Dialog_AssignDoctors(medPawn, recipe, bill));
 
-                // Empêcher l'exécution de la méthode originale
+                // Prevent execution of the original method
                 return false;
             }
 
-            // Continuer l'exécution normale pour les autres recettes
+            // Continue normal execution for other revenues
             return true;
         }
     }

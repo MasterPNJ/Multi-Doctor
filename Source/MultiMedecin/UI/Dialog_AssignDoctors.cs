@@ -15,9 +15,9 @@ namespace MultiDoctorSurgery.UI
         private List<Pawn> availableDoctors;
         private Vector2 surgeonScrollPosition;
         private Vector2 assistantScrollPosition;
-        private Pawn selectedSurgeon; // Chirurgien principal sélectionné
+        private Pawn selectedSurgeon; // Principal surgeon selected
 
-        // Variables pour stocker les assignations précédentes
+        // Variables for storing previous assignments
         private Pawn previousSurgeon;
         private List<Pawn> previousAssignedDoctors;
 
@@ -31,22 +31,22 @@ namespace MultiDoctorSurgery.UI
                 .Where(p => p != patient && !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
                 .ToList();
 
-            // Stocker les assignations précédentes
+            // Store previous assignments
             this.previousSurgeon = bill.surgeon;
             this.previousAssignedDoctors = new List<Pawn>(bill.assignedDoctors);
 
-            // Si un chirurgien est déjà assigné, le sélectionner, sinon choisir le meilleur
+            // If a surgeon has already been assigned, select him or her, otherwise choose the best surgeon.
             if (bill.surgeon != null && availableDoctors.Contains(bill.surgeon))
             {
                 selectedSurgeon = bill.surgeon;
             }
             else
             {
-                // Par défaut, sélectionner le médecin avec la meilleure compétence
+                // By default, select the doctor with the best skills
                 selectedSurgeon = availableDoctors.OrderByDescending(d => d.skills.GetSkill(SkillDefOf.Medicine).Level).FirstOrDefault();
             }
 
-            // Ajouter le chirurgien principal à la liste des médecins assignés s'il n'y est pas déjà
+            // Add the lead surgeon to the list of assigned doctors if he or she is not already on the list
             if (selectedSurgeon != null && !bill.assignedDoctors.Contains(selectedSurgeon))
             {
                 bill.assignedDoctors.Add(selectedSurgeon);
@@ -62,19 +62,19 @@ namespace MultiDoctorSurgery.UI
 
         public override void DoWindowContents(Rect inRect)
         {
-            // Titre
+            // Title
             Text.Font = GameFont.Medium;
             Widgets.Label(new Rect(0, 0, inRect.width, 30f), "AssignDoctors_Title".Translate(patient.Name.ToStringShort));
             Text.Font = GameFont.Small;
 
             float curY = 40f;
 
-            // Sélection du chirurgien principal
+            // Selecting the lead surgeon du chirurgien principal
             Text.Font = GameFont.Medium;
             string surgeonLabel = "AssignDoctors_SelectSurgeon".Translate();
             Rect surgeonLabelRect = new Rect(0, curY, inRect.width, 25f);
             Widgets.Label(surgeonLabelRect, surgeonLabel);
-            // Dessiner la ligne sous le texte
+            // Draw the line under the text
             GUI.color = Color.white;
             Widgets.DrawLineHorizontal(surgeonLabelRect.x, surgeonLabelRect.yMax - 2f, Text.CalcSize(surgeonLabel).x);
             Text.Font = GameFont.Small;
@@ -96,7 +96,7 @@ namespace MultiDoctorSurgery.UI
                 {
                     selectedSurgeon = doctor;
 
-                    // Ajouter le chirurgien principal aux médecins assignés s'il n'y est pas
+                    // Add the senior surgeon to the doctors assigned if he or she is not on the list
                     if (!bill.assignedDoctors.Contains(selectedSurgeon))
                     {
                         bill.assignedDoctors.Add(selectedSurgeon);
@@ -110,12 +110,12 @@ namespace MultiDoctorSurgery.UI
 
             curY += 110f;
 
-            // Sélection des médecins assistants
+            // Selecting medical assistants
             Text.Font = GameFont.Medium;
             string assistantsLabel = "AssignDoctors_SelectAssistants".Translate();
             Rect assistantsLabelRect = new Rect(0, curY, inRect.width, 25f);
             Widgets.Label(assistantsLabelRect, assistantsLabel);
-            // Dessiner la ligne sous le texte
+            // Draw the line under the text
             Widgets.DrawLineHorizontal(assistantsLabelRect.x, assistantsLabelRect.yMax - 2f, Text.CalcSize(assistantsLabel).x);
             Text.Font = GameFont.Small;
             curY += 30f;
@@ -130,7 +130,7 @@ namespace MultiDoctorSurgery.UI
             {
                 if (doctor == selectedSurgeon)
                 {
-                    // Ne pas afficher le chirurgien principal dans la liste des assistants
+                    // Do not display the main surgeon in the list of assistants
                     continue;
                 }
 
@@ -159,22 +159,22 @@ namespace MultiDoctorSurgery.UI
 
             Widgets.EndScrollView();
 
-            // Boutons en bas
+            // Buttons at the bottom
             if (Widgets.ButtonText(new Rect(0, inRect.height - 35f, inRect.width / 2f, 35f), "AssignDoctors_Confirm".Translate()))
             {
-                // Annuler les travaux en cours des chirurgiens et médecins précédents
+                // Cancel work in progress by previous surgeons and doctors
                 CancelOngoingJobs();
 
-                // Stocker le chirurgien principal dans le bill
+                // Store the main surgeon in the bill
                 bill.surgeon = selectedSurgeon;
 
-                // S'assurer que le chirurgien principal est dans la liste des médecins assignés
+                // Ensure that the lead surgeon is on the list of assigned doctors
                 if (!bill.assignedDoctors.Contains(selectedSurgeon))
                 {
                     bill.assignedDoctors.Add(selectedSurgeon);
                 }
 
-                // Assigner le bill au chirurgien principal
+                // Assigning the bill to the lead surgeon
                 bill.SetPawnRestriction(selectedSurgeon);
 
                 Close();
@@ -182,7 +182,7 @@ namespace MultiDoctorSurgery.UI
 
             if (Widgets.ButtonText(new Rect(inRect.width / 2f, inRect.height - 35f, inRect.width / 2f, 35f), "AssignDoctors_Cancel".Translate()))
             {
-                // Annuler l'opération en supprimant le bill
+                // Cancel the operation by deleting the bill
                 patient.BillStack.Bills.Remove(bill);
                 Close();
             }
@@ -190,20 +190,20 @@ namespace MultiDoctorSurgery.UI
 
         private void CancelOngoingJobs()
         {
-            // Annuler le travail du chirurgien précédent s'il est en train d'opérer
+            // Cancel the work of the previous surgeon if he is operating
             if (previousSurgeon != null && previousSurgeon.CurJob != null && previousSurgeon.CurJob.bill == bill)
             {
                 previousSurgeon.jobs.EndCurrentJob(JobCondition.InterruptForced);
             }
 
-            // Annuler les travaux des médecins précédemment assignés
+            // Cancel the work of previously assigned doctors
             if (previousAssignedDoctors != null)
             {
                 foreach (var doctor in previousAssignedDoctors)
                 {
                     if (doctor != previousSurgeon && doctor.CurJob != null && doctor.CurJob.def == MyCustomJobDefs.AssistSurgeryLoop)
                     {
-                        // Terminer le travail si c'est l'assistant
+                        // Finish the job if it's the assistant
                         doctor.jobs.EndCurrentJob(JobCondition.InterruptForced);
                     }
                 }

@@ -19,7 +19,7 @@ namespace MultiDoctorSurgery.UI
 
         public override void DoWindowContents(Rect inRect)
         {
-            // Ne pas appeler base.DoWindowContents(inRect);
+            // Do not call base.DoWindowContents(inRect);
 
             List<BillMedicalEx> scheduledOperations = Find.Maps.SelectMany(map => map.mapPawns.FreeColonistsSpawned)
                 .SelectMany(pawn => pawn.BillStack.Bills)
@@ -34,7 +34,7 @@ namespace MultiDoctorSurgery.UI
 
             float curY = 0f;
 
-            // En-tête des colonnes
+            // Column headers
             Rect headerRect = new Rect(0f, curY, scrollRect.width, rowHeight);
             Text.Anchor = TextAnchor.MiddleCenter;
             Widgets.Label(new Rect(headerRect.x, headerRect.y, headerRect.width / 4f, headerRect.height), "OperationsTab_Patient".Translate());
@@ -71,12 +71,12 @@ namespace MultiDoctorSurgery.UI
             Widgets.Label(patientRect, bill.GiverPawn.Name.ToStringShort);
             x += width;
 
-            // Opération
+            // Operation
             Rect operationRect = new Rect(x, rect.y, width, rect.height);
             Widgets.Label(operationRect, bill.recipe.LabelCap);
             x += width;
 
-            // Chirurgien
+            // Surgeon
             Rect surgeonRect = new Rect(x, rect.y, width, rect.height);
             string surgeonName = bill.surgeon != null ? bill.surgeon.Name.ToStringShort : "OperationsTab_None".Translate().ToString();
             if (Widgets.ButtonText(surgeonRect, surgeonName))
@@ -86,7 +86,7 @@ namespace MultiDoctorSurgery.UI
             }
             x += width;
 
-            // Médecins assignés
+            // Doctors assigned
             Rect doctorsRect = new Rect(x, rect.y, width, rect.height);
             if (Widgets.ButtonText(doctorsRect, "OperationsTab_ViewEdit".Translate()))
             {
@@ -110,26 +110,26 @@ namespace MultiDoctorSurgery.UI
                     "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(SkillDefOf.Medicine).Level),
                     () =>
                     {
-                        // Stocker le chirurgien précédent
+                        // Store the previous surgeon
                         var previousSurgeon = bill.surgeon;
 
-                        // Mettre à jour le chirurgien
+                        // Updating the surgeon
                         bill.surgeon = doctor;
                         bill.SetPawnRestriction(doctor);
 
-                        // S'assurer que le nouveau chirurgien est dans les médecins assignés
+                        // Ensure that the new surgeon is among the assigned doctors
                         if (!bill.assignedDoctors.Contains(doctor))
                         {
                             bill.assignedDoctors.Add(doctor);
                         }
 
-                        // Annuler le travail du chirurgien précédent
+                        // Cancel the work of the previous surgeon
                         if (previousSurgeon != null && previousSurgeon != doctor && previousSurgeon.CurJob != null && previousSurgeon.CurJob.bill == bill)
                         {
                             previousSurgeon.jobs.EndCurrentJob(JobCondition.InterruptForced);
                         }
 
-                        // Annuler le travail du nouveau chirurgien au cas où il serait déjà engagé dans un autre travail
+                        // Cancel the work of the new surgeon if he or she is already engaged in other work
                         if (doctor.CurJob != null && doctor.CurJob.bill == bill)
                         {
                             doctor.jobs.EndCurrentJob(JobCondition.InterruptForced);

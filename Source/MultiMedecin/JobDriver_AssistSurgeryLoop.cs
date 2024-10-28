@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MultiDoctorSurgery
 {
-    // JobDriver personnalisé pour les assistants
+    // Customised JobDriver for assistants
     public class JobDriver_AssistSurgeryLoop : JobDriver
     {
         public override bool TryMakePreToilReservations(bool errorOnFailed)
