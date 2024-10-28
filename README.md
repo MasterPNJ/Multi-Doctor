@@ -1,2 +1,2 @@
-# MultiMedecin
- Mod rimworld pour avoir plusieurs médecins lors de soin ou d'opération
+# Multi-Doctor Surgery
+ Mod rimworld to have several doctors during an operation
