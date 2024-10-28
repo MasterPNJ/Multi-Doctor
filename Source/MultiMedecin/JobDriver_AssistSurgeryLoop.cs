@@ -20,7 +20,7 @@ namespace MultiDoctorSurgery
             Toil assistToil = new Toil();
             assistToil.initAction = () =>
             {
-                Log.Message($"{pawn.Name} a commencé le Job AssistSurgeryLoop pour {job.targetA.Thing.Label}");
+                //Log.Message($"{pawn.Name} a commencé le Job AssistSurgeryLoop pour {job.targetA.Thing.Label}");
             };
             assistToil.tickAction = () =>
             {

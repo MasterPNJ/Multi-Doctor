@@ -60,7 +60,7 @@ namespace MultiDoctorSurgery.Patches
                     setSurgeryStartedToil.initAction = () =>
                     {
                         medicalBill.SurgeryStarted = true;
-                        Log.Message("[Main Surgeon] Chirurgie commencée.");
+                        //Log.Message("[Main Surgeon] Chirurgie commencée.");
                     };
                     setSurgeryStartedToil.defaultCompleteMode = ToilCompleteMode.Instant;
                     toilsList.Insert(2, setSurgeryStartedToil); // Insérer après les assistants
@@ -84,7 +84,7 @@ namespace MultiDoctorSurgery.Patches
 
                         // Définir le flag SurgeryStarted à false après la fin de la chirurgie
                         medicalBill.SurgeryStarted = false;
-                        Log.Message("[Main Surgeon] Chirurgie terminée.");
+                        //Log.Message("[Main Surgeon] Chirurgie terminée.");
                     });
 
                     // Renvoyer la nouvelle liste de Toils
