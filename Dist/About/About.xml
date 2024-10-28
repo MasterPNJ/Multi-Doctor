@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ModMetaData>
-  <name>Multi Medecin</name>
-  <description>Un mod qui d'avoir plusieurs médecins sur une opération</description>
-  <packageId>MasterPNJ.MultiMedecin</packageId>
+  <name>Multi-Doctor Surgery</name>
+  <description>A mod that allows several doctors to be involved in an operation</description>
+  <packageId>MasterPNJ.MultiDoctor</packageId>
   <author>MasterPNJ</author>
   <url></url>
   <supportedVersions>
