@@ -25,4 +25,8 @@
 	<MultiDoctorSurgery_SpeedMultiplier>Geschwindigkeitsmultiplikator pro zugewiesenem Arzt: {0}</MultiDoctorSurgery_SpeedMultiplier>
 	<MultiDoctorSurgery_SuccessMultiplier>Erfolgsratemultiplikator pro zugewiesenem Arzt: {0}</MultiDoctorSurgery_SuccessMultiplier>
 	<MultiDoctorSurgery_MaxDoctors>Maximale Anzahl zuweisbarer Ärzte: {0}</MultiDoctorSurgery_MaxDoctors>
+	<MultiDoctorSurgery_MaxSpeedBonus>Maximales Geschwindigkeitsbonus-Limit: {0}</MultiDoctorSurgery_MaxSpeedBonus>
+	<MultiDoctorSurgery_MaxSuccessBonus>Maximales Erfolgsraten-Limit: {0}%</MultiDoctorSurgery_MaxSuccessBonus>
+
+
 </LanguageData>

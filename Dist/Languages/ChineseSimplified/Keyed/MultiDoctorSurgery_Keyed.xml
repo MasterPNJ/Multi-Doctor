@@ -25,4 +25,8 @@
 	<MultiDoctorSurgery_SpeedMultiplier>每分配一名医生的速度倍率：{0}</MultiDoctorSurgery_SpeedMultiplier>
 	<MultiDoctorSurgery_SuccessMultiplier>每分配一名医生的成功率倍率：{0}</MultiDoctorSurgery_SuccessMultiplier>
 	<MultiDoctorSurgery_MaxDoctors>可分配的医生最大数量：{0}</MultiDoctorSurgery_MaxDoctors>
+	<MultiDoctorSurgery_MaxSpeedBonus>速度加成的最大限制：{0}</MultiDoctorSurgery_MaxSpeedBonus>
+	<MultiDoctorSurgery_MaxSuccessBonus>成功率的最大限制：{0}%</MultiDoctorSurgery_MaxSuccessBonus>
+
+
 </LanguageData>

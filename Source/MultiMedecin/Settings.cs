@@ -8,11 +8,20 @@ namespace MultiDoctorSurgery
         public float successRateMultiplier = 0.25f;
         public int maxDoctors = 3;
 
+        // New fields for speed and success limits
+        public float maxSpeedBonus = 1.95f; // Default to 95%
+        public float maxSuccessBonus = 0.98f; // Default to 98%
+
         public override void ExposeData()
         {
             Scribe_Values.Look(ref speedMultiplierPerDoctor, "speedMultiplierPerDoctor", 0.5f);
             Scribe_Values.Look(ref successRateMultiplier, "successRateMultiplier", 0.25f);
             Scribe_Values.Look(ref maxDoctors, "maxDoctors", 3);
+
+            // Save/load new fields
+            Scribe_Values.Look(ref maxSpeedBonus, "maxSpeedBonus", 1.95f);
+            Scribe_Values.Look(ref maxSuccessBonus, "maxSuccessBonus", 0.98f);
+
             base.ExposeData();
         }
     }

@@ -10,6 +10,8 @@ namespace MultiDoctorSurgery
         public Pawn surgeon;
         public List<Pawn> assignedDoctors = new List<Pawn>();
         public bool SurgeryStarted = false; // New flag
+        public float SpeedBonus { get; set; } = 1f; // Default to base speed bonus
+        public float SuccessRateBonus { get; set; } = 0f; // Default to no additional success rate
 
         public BillMedicalEx(RecipeDef recipe, List<Thing> uniqueIngredients) : base(recipe, uniqueIngredients)
         {

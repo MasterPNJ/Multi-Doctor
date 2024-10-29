@@ -25,13 +25,19 @@ namespace MultiDoctorSurgery
             listingStandard.Begin(inRect);
 
             listingStandard.Label("MultiDoctorSurgery_SpeedMultiplier".Translate(settings.speedMultiplierPerDoctor.ToString("F2")));
-            settings.speedMultiplierPerDoctor = listingStandard.Slider(settings.speedMultiplierPerDoctor, 0f, 5f);
+            settings.speedMultiplierPerDoctor = listingStandard.Slider(settings.speedMultiplierPerDoctor, 0f, 1f);
 
             listingStandard.Label("MultiDoctorSurgery_SuccessMultiplier".Translate(settings.successRateMultiplier.ToString("F2")));
             settings.successRateMultiplier = listingStandard.Slider(settings.successRateMultiplier, 0f, 1f);
 
             listingStandard.Label("MultiDoctorSurgery_MaxDoctors".Translate(settings.maxDoctors));
             settings.maxDoctors = Mathf.RoundToInt(listingStandard.Slider(settings.maxDoctors, 1, 5));
+
+            listingStandard.Label("MultiDoctorSurgery_MaxSpeedBonus".Translate(settings.maxSpeedBonus.ToString("P")));
+            settings.maxSpeedBonus = listingStandard.Slider(settings.maxSpeedBonus, 1f, 3f);
+
+            listingStandard.Label("MultiDoctorSurgery_MaxSuccessBonus".Translate(settings.maxSuccessBonus.ToString("P")));
+            settings.maxSuccessBonus = listingStandard.Slider(settings.maxSuccessBonus, 0f, 1f);
 
             listingStandard.End();
             settings.Write();

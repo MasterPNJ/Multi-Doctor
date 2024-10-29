@@ -23,6 +23,7 @@ namespace MultiDoctorSurgery.UI
 
         private float currentSpeedBonus;
         private float currentSuccessRate;
+        private float currentTotalSuccessRate; // Nouvelle variable pour le taux de succès total
 
         public Dialog_AssignDoctors(Pawn patient, RecipeDef recipe, BillMedicalEx bill)
         {
@@ -69,6 +70,10 @@ namespace MultiDoctorSurgery.UI
             Widgets.Label(new Rect(0, curY, inRect.width, 30f), $"Speed Bonus: {currentSpeedBonus:F2}");
             curY += 30f;
             Widgets.Label(new Rect(0, curY, inRect.width, 30f), $"Success Rate Bonus: {currentSuccessRate:P}");
+            curY += 30f;
+
+            // Display the total surgery success rate
+            Widgets.Label(new Rect(0, curY, inRect.width, 30f), $"Total Success Rate: {currentTotalSuccessRate:P}");
             curY += 40f;
 
             // Surgeon selection
@@ -174,12 +179,28 @@ namespace MultiDoctorSurgery.UI
         private void CalculateMultipliers()
         {
             // Reset multipliers to base values
-            currentSpeedBonus = 1f; // Base speed bonus (no assistants)
-            currentSuccessRate = 0f; // Base success rate
+            currentSpeedBonus = 1f;
+            currentSuccessRate = 0f;
 
             int assistantsCount = bill.assignedDoctors.Count - 1; // Exclude lead surgeon
+
+            // Calculate bonus based on the number of assistants
             currentSpeedBonus += assistantsCount * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor;
             currentSuccessRate += assistantsCount * MultiDoctorSurgeryMod.settings.successRateMultiplier;
+
+            // Apply limits for speed and success bonuses
+            currentSpeedBonus = Mathf.Min(currentSpeedBonus, MultiDoctorSurgeryMod.settings.maxSpeedBonus);
+            currentSuccessRate = Mathf.Min(currentSuccessRate, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
+
+            // Get the base surgery success rate of the lead surgeon
+            float baseSuccessRate = selectedSurgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance);
+
+            // Calculate total success rate by adding base rate and bonus
+            float totalSuccessRate = baseSuccessRate + currentSuccessRate;
+            totalSuccessRate = Mathf.Min(totalSuccessRate, 0.95f); // Apply a global cap of 95%
+
+            // Store the total success rate for display
+            currentTotalSuccessRate = totalSuccessRate;
         }
 
         private void CancelOngoingJobs()

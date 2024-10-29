@@ -11,13 +11,8 @@ namespace MultiDoctorSurgery.Patches
         {
             if (req.Thing is Pawn pawn && pawn.CurJob != null && pawn.CurJob.bill is BillMedicalEx medicalBill)
             {
-                var assignedDoctors = medicalBill.assignedDoctors;
-
-                if (assignedDoctors != null && assignedDoctors.Count > 1)
-                {
-                    float speedMultiplier = 1f + ((assignedDoctors.Count - 1) * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor);
-                    __result *= speedMultiplier;
-                }
+                // Use the speed bonus calculated in Dialog_AssignDoctors and capped at 95%
+                __result *= medicalBill.SpeedBonus;
             }
         }
     }
