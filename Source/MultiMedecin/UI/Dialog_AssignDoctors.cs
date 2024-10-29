@@ -180,28 +180,34 @@ namespace MultiDoctorSurgery.UI
         private void CalculateMultipliers()
         {
             // Reset multipliers to base values
-            currentSpeedBonus = 1f;
-            currentSuccessRate = 0f;
-
-            int assistantsCount = bill.assignedDoctors.Count - 1; // Exclude lead surgeon
-
-            // Calculate bonus based on the number of assistants
-            currentSpeedBonus += assistantsCount * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor;
-            currentSuccessRate += assistantsCount * MultiDoctorSurgeryMod.settings.successRateMultiplier;
-
-            // Apply limits for speed and success bonuses using settings
-            currentSpeedBonus = Mathf.Min(currentSpeedBonus, MultiDoctorSurgeryMod.settings.maxSpeedBonus);
-            currentSuccessRate = Mathf.Min(currentSuccessRate, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
+            currentSpeedBonus = 1f; // Base speed multiplier
+            currentSuccessRate = 0f; // Base success rate bonus
 
             // Get the base surgery success rate of the lead surgeon
             float baseSuccessRate = selectedSurgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance);
 
-            // Calculate total success rate by adding base rate and bonus
-            float totalSuccessRate = baseSuccessRate + currentSuccessRate;
-            totalSuccessRate = Mathf.Min(totalSuccessRate, MultiDoctorSurgeryMod.settings.maxSuccessBonus); // Apply the adjustable max limit from settings
+            // Calculate bonuses based on each assistant's medical skill level (excluding lead surgeon)
+            for (int i = 1; i < bill.assignedDoctors.Count; i++) // Start from index 1 to skip the lead surgeon
+            {
+                var assistant = bill.assignedDoctors[i];
+                float skillLevel = assistant.skills.GetSkill(SkillDefOf.Medicine).Level;
 
-            // Store the total success rate for display
-            currentTotalSuccessRate = totalSuccessRate;
+                // Calculate speed bonus as a function of assistant's skill level and speed multiplier setting
+                currentSpeedBonus += skillLevel * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor / 20f; // Divided by 20 to normalize
+
+                // Calculate success rate bonus as a function of assistant's skill level and success multiplier setting
+                currentSuccessRate += skillLevel * MultiDoctorSurgeryMod.settings.successRateMultiplier / 20f; // Divided by 20 to normalize
+            }
+
+            // Apply limits for speed and success bonuses based on settings
+            currentSpeedBonus = Mathf.Min(currentSpeedBonus, MultiDoctorSurgeryMod.settings.maxSpeedBonus);
+            currentSuccessRate = Mathf.Min(currentSuccessRate, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
+
+            // Calculate total success rate by adding base rate and the calculated success rate bonus
+            float totalSuccessRate = baseSuccessRate + currentSuccessRate;
+
+            // Apply the adjustable maximum limit for total success rate
+            currentTotalSuccessRate = Mathf.Min(totalSuccessRate, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
         }
 
         public static float GetCurrentSpeedBonus(BillMedicalEx bill)
