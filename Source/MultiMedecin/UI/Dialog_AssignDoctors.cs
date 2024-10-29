@@ -43,7 +43,9 @@ namespace MultiDoctorSurgery.UI
             selectedSurgeon = bill.assignedDoctors.FirstOrDefault() ?? availableDoctors.OrderByDescending(d => d.skills.GetSkill(SkillDefOf.Medicine).Level).FirstOrDefault();
             if (selectedSurgeon != null && !bill.assignedDoctors.Contains(selectedSurgeon))
             {
-                bill.assignedDoctors.Insert(0, selectedSurgeon); // Ensure the lead surgeon is at the start
+                // Clear assistants and make sure only the selected surgeon is in the list
+                bill.assignedDoctors.Clear();
+                bill.assignedDoctors.Insert(0, selectedSurgeon); // Insert the surgeon as the first item
             }
 
             // Calculate multipliers with existing assigned doctors
@@ -102,8 +104,10 @@ namespace MultiDoctorSurgery.UI
                 if (Widgets.RadioButtonLabeled(rowRect, label, isSelected))
                 {
                     selectedSurgeon = doctor;
-                    bill.assignedDoctors.Remove(doctor);
-                    bill.assignedDoctors.Insert(0, doctor); // Ensure selected surgeon is the first in the list
+
+                    // Clear assistants and make sure only the selected surgeon is in the list
+                    bill.assignedDoctors.Clear();
+                    bill.assignedDoctors.Insert(0, selectedSurgeon); // Insert the surgeon as the first item
                     CalculateMultipliers();
                 }
                 surgeonY += 35f;
@@ -122,7 +126,7 @@ namespace MultiDoctorSurgery.UI
             curY += 30f;
 
             Rect assistantOutRect = new Rect(0f, curY, inRect.width, inRect.height - curY - 70f);
-            Rect assistantViewRect = new Rect(0f, 0f, inRect.width - 16f, (availableDoctors.Count - 1) * 35f); // -1 pour ne pas compter le chirurgien principal
+            Rect assistantViewRect = new Rect(0f, 0f, inRect.width - 16f, (availableDoctors.Count - 1) * 35f); // -1 to exclude the lead surgeon
 
             Widgets.BeginScrollView(assistantOutRect, ref assistantScrollPosition, assistantViewRect);
 
@@ -138,7 +142,7 @@ namespace MultiDoctorSurgery.UI
 
                 if (newIsAssigned != isAssigned)
                 {
-                    if (newIsAssigned && bill.assignedDoctors.Count < MultiDoctorSurgeryMod.settings.maxDoctors)
+                    if (newIsAssigned && (bill.assignedDoctors.Count - 1) < (MultiDoctorSurgeryMod.settings.maxDoctors - 1))
                         bill.assignedDoctors.Add(doctor);
                     else if (!newIsAssigned)
                         bill.assignedDoctors.Remove(doctor);
