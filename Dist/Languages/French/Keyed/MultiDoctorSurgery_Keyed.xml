@@ -26,5 +26,5 @@
 	<MultiDoctorSurgery_SuccessMultiplier>Multiplicateur de taux de réussite par médecin assigné : {0}</MultiDoctorSurgery_SuccessMultiplier>
 	<MultiDoctorSurgery_MaxDoctors>Nombre maximal de médecins assignables : {0}</MultiDoctorSurgery_MaxDoctors>
 	<MultiDoctorSurgery_MaxSpeedBonus>Limite maximale de bonus de vitesse : {0}</MultiDoctorSurgery_MaxSpeedBonus>
-	<MultiDoctorSurgery_MaxSuccessBonus>Limite maximale de taux de réussite : {0}%</MultiDoctorSurgery_MaxSuccessBonus>
+	<MultiDoctorSurgery_MaxSuccessBonus>Limite maximale de taux de réussite : {0}</MultiDoctorSurgery_MaxSuccessBonus>
 </LanguageData>

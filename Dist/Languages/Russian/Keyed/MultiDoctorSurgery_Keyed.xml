@@ -26,7 +26,7 @@
 	<MultiDoctorSurgery_SuccessMultiplier>Множитель успеха за каждого назначенного врача: {0}</MultiDoctorSurgery_SuccessMultiplier>
 	<MultiDoctorSurgery_MaxDoctors>Максимальное количество назначаемых врачей: {0}</MultiDoctorSurgery_MaxDoctors>
 	<MultiDoctorSurgery_MaxSpeedBonus>Максимальный предел бонуса скорости: {0}</MultiDoctorSurgery_MaxSpeedBonus>
-	<MultiDoctorSurgery_MaxSuccessBonus>Максимальный предел успеха: {0}%</MultiDoctorSurgery_MaxSuccessBonus>
+	<MultiDoctorSurgery_MaxSuccessBonus>Максимальный предел успеха: {0}</MultiDoctorSurgery_MaxSuccessBonus>
 
 
 </LanguageData>
