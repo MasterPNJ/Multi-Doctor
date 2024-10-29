@@ -1,6 +1,8 @@
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using Verse.AI;
+using MultiDoctorSurgery.UI;
 
 namespace MultiDoctorSurgery.Patches
 {
@@ -11,8 +13,11 @@ namespace MultiDoctorSurgery.Patches
         {
             if (req.Thing is Pawn pawn && pawn.CurJob != null && pawn.CurJob.bill is BillMedicalEx medicalBill)
             {
-                // Use the speed bonus calculated in Dialog_AssignDoctors and capped at 95%
-                __result *= medicalBill.SpeedBonus;
+                // Calculate speed multiplier based on the current number of assistants
+                float speedMultiplier = Dialog_AssignDoctors.GetCurrentSpeedBonus(medicalBill);
+
+                // Apply the speed multiplier to the base speed result
+                __result *= speedMultiplier;
             }
         }
     }
