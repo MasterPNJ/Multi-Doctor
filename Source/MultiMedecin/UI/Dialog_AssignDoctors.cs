@@ -4,6 +4,7 @@ using Verse.AI;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace MultiDoctorSurgery.UI
 {
@@ -157,20 +158,47 @@ namespace MultiDoctorSurgery.UI
             // Buttons at the bottom
             if (Widgets.ButtonText(new Rect(0, inRect.height - 35f, inRect.width / 2f, 35f), "AssignDoctors_Confirm".Translate()))
             {
-                // Cancel work in progress by previous surgeons and doctors
-                CancelOngoingJobs();
-
-                // Store the main surgeon in the bill
-                bill.surgeon = selectedSurgeon;
-
-                // Ensure that the lead surgeon is on the list of assigned doctors
-                if (!bill.assignedDoctors.Contains(selectedSurgeon))
+                try
                 {
-                    bill.assignedDoctors.Add(selectedSurgeon);
+                    // Cancel work in progress by previous surgeons and doctors
+                    CancelOngoingJobs();
+
+                    // Verify that selectedSurgeon and bill are not null
+                    if (selectedSurgeon == null)
+                    {
+                        Log.Error("Dialog_AssignDoctors: selectedSurgeon is null when confirming assignment.");
+                        return;
+                    }
+                    if (bill == null)
+                    {
+                        Log.Error("Dialog_AssignDoctors: bill is null when confirming assignment.");
+                        return;
+                    }
+
+                    // Store the main surgeon in the bill
+                    bill.surgeon = selectedSurgeon;
+
+                    // Ensure that the lead surgeon is on the list of assigned doctors
+                    if (!bill.assignedDoctors.Contains(selectedSurgeon))
+                    {
+                        bill.assignedDoctors.Add(selectedSurgeon);
+                    }
+
+                    // Assigning the bill to the lead surgeon with additional null checks
+                    if (bill != null && selectedSurgeon != null)
+                    {
+                        bill.SetPawnRestriction(selectedSurgeon);
+                    }
+                    else
+                    {
+                        Log.Error("Dialog_AssignDoctors: Cannot set pawn restriction - bill or selectedSurgeon is null.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Dialog_AssignDoctors: Exception occurred during confirmation - {ex}");
                 }
 
-                // Assigning the bill to the lead surgeon
-                bill.SetPawnRestriction(selectedSurgeon);
                 Close();
             }
             if (Widgets.ButtonText(new Rect(inRect.width / 2f, inRect.height - 35f, inRect.width / 2f, 35f), "AssignDoctors_Cancel".Translate()))

@@ -2,6 +2,7 @@ using RimWorld;
 using Verse;
 using UnityEngine;
 using HarmonyLib;
+using MultiDoctorSurgery;
 
 namespace MultiDoctorSurgery
 {

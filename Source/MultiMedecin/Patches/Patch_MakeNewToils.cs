@@ -18,20 +18,20 @@ namespace MultiDoctorSurgery.Patches
                 var assignedDoctors = medicalBill.assignedDoctors;
                 var surgeon = medicalBill.surgeon;
 
+                // Check that only the assigned surgeon is allowed to start the operation
+                if (surgeon != null && surgeon != __instance.pawn)
+                {
+                    // If the pawn trying to start the job is not the main surgeon, cancel the job
+                    __instance.pawn.jobs.EndCurrentJob(JobCondition.Incompletable);
+                    yield break; // Exit immediately if it's not the main surgeon
+                }
+
                 if (assignedDoctors != null && assignedDoctors.Count > 0)
                 {
-                    // Check that the lead surgeon is the one carrying out the work
-                    if (surgeon != null && surgeon != __instance.pawn)
-                    {
-                        // Cancel work if not the main surgeon
-                        __instance.pawn.jobs.EndCurrentJob(JobCondition.Incompletable);
-                        yield break;
-                    }
-
-                    // Converting toils into lists for manipulation
+                    // Convert toils to a list to allow manipulation
                     List<Toil> toilsList = toils.ToList();
 
-                    // Create a new Toil to start assistants after the main job is active
+                    // Create a new Toil to start assistant jobs after the main job is active
                     Toil startAssistantsToil = new Toil();
                     startAssistantsToil.initAction = () =>
                     {
@@ -60,7 +60,7 @@ namespace MultiDoctorSurgery.Patches
                     setSurgeryStartedToil.initAction = () =>
                     {
                         medicalBill.SurgeryStarted = true;
-                        //Log.Message("[Main Surgeon] Chirurgie commencée.");
+                        //Log.Message("[Main Surgeon] Surgery started.");
                     };
                     setSurgeryStartedToil.defaultCompleteMode = ToilCompleteMode.Instant;
                     toilsList.Insert(2, setSurgeryStartedToil); // Insert after assistants
@@ -84,7 +84,7 @@ namespace MultiDoctorSurgery.Patches
 
                         // Set the SurgeryStarted flag to false after the end of surgery
                         medicalBill.SurgeryStarted = false;
-                        //Log.Message("[Main Surgeon] Chirurgie terminée.");
+                        //Log.Message("[Main Surgeon] Surgery completed.");
                     });
 
                     // Resend the new Toils list
@@ -114,9 +114,9 @@ namespace MultiDoctorSurgery.Patches
 
         private static void StartAssistantJobLoop(Pawn doctor, Pawn patient, BillMedicalEx medicalBill)
         {
-            // Create a personalised job that keeps the assistant close to the patient
+            // Create a personalized job that keeps the assistant close to the patient
             Job job = JobMaker.MakeJob(MyCustomJobDefs.AssistSurgeryLoop, patient);
-            job.bill = medicalBill; // Linking the surgery bill to the job
+            job.bill = medicalBill; // Link the surgery bill to the job
             doctor.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
         }
     }
