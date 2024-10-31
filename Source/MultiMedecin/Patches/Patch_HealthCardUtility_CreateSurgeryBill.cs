@@ -10,9 +10,16 @@ namespace MultiDoctorSurgery.Patches
     {
         public static bool Prefix(Pawn medPawn, RecipeDef recipe, BodyPartRecord part, List<Thing> uniqueIngredients, bool sendMessages)
         {
+            // Check if the recipe is for xenogerm implantation
+            if (recipe.defName == "ImplantXenogerm")
+            {
+                // Allow the game to handle xenogerm implantation normally without our custom interface
+                return true;
+            }
+
             if (recipe.Worker is Recipe_Surgery)
             {
-                // Create our personalised bill
+                // Create our personalized bill
                 var bill = new BillMedicalEx(recipe, uniqueIngredients);
                 bill.Part = part;
 
@@ -25,7 +32,7 @@ namespace MultiDoctorSurgery.Patches
                 return false;
             }
 
-            // Continue normal execution for other revenues
+            // Continue normal execution for other recipes
             return true;
         }
     }
