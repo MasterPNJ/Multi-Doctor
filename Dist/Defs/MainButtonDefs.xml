@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-	<!-- Définition du MainButtonDef -->
+	<!-- MainButtonDef Definition -->
 	<MainButtonDef>
 		<defName>OperationsTab</defName>
-		<label>Opérations</label>
-		<description>Voir et gérer les opérations programmées.</description>
+		<label>Operations</label>
+		<description>View and manage scheduled operations.</description>
 		<buttonVisible>true</buttonVisible>
 		<order>700</order>
 		<tabWindowClass>MultiDoctorSurgery.UI.MainTabWindow_Operations</tabWindowClass>
