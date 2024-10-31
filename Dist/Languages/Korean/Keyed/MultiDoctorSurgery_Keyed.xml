@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+	<!-- Main Button -->
+	<OperationsTab_Label>수술</OperationsTab_Label>
+	<OperationsTab_Description>예약된 수술을 보고 관리합니다.</OperationsTab_Description>
+
+	<!-- Dialog Assign Doctors -->
+	<AssignDoctors_Title>{0}에 배정할 의사를 선택하세요</AssignDoctors_Title>
+	<AssignDoctors_SelectSurgeon>주요 외과의를 선택하세요:</AssignDoctors_SelectSurgeon>
+	<AssignDoctors_SelectAssistants>보조 의사를 선택하세요:</AssignDoctors_SelectAssistants>
+	<AssignDoctors_DoctorEntry>{0} (의술: {1})</AssignDoctors_DoctorEntry>
+	<AssignDoctors_Confirm>확인</AssignDoctors_Confirm>
+	<AssignDoctors_Cancel>취소</AssignDoctors_Cancel>
+
+	<!-- Main Tab Window Operations -->
+	<OperationsTab_Patient>환자</OperationsTab_Patient>
+	<OperationsTab_Operation>수술</OperationsTab_Operation>
+	<OperationsTab_Surgeon>외과의</OperationsTab_Surgeon>
+	<OperationsTab_Doctors>의사들</OperationsTab_Doctors>
+	<OperationsTab_ViewEdit>보기/편집</OperationsTab_ViewEdit>
+	<OperationsTab_None>없음</OperationsTab_None>
+
+	<!-- Settings -->
+	<MultiDoctorSurgery_SettingsCategory>다중 의사 수술</MultiDoctorSurgery_SettingsCategory>
+	<MultiDoctorSurgery_SpeedMultiplier>배정된 의사당 속도 배율: {0}</MultiDoctorSurgery_SpeedMultiplier>
+	<MultiDoctorSurgery_SuccessMultiplier>배정된 의사당 성공률 배율: {0}</MultiDoctorSurgery_SuccessMultiplier>
+	<MultiDoctorSurgery_MaxDoctors>배정 가능한 의사의 최대 수: {0}</MultiDoctorSurgery_MaxDoctors>
+	<MultiDoctorSurgery_MaxSpeedBonus>최대 속도 보너스 제한: {0}</MultiDoctorSurgery_MaxSpeedBonus>
+	<MultiDoctorSurgery_MaxSuccessBonus>최대 성공률 제한: {0}</MultiDoctorSurgery_MaxSuccessBonus>
+
+</LanguageData>
