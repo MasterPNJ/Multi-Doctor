@@ -17,6 +17,9 @@ namespace MultiDoctorSurgery.UI
         private Vector2 assistantScrollPosition;
         private Pawn selectedSurgeon; // Principal surgeon selected
 
+        // The required skill for this recipe
+        private SkillDef requiredSkill;
+
         // Variables for storing previous assignments
         private Pawn previousSurgeon;
         private List<Pawn> previousAssignedDoctors;
@@ -31,6 +34,9 @@ namespace MultiDoctorSurgery.UI
             this.recipe = recipe;
             this.bill = bill;
 
+            // Determine the required skill for the recipe
+            this.requiredSkill = recipe.workSkill ?? SkillDefOf.Medicine; // Fallback to Medicine if workSkill is null
+
             this.availableDoctors = patient.Map.mapPawns.FreeColonistsSpawned
                 .Where(p => p != patient && !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
                 .ToList();
@@ -40,7 +46,7 @@ namespace MultiDoctorSurgery.UI
             this.previousAssignedDoctors = new List<Pawn>(bill.assignedDoctors);
 
             // Check if there's already a selected surgeon, otherwise pick the best doctor as default
-            selectedSurgeon = bill.assignedDoctors.FirstOrDefault() ?? availableDoctors.OrderByDescending(d => d.skills.GetSkill(SkillDefOf.Medicine).Level).FirstOrDefault();
+            selectedSurgeon = bill.assignedDoctors.FirstOrDefault() ?? availableDoctors.OrderByDescending(d => d.skills.GetSkill(requiredSkill).Level).FirstOrDefault();
             if (selectedSurgeon != null && !bill.assignedDoctors.Contains(selectedSurgeon))
             {
                 // Clear assistants and make sure only the selected surgeon is in the list
@@ -100,7 +106,7 @@ namespace MultiDoctorSurgery.UI
             {
                 Rect rowRect = new Rect(0, surgeonY, surgeonViewRect.width, 30f);
                 bool isSelected = doctor == selectedSurgeon;
-                string label = "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(SkillDefOf.Medicine).Level);
+                string label = "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(requiredSkill).Level);
                 if (Widgets.RadioButtonLabeled(rowRect, label, isSelected))
                 {
                     selectedSurgeon = doctor;
@@ -137,7 +143,7 @@ namespace MultiDoctorSurgery.UI
                 bool isAssigned = bill.assignedDoctors.Contains(doctor);
                 Rect rowRect = new Rect(0, assistantY, assistantViewRect.width, 30f);
                 bool newIsAssigned = isAssigned;
-                string label = "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(SkillDefOf.Medicine).Level);
+                string label = "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(requiredSkill).Level);
                 Widgets.CheckboxLabeled(rowRect, label, ref newIsAssigned);
 
                 if (newIsAssigned != isAssigned)
@@ -194,7 +200,7 @@ namespace MultiDoctorSurgery.UI
             for (int i = 1; i < bill.assignedDoctors.Count; i++) // Start from index 1 to skip the lead surgeon
             {
                 var assistant = bill.assignedDoctors[i];
-                float skillLevel = assistant.skills.GetSkill(SkillDefOf.Medicine).Level;
+                float skillLevel = assistant.skills.GetSkill(requiredSkill).Level;
 
                 // Calculate speed bonus as a function of assistant's skill level and speed multiplier setting
                 currentSpeedBonus += skillLevel * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor / 20f; // Divided by 20 to normalize
