@@ -8,7 +8,6 @@
 	<AssignDoctors_Title>Ärzte für {0} zuweisen</AssignDoctors_Title>
 	<AssignDoctors_SelectSurgeon>Wählen Sie den Hauptchirurgen aus:</AssignDoctors_SelectSurgeon>
 	<AssignDoctors_SelectAssistants>Assistenzärzte auswählen:</AssignDoctors_SelectAssistants>
-	<AssignDoctors_DoctorEntry>{0} (Medizin: {1})</AssignDoctors_DoctorEntry>
 	<AssignDoctors_Confirm>Bestätigen</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>Abbrechen</AssignDoctors_Cancel>
 

@@ -8,7 +8,6 @@
 	<AssignDoctors_Title>{0}에 배정할 의사를 선택하세요</AssignDoctors_Title>
 	<AssignDoctors_SelectSurgeon>주요 외과의를 선택하세요:</AssignDoctors_SelectSurgeon>
 	<AssignDoctors_SelectAssistants>보조 의사를 선택하세요:</AssignDoctors_SelectAssistants>
-	<AssignDoctors_DoctorEntry>{0} (의술: {1})</AssignDoctors_DoctorEntry>
 	<AssignDoctors_Confirm>확인</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>취소</AssignDoctors_Cancel>
 

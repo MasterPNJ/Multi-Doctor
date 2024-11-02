@@ -8,7 +8,6 @@
 	<AssignDoctors_Title>Назначить врачей для {0}</AssignDoctors_Title>
 	<AssignDoctors_SelectSurgeon>Выберите главного хирурга:</AssignDoctors_SelectSurgeon>
 	<AssignDoctors_SelectAssistants>Выберите помощников:</AssignDoctors_SelectAssistants>
-	<AssignDoctors_DoctorEntry>{0} (Медицина: {1})</AssignDoctors_DoctorEntry>
 	<AssignDoctors_Confirm>Подтвердить</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>Отмена</AssignDoctors_Cancel>
 

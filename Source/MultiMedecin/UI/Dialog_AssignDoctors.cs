@@ -106,7 +106,7 @@ namespace MultiDoctorSurgery.UI
             {
                 Rect rowRect = new Rect(0, surgeonY, surgeonViewRect.width, 30f);
                 bool isSelected = doctor == selectedSurgeon;
-                string label = "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(requiredSkill).Level);
+                string label = $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctor.skills.GetSkill(requiredSkill).Level})";
                 if (Widgets.RadioButtonLabeled(rowRect, label, isSelected))
                 {
                     selectedSurgeon = doctor;
@@ -143,7 +143,7 @@ namespace MultiDoctorSurgery.UI
                 bool isAssigned = bill.assignedDoctors.Contains(doctor);
                 Rect rowRect = new Rect(0, assistantY, assistantViewRect.width, 30f);
                 bool newIsAssigned = isAssigned;
-                string label = "AssignDoctors_DoctorEntry".Translate(doctor.Name.ToStringShort, doctor.skills.GetSkill(requiredSkill).Level);
+                string label = $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctor.skills.GetSkill(requiredSkill).Level})";
                 Widgets.CheckboxLabeled(rowRect, label, ref newIsAssigned);
 
                 if (newIsAssigned != isAssigned)

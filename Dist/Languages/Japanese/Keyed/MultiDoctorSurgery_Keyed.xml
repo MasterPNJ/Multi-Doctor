@@ -8,7 +8,6 @@
 	<AssignDoctors_Title>{0}の医師を割り当てる</AssignDoctors_Title>
 	<AssignDoctors_SelectSurgeon>主要な外科医を選択してください：</AssignDoctors_SelectSurgeon>
 	<AssignDoctors_SelectAssistants>助手の医師を選択してください：</AssignDoctors_SelectAssistants>
-	<AssignDoctors_DoctorEntry>{0}（医療スキル：{1}）</AssignDoctors_DoctorEntry>
 	<AssignDoctors_Confirm>確認</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>キャンセル</AssignDoctors_Cancel>
 

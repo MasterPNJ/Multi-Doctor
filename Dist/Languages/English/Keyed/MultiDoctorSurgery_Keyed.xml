@@ -8,7 +8,6 @@
 	<AssignDoctors_Title>Assign doctors for {0}</AssignDoctors_Title>
 	<AssignDoctors_SelectSurgeon>Select the primary surgeon:</AssignDoctors_SelectSurgeon>
 	<AssignDoctors_SelectAssistants>Select assistant doctors:</AssignDoctors_SelectAssistants>
-	<AssignDoctors_DoctorEntry>{0} (Medicine: {1})</AssignDoctors_DoctorEntry>
 	<AssignDoctors_Confirm>Confirm</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>Cancel</AssignDoctors_Cancel>
 

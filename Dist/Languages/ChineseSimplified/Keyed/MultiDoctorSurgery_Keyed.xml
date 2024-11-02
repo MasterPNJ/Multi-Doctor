@@ -8,7 +8,6 @@
 	<AssignDoctors_Title>为 {0} 分配医生</AssignDoctors_Title>
 	<AssignDoctors_SelectSurgeon>选择主刀医生：</AssignDoctors_SelectSurgeon>
 	<AssignDoctors_SelectAssistants>选择助理医生：</AssignDoctors_SelectAssistants>
-	<AssignDoctors_DoctorEntry>{0}（医术：{1}）</AssignDoctors_DoctorEntry>
 	<AssignDoctors_Confirm>确认</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>取消</AssignDoctors_Cancel>
 
