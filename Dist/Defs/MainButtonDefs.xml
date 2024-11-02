@@ -6,7 +6,7 @@
 		<label>Operations</label>
 		<description>View and manage scheduled operations.</description>
 		<buttonVisible>true</buttonVisible>
-		<order>700</order>
+		<order>130</order>
 		<tabWindowClass>MultiDoctorSurgery.UI.MainTabWindow_Operations</tabWindowClass>
 		<validWithoutMap>false</validWithoutMap>
 		<iconPath>UI/Commands/AssignDoctors</iconPath>
