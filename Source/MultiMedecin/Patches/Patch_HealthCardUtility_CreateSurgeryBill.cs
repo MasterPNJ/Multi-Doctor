@@ -17,6 +17,14 @@ namespace MultiDoctorSurgery.Patches
                 return true;
             }
 
+            // Check if the operation is in the exclusion list
+            if (MultiDoctorSurgeryMod.settings.excludedOperations != null &&
+                MultiDoctorSurgeryMod.settings.excludedOperations.Contains(recipe.defName))
+            {
+                // If the operation is excluded, allow the base game method to execute
+                return true;
+            }
+
             if (recipe.Worker is Recipe_Surgery)
             {
                 // Create our personalized bill

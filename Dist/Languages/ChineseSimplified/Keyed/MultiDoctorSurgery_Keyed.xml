@@ -18,6 +18,8 @@
 	<OperationsTab_Doctors>医生</OperationsTab_Doctors>
 	<OperationsTab_ViewEdit>查看/编辑</OperationsTab_ViewEdit>
 	<OperationsTab_None>无</OperationsTab_None>
+	<ManageExcludedOperations>管理排除的手术</ManageExcludedOperations>
+	<ExcludedOperations>排除的手术</ExcludedOperations>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>多医生手术</MultiDoctorSurgery_SettingsCategory>

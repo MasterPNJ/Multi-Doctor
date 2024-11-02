@@ -18,6 +18,8 @@
 	<OperationsTab_Doctors>Врачи</OperationsTab_Doctors>
 	<OperationsTab_ViewEdit>Просмотр/Редактирование</OperationsTab_ViewEdit>
 	<OperationsTab_None>Нет</OperationsTab_None>
+	<ManageExcludedOperations>Управление исключенными операциями</ManageExcludedOperations>
+	<ExcludedOperations>Исключенные операции</ExcludedOperations>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>Многоврачебная хирургия</MultiDoctorSurgery_SettingsCategory>

@@ -19,7 +19,6 @@ namespace MultiDoctorSurgery.UI
 
         public override void DoWindowContents(Rect inRect)
         {
-            // Do not call base.DoWindowContents(inRect);
 
             List<BillMedicalEx> scheduledOperations = Find.Maps.SelectMany(map => map.mapPawns.FreeColonistsSpawned)
                 .SelectMany(pawn => pawn.BillStack.Bills)
@@ -30,11 +29,11 @@ namespace MultiDoctorSurgery.UI
             float contentHeight = scheduledOperations.Count * rowHeight;
 
             Rect scrollRect = new Rect(0f, 0f, inRect.width - 16f, contentHeight);
-            Widgets.BeginScrollView(inRect, ref scrollPosition, scrollRect);
+            Widgets.BeginScrollView(new Rect(0, 0, inRect.width, inRect.height - 50f), ref scrollPosition, scrollRect);
 
             float curY = 0f;
 
-            // Column headers
+            // Headers
             Rect headerRect = new Rect(0f, curY, scrollRect.width, rowHeight);
             Text.Anchor = TextAnchor.MiddleCenter;
             Widgets.Label(new Rect(headerRect.x, headerRect.y, headerRect.width / 4f, headerRect.height), "OperationsTab_Patient".Translate());
@@ -48,13 +47,17 @@ namespace MultiDoctorSurgery.UI
             foreach (var bill in scheduledOperations)
             {
                 Rect rowRect = new Rect(0f, curY, scrollRect.width, rowHeight);
-
                 DrawOperationRow(rowRect, bill);
-
                 curY += rowHeight;
             }
 
             Widgets.EndScrollView();
+
+            // Add the button for managing excluded operations at the bottom
+            if (Widgets.ButtonText(new Rect(inRect.width - 210f, inRect.height - 40f, 200f, 35f), "ManageExcludedOperations".Translate()))
+            {
+                Find.WindowStack.Add(new Dialog_ManageExcludedOperations());
+            }
         }
 
         private void DrawOperationRow(Rect rect, BillMedicalEx bill)

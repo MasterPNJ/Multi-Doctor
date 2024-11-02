@@ -18,6 +18,8 @@
 	<OperationsTab_Doctors>Médicos</OperationsTab_Doctors>
 	<OperationsTab_ViewEdit>Ver/Editar</OperationsTab_ViewEdit>
 	<OperationsTab_None>Nenhum</OperationsTab_None>
+	<ManageExcludedOperations>Gerenciar Operações Excluídas</ManageExcludedOperations>
+	<ExcludedOperations>Operações Excluídas</ExcludedOperations>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>Cirurgia Multi-Médico</MultiDoctorSurgery_SettingsCategory>

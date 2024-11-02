@@ -18,6 +18,8 @@
 	<OperationsTab_Doctors>Ärzte</OperationsTab_Doctors>
 	<OperationsTab_ViewEdit>Anzeigen/Bearbeiten</OperationsTab_ViewEdit>
 	<OperationsTab_None>Keiner</OperationsTab_None>
+	<ManageExcludedOperations>Ausgeschlossene Operationen verwalten</ManageExcludedOperations>
+	<ExcludedOperations>Ausgeschlossene Operationen</ExcludedOperations>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>Mehrfacharzt-Chirurgie</MultiDoctorSurgery_SettingsCategory>

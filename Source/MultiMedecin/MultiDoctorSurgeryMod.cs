@@ -2,6 +2,8 @@ using RimWorld;
 using Verse;
 using UnityEngine;
 using HarmonyLib;
+using System.Collections.Generic;
+using MultiDoctorSurgery.UI;
 
 namespace MultiDoctorSurgery
 {
@@ -9,6 +11,7 @@ namespace MultiDoctorSurgery
     public class MultiDoctorSurgeryMod : Mod
     {
         public static Settings settings;
+        public static List<string> excludedOperations = new List<string>();
 
         public MultiDoctorSurgeryMod(ModContentPack content) : base(content)
         {
@@ -38,6 +41,11 @@ namespace MultiDoctorSurgery
 
             listingStandard.Label("MultiDoctorSurgery_MaxSuccessBonus".Translate(settings.maxSuccessBonus.ToString("P")));
             settings.maxSuccessBonus = listingStandard.Slider(settings.maxSuccessBonus, 0f, 1f);
+
+            if (Widgets.ButtonText(new Rect(inRect.x, inRect.y + 200f, 200f, 30f), "ManageExcludedOperations".Translate()))
+            {
+                Find.WindowStack.Add(new Dialog_ManageExcludedOperations());
+            }
 
             listingStandard.End();
             settings.Write();

@@ -18,6 +18,8 @@
 	<OperationsTab_Doctors>의사들</OperationsTab_Doctors>
 	<OperationsTab_ViewEdit>보기/편집</OperationsTab_ViewEdit>
 	<OperationsTab_None>없음</OperationsTab_None>
+	<ManageExcludedOperations>제외된 수술 관리</ManageExcludedOperations>
+	<ExcludedOperations>제외된 수술</ExcludedOperations>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>다중 의사 수술</MultiDoctorSurgery_SettingsCategory>
