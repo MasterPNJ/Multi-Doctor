@@ -4,6 +4,9 @@
   <description>A mod that allows several doctors to be involved in an operation</description>
   <packageId>MasterPNJ.MultiDoctor</packageId>
   <author>MasterPNJ</author>
+  <incompatibleWith>
+	  <li>derekbickley.ltocolonygroupsfinal</li>
+  </incompatibleWith>
   <url></url>
   <supportedVersions>
     <li>1.5</li>
