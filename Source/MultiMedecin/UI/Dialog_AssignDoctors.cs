@@ -104,9 +104,19 @@ namespace MultiDoctorSurgery.UI
             float surgeonY = 0f;
             foreach (var doctor in availableDoctors)
             {
+                int requiredSkillLevel = recipe.skillRequirements?.FirstOrDefault(req => req.skill == requiredSkill)?.minLevel ?? 0;
+                int doctorSkillLevel = doctor.skills.GetSkill(requiredSkill).Level;
+                //Log.Message($"Vérification des compétences : {doctor.Name.ToStringShort} - Niveau de {requiredSkill.label} : {doctorSkillLevel}, Niveau requis pour l'opération : {requiredSkillLevel}");
+
+                // Check whether the doctor has the necessary skills
+                if (doctorSkillLevel < requiredSkillLevel)
+                {
+                    continue;
+                }
+
                 Rect rowRect = new Rect(0, surgeonY, surgeonViewRect.width, 30f);
                 bool isSelected = doctor == selectedSurgeon;
-                string label = $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctor.skills.GetSkill(requiredSkill).Level})";
+                string label = $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctorSkillLevel})";
                 if (Widgets.RadioButtonLabeled(rowRect, label, isSelected))
                 {
                     selectedSurgeon = doctor;
