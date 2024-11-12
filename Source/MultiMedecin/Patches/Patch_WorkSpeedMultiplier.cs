@@ -13,8 +13,16 @@ namespace MultiDoctorSurgery.Patches
         {
             if (req.Thing is Pawn pawn && pawn.CurJob != null && pawn.CurJob.bill is BillMedicalEx medicalBill)
             {
-                // Calculate speed multiplier based on the current number of assistants
+                //Limit the application to the main surgery job only, not to support tasks
+                if (pawn.CurJob.def != JobDefOf.DoBill)
+                {
+                    return;
+                }
+
+                // Calculate the speed multiplier based on the number of assistants
                 float speedMultiplier = Dialog_AssignDoctors.GetCurrentSpeedBonus(medicalBill);
+
+                //Log.Message($"[Debug] Applying speed multiplier {speedMultiplier} for pawn {pawn.Name.ToStringShort} on job {pawn.CurJob.def.defName}");
 
                 // Apply the speed multiplier to the base speed result
                 __result *= speedMultiplier;
