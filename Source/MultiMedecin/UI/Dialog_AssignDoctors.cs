@@ -199,6 +199,7 @@ namespace MultiDoctorSurgery.UI
 
         private void CalculateMultipliers()
         {
+            //LogSurgeonStats(selectedSurgeon, "Before Applying Multipliers");
             // Reset multipliers to base values
             currentSpeedBonus = 1f; // Base speed multiplier
             currentSuccessRate = 0f; // Base success rate bonus
@@ -228,6 +229,28 @@ namespace MultiDoctorSurgery.UI
 
             // Apply the adjustable maximum limit for total success rate
             currentTotalSuccessRate = Mathf.Min(totalSuccessRate, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
+
+            // Log to verify the calculated multipliers and the final success rate
+            //Log.Message($"[Debug] Surgeon {selectedSurgeon.Name.ToStringShort} - Calculated Speed Bonus: {currentSpeedBonus}, Calculated Success Rate: {currentSuccessRate}, Total Success Rate: {currentTotalSuccessRate}");
+
+            //LogSurgeonStats(selectedSurgeon, "After Applying Multipliers");
+        }
+
+        private void LogSurgeonStats(Pawn surgeon, string context)
+        {
+            StatDef medicalOperationSpeed = DefDatabase<StatDef>.GetNamed("MedicalOperationSpeed", errorOnFail: false);
+            if (medicalOperationSpeed != null)
+            {
+                Log.Message($"[Surgeon Stats {context}] {surgeon.Name.ToStringShort} - MedicalOperationSpeed: {surgeon.GetStatValue(medicalOperationSpeed)}, " +
+                            $"MedicalSurgerySuccessChance: {surgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance)}, " +
+                            $"GeneralLaborSpeed: {surgeon.GetStatValue(StatDefOf.GeneralLaborSpeed)}, " +
+                            $"Manipulation: {surgeon.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation)}, " +
+                            $"Sight: {surgeon.health.capacities.GetLevel(PawnCapacityDefOf.Sight)}");
+            }
+            else
+            {
+                Log.Message($"[Surgeon Stats {context}] {surgeon.Name.ToStringShort} - Could not find MedicalOperationSpeed stat.");
+            }
         }
 
         public static float GetCurrentSpeedBonus(BillMedicalEx bill)
