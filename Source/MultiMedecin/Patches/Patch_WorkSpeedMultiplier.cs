@@ -31,13 +31,13 @@ namespace MultiDoctorSurgery.Patches
                     float speedMultiplier = Dialog_AssignDoctors.GetCurrentSpeedBonus(medicalBill);
 
                     // Log the stat value before applying the multiplier for verification
-                    Log.Message($"[Debug] Before applying multiplier - Pawn: {pawn.Name.ToStringShort}, Stat: {statDef.defName}, Value: {__result}");
+                    //Log.Message($"[Debug] Before applying multiplier - Pawn: {pawn.Name.ToStringShort}, Stat: {statDef.defName}, Value: {__result}");
 
                     // Apply the speed multiplier
                     __result *= speedMultiplier;
 
                     // Log to verify that only the surgery speed stat is modified
-                    Log.Message($"[Debug] After applying surgery speed multiplier {speedMultiplier} for pawn {pawn.Name.ToStringShort} on job {pawn.CurJob.def.defName}, Final Value: {__result}");
+                    //Log.Message($"[Debug] After applying surgery speed multiplier {speedMultiplier} for pawn {pawn.Name.ToStringShort} on job {pawn.CurJob.def.defName}, Final Value: {__result}");
                 }
             }
         }
