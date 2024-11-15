@@ -10,6 +10,8 @@
 	<AssignDoctors_SelectAssistants>보조 의사를 선택하세요:</AssignDoctors_SelectAssistants>
 	<AssignDoctors_Confirm>확인</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>취소</AssignDoctors_Cancel>
+	<AssignDoctors_SortByName>이름순 정렬</AssignDoctors_SortByName>
+	<AssignDoctors_SortBySkill>기술순 정렬</AssignDoctors_SortBySkill>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>환자</OperationsTab_Patient>

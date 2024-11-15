@@ -10,6 +10,8 @@
 	<AssignDoctors_SelectAssistants>助手の医師を選択してください：</AssignDoctors_SelectAssistants>
 	<AssignDoctors_Confirm>確認</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>キャンセル</AssignDoctors_Cancel>
+	<AssignDoctors_SortByName>名前順に並べ替え</AssignDoctors_SortByName>
+	<AssignDoctors_SortBySkill>スキル順に並べ替え</AssignDoctors_SortBySkill>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>患者</OperationsTab_Patient>

@@ -80,7 +80,7 @@ namespace MultiDoctorSurgery.UI
             float curY = 40f;
 
             // Sorting buttons with toggleable order
-            if (Widgets.ButtonText(new Rect(0, curY, inRect.width / 2f, 25f), "Sort by Name"))
+            if (Widgets.ButtonText(new Rect(0, curY, inRect.width / 2f, 25f), "AssignDoctors_SortByName".Translate()))
             {
                 if (sortingMode == SortingMode.ByName)
                 {
@@ -92,7 +92,7 @@ namespace MultiDoctorSurgery.UI
                     isAscending = true; // Reset to ascending when switching sorting mode
                 }
             }
-            if (Widgets.ButtonText(new Rect(inRect.width / 2f, curY, inRect.width / 2f, 25f), "Sort by Skill"))
+            if (Widgets.ButtonText(new Rect(inRect.width / 2f, curY, inRect.width / 2f, 25f), "AssignDoctors_SortBySkill".Translate()))
             {
                 if (sortingMode == SortingMode.BySkill)
                 {

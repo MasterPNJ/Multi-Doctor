@@ -10,6 +10,8 @@
 	<AssignDoctors_SelectAssistants>Выберите помощников:</AssignDoctors_SelectAssistants>
 	<AssignDoctors_Confirm>Подтвердить</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>Отмена</AssignDoctors_Cancel>
+	<AssignDoctors_SortByName>Сортировать по имени</AssignDoctors_SortByName>
+	<AssignDoctors_SortBySkill>Сортировать по навыкам</AssignDoctors_SortBySkill>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>Пациент</OperationsTab_Patient>

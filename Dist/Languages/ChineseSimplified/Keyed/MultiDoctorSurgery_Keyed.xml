@@ -10,6 +10,8 @@
 	<AssignDoctors_SelectAssistants>选择助理医生：</AssignDoctors_SelectAssistants>
 	<AssignDoctors_Confirm>确认</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>取消</AssignDoctors_Cancel>
+	<AssignDoctors_SortByName>按姓名排序</AssignDoctors_SortByName>
+	<AssignDoctors_SortBySkill>按技能排序</AssignDoctors_SortBySkill>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>患者</OperationsTab_Patient>

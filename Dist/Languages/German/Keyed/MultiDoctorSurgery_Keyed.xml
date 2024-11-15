@@ -10,6 +10,8 @@
 	<AssignDoctors_SelectAssistants>Assistenzärzte auswählen:</AssignDoctors_SelectAssistants>
 	<AssignDoctors_Confirm>Bestätigen</AssignDoctors_Confirm>
 	<AssignDoctors_Cancel>Abbrechen</AssignDoctors_Cancel>
+	<AssignDoctors_SortByName>Nach Name sortieren</AssignDoctors_SortByName>
+	<AssignDoctors_SortBySkill>Nach Fähigkeit sortieren</AssignDoctors_SortBySkill>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>Patient</OperationsTab_Patient>
