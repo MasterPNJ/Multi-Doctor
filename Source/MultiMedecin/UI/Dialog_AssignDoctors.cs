@@ -28,6 +28,11 @@ namespace MultiDoctorSurgery.UI
         private float currentSuccessRate;
         private float currentTotalSuccessRate; // New variable to store total success rate
 
+        // Sorting mode and order for the doctor list
+        private enum SortingMode { ByName, BySkill }
+        private SortingMode sortingMode = SortingMode.BySkill;
+        private bool isAscending = true;
+
         public Dialog_AssignDoctors(Pawn patient, RecipeDef recipe, BillMedicalEx bill)
         {
             this.patient = patient;
@@ -74,6 +79,33 @@ namespace MultiDoctorSurgery.UI
 
             float curY = 40f;
 
+            // Sorting buttons with toggleable order
+            if (Widgets.ButtonText(new Rect(0, curY, inRect.width / 2f, 25f), "Sort by Name"))
+            {
+                if (sortingMode == SortingMode.ByName)
+                {
+                    isAscending = !isAscending; // Toggle order if sorting mode is already by name
+                }
+                else
+                {
+                    sortingMode = SortingMode.ByName;
+                    isAscending = true; // Reset to ascending when switching sorting mode
+                }
+            }
+            if (Widgets.ButtonText(new Rect(inRect.width / 2f, curY, inRect.width / 2f, 25f), "Sort by Skill"))
+            {
+                if (sortingMode == SortingMode.BySkill)
+                {
+                    isAscending = !isAscending; // Toggle order if sorting mode is already by skill
+                }
+                else
+                {
+                    sortingMode = SortingMode.BySkill;
+                    isAscending = true; // Reset to ascending when switching sorting mode
+                }
+            }
+            curY += 35f;
+
             // Display speed and success rate multipliers
             Widgets.Label(new Rect(0, curY, inRect.width, 30f), $"Speed Bonus: {currentSpeedBonus:F2}");
             curY += 30f;
@@ -99,14 +131,18 @@ namespace MultiDoctorSurgery.UI
             Rect surgeonOutRect = new Rect(0f, curY, inRect.width, 100f);
             Rect surgeonViewRect = new Rect(0f, 0f, inRect.width - 16f, availableDoctors.Count * 35f);
 
+            // Sort doctors based on the selected sorting mode and order
+            var sortedDoctors = sortingMode == SortingMode.ByName
+                ? (isAscending ? availableDoctors.OrderBy(d => d.Name.ToStringShort) : availableDoctors.OrderByDescending(d => d.Name.ToStringShort))
+                : (isAscending ? availableDoctors.OrderBy(d => d.skills.GetSkill(requiredSkill).Level) : availableDoctors.OrderByDescending(d => d.skills.GetSkill(requiredSkill).Level));
+
             Widgets.BeginScrollView(surgeonOutRect, ref surgeonScrollPosition, surgeonViewRect);
 
             float surgeonY = 0f;
-            foreach (var doctor in availableDoctors)
+            foreach (var doctor in sortedDoctors)
             {
                 int requiredSkillLevel = recipe.skillRequirements?.FirstOrDefault(req => req.skill == requiredSkill)?.minLevel ?? 0;
                 int doctorSkillLevel = doctor.skills.GetSkill(requiredSkill).Level;
-                //Log.Message($"Vérification des compétences : {doctor.Name.ToStringShort} - Niveau de {requiredSkill.label} : {doctorSkillLevel}, Niveau requis pour l'opération : {requiredSkillLevel}");
 
                 // Check whether the doctor has the necessary skills
                 if (doctorSkillLevel < requiredSkillLevel)
@@ -147,7 +183,7 @@ namespace MultiDoctorSurgery.UI
             Widgets.BeginScrollView(assistantOutRect, ref assistantScrollPosition, assistantViewRect);
 
             float assistantY = 0f;
-            foreach (var doctor in availableDoctors)
+            foreach (var doctor in sortedDoctors)
             {
                 if (doctor == selectedSurgeon) continue;
                 bool isAssigned = bill.assignedDoctors.Contains(doctor);
@@ -199,7 +235,6 @@ namespace MultiDoctorSurgery.UI
 
         private void CalculateMultipliers()
         {
-            //LogSurgeonStats(selectedSurgeon, "Before Applying Multipliers");
             // Reset multipliers to base values
             currentSpeedBonus = 1f; // Base speed multiplier
             currentSuccessRate = 0f; // Base success rate bonus
@@ -229,11 +264,6 @@ namespace MultiDoctorSurgery.UI
 
             // Apply the adjustable maximum limit for total success rate
             currentTotalSuccessRate = Mathf.Min(totalSuccessRate, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
-
-            // Log to verify the calculated multipliers and the final success rate
-            //Log.Message($"[Debug] Surgeon {selectedSurgeon.Name.ToStringShort} - Calculated Speed Bonus: {currentSpeedBonus}, Calculated Success Rate: {currentSuccessRate}, Total Success Rate: {currentTotalSuccessRate}");
-
-            //LogSurgeonStats(selectedSurgeon, "After Applying Multipliers");
         }
 
         private void LogSurgeonStats(Pawn surgeon, string context)
