@@ -52,9 +52,22 @@ namespace MultiDoctorSurgery.UI
             float curY = 80f; // Start below the search bar to avoid overlap
 
             // Recipe filtering based on search text
-            List<RecipeDef> filteredRecipes = allRecipes.FindAll(recipe =>
-                recipe.Worker is Recipe_Surgery && (string.IsNullOrEmpty(searchText) || recipe.label.ToLower().Contains(searchText.ToLower()))
-            );
+            List<RecipeDef> filteredRecipes = new List<RecipeDef>();
+
+            foreach (var recipe in allRecipes)
+            {
+                if (recipe.Worker == null)
+                {
+                    Log.Warning($"[MultiDoctorSurgery] Recipe {recipe.defName} has a null Worker. Skipping.");
+                    continue;
+                }
+
+                if (recipe.Worker is Recipe_Surgery &&
+                    (string.IsNullOrEmpty(searchText) || recipe.label.ToLower().Contains(searchText.ToLower())))
+                {
+                    filteredRecipes.Add(recipe);
+                }
+            }
 
             // Calculate content height to ensure the last item is fully displayed
             float contentHeight = filteredRecipes.Count * 30f + 10f;
@@ -88,9 +101,9 @@ namespace MultiDoctorSurgery.UI
                     rowY += 30f;
                 }
             }
-            catch (System.NullReferenceException ex)
+            catch (System.Exception ex)
             {
-                Log.Error("NullReferenceException in DoWindowContents: " + ex.Message);
+                Log.Error($"Error in DoWindowContents: {ex.Message}");
             }
 
             Widgets.EndScrollView();
