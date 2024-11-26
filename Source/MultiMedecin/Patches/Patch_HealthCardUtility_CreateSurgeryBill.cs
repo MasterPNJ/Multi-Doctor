@@ -10,6 +10,13 @@ namespace MultiDoctorSurgery.Patches
     {
         public static bool Prefix(Pawn medPawn, RecipeDef recipe, BodyPartRecord part, List<Thing> uniqueIngredients, bool sendMessages)
         {
+            // Validate inputs
+            if (medPawn == null || recipe == null)
+            {
+                Log.Error("[MultiDoctorSurgery] Null reference in CreateSurgeryBill. medPawn or recipe is null.");
+                return true; // Let the base method handle the case
+            }
+
             // Check if the recipe is for xenogerm implantation
             if (recipe.defName == "ImplantXenogerm")
             {
@@ -30,6 +37,13 @@ namespace MultiDoctorSurgery.Patches
                 // Create our personalized bill
                 var bill = new BillMedicalEx(recipe, uniqueIngredients);
                 bill.Part = part;
+
+                // Ensure the medPawn has a BillStack
+                if (medPawn.BillStack == null)
+                {
+                    Log.Error($"[MultiDoctorSurgery] medPawn {medPawn.Name.ToStringShort} does not have a BillStack. Skipping.");
+                    return true; // Fallback to base method
+                }
 
                 medPawn.BillStack.AddBill(bill);
 

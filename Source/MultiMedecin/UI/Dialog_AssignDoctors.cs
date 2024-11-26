@@ -42,16 +42,30 @@ namespace MultiDoctorSurgery.UI
             // Determine the required skill for the recipe
             this.requiredSkill = recipe.workSkill ?? SkillDefOf.Medicine; // Fallback to Medicine if workSkill is null
 
-            this.availableDoctors = patient.Map.mapPawns.FreeColonistsSpawned
-                .Where(p => p != patient && !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
-                .ToList();
+            this.availableDoctors = patient.Map.mapPawns.AllPawns
+            .Where(p => p != null // Ensure the pawn is not null
+                        && p != patient // Exclude the patient
+                        && !p.Dead // Exclude dead pawns
+                        && !p.Downed // Exclude downed pawns
+                        && (p.IsColonist || (p.Faction != null && p.Faction == Faction.OfPlayer)) // Include paramedics or any pawn under player's control
+                        && p.health != null && p.health.capacities != null // Ensure health and capacities exist
+                        && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) // Ensure the pawn can manipulate
+                        && (p.skills != null || p.def.race.IsMechanoid)) // Include if the pawn has skills or is a mechanoid
+            .ToList();
+
+            // Log the available doctors for debugging
+            Log.Message($"[MultiDoctorSurgery] Available doctors for surgery: {string.Join(", ", availableDoctors.Select(d => d.Name.ToStringShort))}");
 
             // Store previous assignments
             this.previousSurgeon = bill.surgeon;
             this.previousAssignedDoctors = new List<Pawn>(bill.assignedDoctors);
 
             // Check if there's already a selected surgeon, otherwise pick the best doctor as default
-            selectedSurgeon = bill.assignedDoctors.FirstOrDefault() ?? availableDoctors.OrderByDescending(d => d.skills.GetSkill(requiredSkill).Level).FirstOrDefault();
+            selectedSurgeon = bill.assignedDoctors.FirstOrDefault()
+            ?? availableDoctors
+                .Where(d => d.skills != null && d.skills.GetSkill(requiredSkill) != null) // Ensure skills and the required skill exist
+                .OrderByDescending(d => d.skills.GetSkill(requiredSkill).Level)
+                .FirstOrDefault();
             if (selectedSurgeon != null && !bill.assignedDoctors.Contains(selectedSurgeon))
             {
                 // Clear assistants and make sure only the selected surgeon is in the list
@@ -133,38 +147,58 @@ namespace MultiDoctorSurgery.UI
 
             // Sort doctors based on the selected sorting mode and order
             var sortedDoctors = sortingMode == SortingMode.ByName
-                ? (isAscending ? availableDoctors.OrderBy(d => d.Name.ToStringShort) : availableDoctors.OrderByDescending(d => d.Name.ToStringShort))
-                : (isAscending ? availableDoctors.OrderBy(d => d.skills.GetSkill(requiredSkill).Level) : availableDoctors.OrderByDescending(d => d.skills.GetSkill(requiredSkill).Level));
+            ? (isAscending ? availableDoctors.OrderBy(d => d.Name.ToStringShort) : availableDoctors.OrderByDescending(d => d.Name.ToStringShort))
+            : (isAscending
+                ? availableDoctors.OrderBy(d => d.def.race.IsMechanoid ? -1 : d.skills?.GetSkill(requiredSkill)?.Level ?? 0)
+                : availableDoctors.OrderByDescending(d => d.def.race.IsMechanoid ? -1 : d.skills?.GetSkill(requiredSkill)?.Level ?? 0));
+
+            // Log the sorted doctors for debugging
+            Log.Message($"[MultiDoctorSurgery] Sorted doctors: {string.Join(", ", sortedDoctors.Select(d => d.Name.ToStringShort))}");
 
             Widgets.BeginScrollView(surgeonOutRect, ref surgeonScrollPosition, surgeonViewRect);
 
-            float surgeonY = 0f;
-            foreach (var doctor in sortedDoctors)
+            try
             {
-                int requiredSkillLevel = recipe.skillRequirements?.FirstOrDefault(req => req.skill == requiredSkill)?.minLevel ?? 0;
-                int doctorSkillLevel = doctor.skills.GetSkill(requiredSkill).Level;
-
-                // Check whether the doctor has the necessary skills
-                if (doctorSkillLevel < requiredSkillLevel)
+                float surgeonY = 0f;
+                foreach (var doctor in sortedDoctors)
                 {
-                    continue;
-                }
+                    if (doctor == null)
+                    {
+                        Log.Warning("[MultiDoctorSurgery] Skipped null doctor.");
+                        continue;
+                    }
 
-                Rect rowRect = new Rect(0, surgeonY, surgeonViewRect.width, 30f);
-                bool isSelected = doctor == selectedSurgeon;
-                string label = $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctorSkillLevel})";
-                if (Widgets.RadioButtonLabeled(rowRect, label, isSelected))
-                {
-                    selectedSurgeon = doctor;
+                    int requiredSkillLevel = recipe.skillRequirements?.FirstOrDefault(req => req.skill == requiredSkill)?.minLevel ?? 0;
+                    int doctorSkillLevel = doctor.skills?.GetSkill(requiredSkill)?.Level ?? 0;
 
-                    // Clear assistants and make sure only the selected surgeon is in the list
-                    bill.assignedDoctors.Clear();
-                    bill.assignedDoctors.Insert(0, selectedSurgeon); // Insert the surgeon as the first item
-                    CalculateMultipliers();
+                    if (!doctor.def.race.IsMechanoid && doctorSkillLevel < requiredSkillLevel)
+                    {
+                        Log.Message($"[MultiDoctorSurgery] Doctor {doctor.Name.ToStringShort} skipped (Skill level {doctorSkillLevel} < Required {requiredSkillLevel}).");
+                        continue;
+                    }
+
+                    Rect rowRect = new Rect(0, surgeonY, surgeonViewRect.width, 30f);
+                    bool isSelected = doctor == selectedSurgeon;
+                    string label = doctor.def.race.IsMechanoid
+                        ? $"{doctor.Name.ToStringShort} (Mechanoid)"
+                        : $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctorSkillLevel})";
+
+                    if (Widgets.RadioButtonLabeled(rowRect, label, isSelected))
+                    {
+                        selectedSurgeon = doctor;
+
+                        // Clear assistants and make sure only the selected surgeon is in the list
+                        bill.assignedDoctors.Clear();
+                        bill.assignedDoctors.Insert(0, selectedSurgeon); // Insert the surgeon as the first item
+                        CalculateMultipliers();
+                    }
+                    surgeonY += 35f;
                 }
-                surgeonY += 35f;
             }
-            Widgets.EndScrollView();
+            finally
+            {
+                Widgets.EndScrollView();
+            }
             curY += 110f;
 
             // Selecting medical assistants
@@ -182,28 +216,53 @@ namespace MultiDoctorSurgery.UI
 
             Widgets.BeginScrollView(assistantOutRect, ref assistantScrollPosition, assistantViewRect);
 
-            float assistantY = 0f;
-            foreach (var doctor in sortedDoctors)
+            try
             {
-                if (doctor == selectedSurgeon) continue;
-                bool isAssigned = bill.assignedDoctors.Contains(doctor);
-                Rect rowRect = new Rect(0, assistantY, assistantViewRect.width, 30f);
-                bool newIsAssigned = isAssigned;
-                string label = $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctor.skills.GetSkill(requiredSkill).Level})";
-                Widgets.CheckboxLabeled(rowRect, label, ref newIsAssigned);
-
-                if (newIsAssigned != isAssigned)
+                float assistantY = 0f;
+                foreach (var doctor in sortedDoctors)
                 {
-                    if (newIsAssigned && (bill.assignedDoctors.Count - 1) < (MultiDoctorSurgeryMod.settings.maxDoctors - 1))
-                        bill.assignedDoctors.Add(doctor);
-                    else if (!newIsAssigned)
-                        bill.assignedDoctors.Remove(doctor);
+                    if (doctor == selectedSurgeon) continue;
 
-                    CalculateMultipliers();
+                    // Vérifie si le médecin ou ses propriétés sont nulles
+                    if (doctor == null || doctor.health == null || (doctor.skills == null && !doctor.def.race.IsMechanoid))
+                    {
+                        Log.Warning($"[MultiDoctorSurgery] Skipping null or invalid doctor: {doctor?.Name?.ToStringShort ?? "null"}");
+                        continue;
+                    }
+
+                    // Récupère le niveau de compétence ou 0 pour les mécanoïdes
+                    int doctorSkillLevel = doctor.def.race.IsMechanoid ? 0 : doctor.skills.GetSkill(requiredSkill)?.Level ?? 0;
+
+                    // Crée l'étiquette (label) pour affichage
+                    string label = doctor.def.race.IsMechanoid
+                        ? $"{doctor.Name.ToStringShort} (Mechanoid)"
+                        : $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctorSkillLevel})";
+
+                    // Affiche la checkbox pour assigner ou retirer un assistant
+                    Rect rowRect = new Rect(0, assistantY, assistantViewRect.width, 30f);
+                    bool isAssigned = bill.assignedDoctors.Contains(doctor);
+                    bool newIsAssigned = isAssigned;
+
+                    Widgets.CheckboxLabeled(rowRect, label, ref newIsAssigned);
+
+                    // Met à jour la liste des assistants si l'état change
+                    if (newIsAssigned != isAssigned)
+                    {
+                        if (newIsAssigned && (bill.assignedDoctors.Count - 1) < (MultiDoctorSurgeryMod.settings.maxDoctors - 1))
+                            bill.assignedDoctors.Add(doctor);
+                        else if (!newIsAssigned)
+                            bill.assignedDoctors.Remove(doctor);
+
+                        CalculateMultipliers();
+                    }
+
+                    assistantY += 35f;
                 }
-                assistantY += 35f;
             }
-            Widgets.EndScrollView();
+            finally
+            {
+                Widgets.EndScrollView();
+            }
             curY += 70f;
 
             // Buttons at the bottom
@@ -246,13 +305,28 @@ namespace MultiDoctorSurgery.UI
             for (int i = 1; i < bill.assignedDoctors.Count; i++) // Start from index 1 to skip the lead surgeon
             {
                 var assistant = bill.assignedDoctors[i];
-                float skillLevel = assistant.skills.GetSkill(requiredSkill).Level;
 
-                // Calculate speed bonus as a function of assistant's skill level and speed multiplier setting
-                currentSpeedBonus += skillLevel * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor / 20f; // Divided by 20 to normalize
+                // Vérifie si c'est un mécanoïde
+                if (assistant.def.race.IsMechanoid)
+                {
+                    // Applique un bonus fixe ou spécifique aux mécanoïdes
+                    float mechSpeedBonus = MultiDoctorSurgeryMod.settings.mechSpeedBonus; // Exemple: bonus fixe
+                    float mechSuccessBonus = MultiDoctorSurgeryMod.settings.mechSuccessBonus; // Exemple: bonus fixe
 
-                // Calculate success rate bonus as a function of assistant's skill level and success multiplier setting
-                currentSuccessRate += skillLevel * MultiDoctorSurgeryMod.settings.successRateMultiplier / 20f; // Divided by 20 to normalize
+                    currentSpeedBonus += mechSpeedBonus;
+                    currentSuccessRate += mechSuccessBonus;
+
+                    Log.Message($"[MultiDoctorSurgery] Mechanoid {assistant.Name.ToStringShort} added speed bonus: {mechSpeedBonus}, success bonus: {mechSuccessBonus}");
+                }
+                else
+                {
+                    // Utilise le niveau de compétence pour les humains
+                    float skillLevel = assistant.skills.GetSkill(requiredSkill)?.Level ?? 0;
+
+                    // Calcule les bonus pour les humains
+                    currentSpeedBonus += skillLevel * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor / 20f; // Divided by 20 to normalize
+                    currentSuccessRate += skillLevel * MultiDoctorSurgeryMod.settings.successRateMultiplier / 20f; // Divided by 20 to normalize
+                }
             }
 
             // Apply limits for speed and success bonuses based on settings
@@ -303,6 +377,7 @@ namespace MultiDoctorSurgery.UI
             {
                 foreach (var doctor in previousAssignedDoctors)
                 {
+                    if (doctor == null) continue; // Skip null doctors
                     if (doctor != previousSurgeon && doctor.CurJob != null && doctor.CurJob.def == MyCustomJobDefs.AssistSurgeryLoop)
                     {
                         // Finish the job if it's the assistant
