@@ -54,7 +54,7 @@ namespace MultiDoctorSurgery.UI
             .ToList();
 
             // Log the available doctors for debugging
-            Log.Message($"[MultiDoctorSurgery] Available doctors for surgery: {string.Join(", ", availableDoctors.Select(d => d.Name.ToStringShort))}");
+            //Log.Message($"[MultiDoctorSurgery] Available doctors for surgery: {string.Join(", ", availableDoctors.Select(d => d.Name.ToStringShort))}");
 
             // Store previous assignments
             this.previousSurgeon = bill.surgeon;
@@ -153,7 +153,7 @@ namespace MultiDoctorSurgery.UI
                 : availableDoctors.OrderByDescending(d => d.def.race.IsMechanoid ? -1 : d.skills?.GetSkill(requiredSkill)?.Level ?? 0));
 
             // Log the sorted doctors for debugging
-            Log.Message($"[MultiDoctorSurgery] Sorted doctors: {string.Join(", ", sortedDoctors.Select(d => d.Name.ToStringShort))}");
+            //Log.Message($"[MultiDoctorSurgery] Sorted doctors: {string.Join(", ", sortedDoctors.Select(d => d.Name.ToStringShort))}");
 
             Widgets.BeginScrollView(surgeonOutRect, ref surgeonScrollPosition, surgeonViewRect);
 
@@ -173,7 +173,7 @@ namespace MultiDoctorSurgery.UI
 
                     if (!doctor.def.race.IsMechanoid && doctorSkillLevel < requiredSkillLevel)
                     {
-                        Log.Message($"[MultiDoctorSurgery] Doctor {doctor.Name.ToStringShort} skipped (Skill level {doctorSkillLevel} < Required {requiredSkillLevel}).");
+                       // Log.Message($"[MultiDoctorSurgery] Doctor {doctor.Name.ToStringShort} skipped (Skill level {doctorSkillLevel} < Required {requiredSkillLevel}).");
                         continue;
                     }
 
@@ -316,7 +316,7 @@ namespace MultiDoctorSurgery.UI
                     currentSpeedBonus += mechSpeedBonus;
                     currentSuccessRate += mechSuccessBonus;
 
-                    Log.Message($"[MultiDoctorSurgery] Mechanoid {assistant.Name.ToStringShort} added speed bonus: {mechSpeedBonus}, success bonus: {mechSuccessBonus}");
+                    //Log.Message($"[MultiDoctorSurgery] Mechanoid {assistant.Name.ToStringShort} added speed bonus: {mechSpeedBonus}, success bonus: {mechSuccessBonus}");
                 }
                 else
                 {
