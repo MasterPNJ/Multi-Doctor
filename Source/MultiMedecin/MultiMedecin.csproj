@@ -34,7 +34,9 @@
 		<Compile Include="UI/Dialog_ManageExcludedOperations .cs" />
 		<Compile Include="UI/MainTabWindow_Operations.cs" />
 		<Compile Include="Patches/Patch_HealthCardUtility_CreateSurgeryBill.cs" />
+		<Compile Include="Patches/Patch_Hospital_AddRandomSurgeryBill.cs" />
 		<Compile Include="Patches/Patch_MakeNewToils.cs" />
 		<Compile Include="Patches/Patch_WorkSpeedMultiplier.cs" />
+		<Compile Include="Patches/Patch_SetPawnRestriction.cs" />
 	</ItemGroup>
 </Project>

@@ -11,20 +11,19 @@ namespace MultiDoctorSurgery.UI
     {
         private Vector2 scrollPosition;
 
+        private List<BillMedicalEx> scheduledOperations = new List<BillMedicalEx>();
+
         public override void PreOpen()
         {
             base.PreOpen();
             this.scrollPosition = Vector2.zero;
+
+            // Rafraîchir les opérations dès l'ouverture
+            RefreshScheduledOperations();
         }
 
         public override void DoWindowContents(Rect inRect)
         {
-
-            List<BillMedicalEx> scheduledOperations = Find.Maps.SelectMany(map => map.mapPawns.FreeColonistsSpawned)
-                .SelectMany(pawn => pawn.BillStack.Bills)
-                .OfType<BillMedicalEx>()
-                .ToList();
-
             float rowHeight = 30f;
             float contentHeight = scheduledOperations.Count * rowHeight;
 
@@ -141,6 +140,31 @@ namespace MultiDoctorSurgery.UI
             }
 
             return options;
+        }
+
+        /// <summary>
+        /// Rafraîchit la liste des opérations à afficher, incluant celles créées par d'autres mods.
+        /// </summary>
+        private void RefreshScheduledOperations()
+        {
+            scheduledOperations.Clear();
+
+            // Ajoute toutes les opérations des colons
+            scheduledOperations.AddRange(Find.Maps
+                .SelectMany(map => map.mapPawns.FreeColonistsSpawned)
+                .SelectMany(pawn => pawn.BillStack.Bills)
+                .OfType<BillMedicalEx>());
+
+            // Ajoute les opérations des invités créées par le mod Hospital
+            var hospitalBills = Find.Maps
+                .SelectMany(map => map.mapPawns.AllPawnsSpawned)
+                .Where(p => !p.IsColonist && p.BillStack != null)
+                .SelectMany(p => p.BillStack.Bills)
+                .OfType<BillMedicalEx>();
+
+            scheduledOperations.AddRange(hospitalBills);
+
+            Log.Message($"[MultiDoctorSurgery] Refreshed operations: {scheduledOperations.Count} operations found.");
         }
     }
 }

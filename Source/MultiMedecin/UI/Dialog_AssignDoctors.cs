@@ -4,6 +4,7 @@ using Verse.AI;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace MultiDoctorSurgery.UI
 {
@@ -281,7 +282,25 @@ namespace MultiDoctorSurgery.UI
                 }
 
                 // Assigning the bill to the lead surgeon
-                bill.SetPawnRestriction(selectedSurgeon);
+                if (selectedSurgeon != null && bill != null)
+                {
+                    try
+                    {
+                        bill.SetPawnRestriction(selectedSurgeon);
+                    }
+                    catch (ArgumentNullException ex)
+                    {
+                        Log.Warning($"[MultiDoctorSurgery] Error setting pawn restriction for {selectedSurgeon.Name.ToStringShort}: {ex.Message}. This might be due to Tactical Groups mod conflict.");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"[MultiDoctorSurgery] Unexpected error while setting pawn restriction for {selectedSurgeon.Name.ToStringShort}: {ex.Message}");
+                    }
+                }
+                else
+                {
+                    Log.Warning("[MultiDoctorSurgery] Surgeon or Bill is null when trying to set pawn restriction.");
+                }
                 Close();
             }
             if (Widgets.ButtonText(new Rect(inRect.width / 2f, inRect.height - 35f, inRect.width / 2f, 35f), "AssignDoctors_Cancel".Translate()))
@@ -298,34 +317,44 @@ namespace MultiDoctorSurgery.UI
             currentSpeedBonus = 1f; // Base speed multiplier
             currentSuccessRate = 0f; // Base success rate bonus
 
+            if (ModLister.GetActiveModWithIdentifier("tactical.groups") != null)
+            {
+                Log.Message("[MultiDoctorSurgery] Tactical Groups detected. Adjusting compatibility.");
+                // Exclure mécanoïdes ou ajuster les assistants
+            }
+
             // Get the base surgery success rate of the lead surgeon
             float baseSuccessRate = selectedSurgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance);
 
-            // Calculate bonuses based on each assistant's medical skill level (excluding lead surgeon)
             for (int i = 1; i < bill.assignedDoctors.Count; i++) // Start from index 1 to skip the lead surgeon
             {
                 var assistant = bill.assignedDoctors[i];
 
-                // Vérifie si c'est un mécanoïde
                 if (assistant.def.race.IsMechanoid)
                 {
-                    // Applique un bonus fixe ou spécifique aux mécanoïdes
-                    float mechSpeedBonus = MultiDoctorSurgeryMod.settings.mechSpeedBonus; // Exemple: bonus fixe
-                    float mechSuccessBonus = MultiDoctorSurgeryMod.settings.mechSuccessBonus; // Exemple: bonus fixe
+                    // Avoid triggering multiple tasks for mechanoids
+                    if (assistant.jobs == null || assistant.jobs.curJob?.def != JobDefOf.DoBill)
+                    {
+                        // Example: Fixed bonus for mechanoids
+                        float mechSpeedBonus = MultiDoctorSurgeryMod.settings.mechSpeedBonus;
+                        float mechSuccessBonus = MultiDoctorSurgeryMod.settings.mechSuccessBonus;
 
-                    currentSpeedBonus += mechSpeedBonus;
-                    currentSuccessRate += mechSuccessBonus;
+                        currentSpeedBonus += mechSpeedBonus;
+                        currentSuccessRate += mechSuccessBonus;
 
-                    //Log.Message($"[MultiDoctorSurgery] Mechanoid {assistant.Name.ToStringShort} added speed bonus: {mechSpeedBonus}, success bonus: {mechSuccessBonus}");
+                        Log.Message($"[MultiDoctorSurgery] Mechanoid {assistant.Name.ToStringShort} added speed bonus: {mechSpeedBonus}, success bonus: {mechSuccessBonus}");
+                    }
+                    else
+                    {
+                        Log.Warning($"[MultiDoctorSurgery] Mechanoid {assistant.Name.ToStringShort} is already performing a job. Skipping additional bonus.");
+                    }
                 }
                 else
                 {
-                    // Utilise le niveau de compétence pour les humains
+                    // Calculate human bonuses
                     float skillLevel = assistant.skills.GetSkill(requiredSkill)?.Level ?? 0;
-
-                    // Calcule les bonus pour les humains
-                    currentSpeedBonus += skillLevel * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor / 20f; // Divided by 20 to normalize
-                    currentSuccessRate += skillLevel * MultiDoctorSurgeryMod.settings.successRateMultiplier / 20f; // Divided by 20 to normalize
+                    currentSpeedBonus += skillLevel * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor / 20f;
+                    currentSuccessRate += skillLevel * MultiDoctorSurgeryMod.settings.successRateMultiplier / 20f;
                 }
             }
 
@@ -338,6 +367,11 @@ namespace MultiDoctorSurgery.UI
 
             // Apply the adjustable maximum limit for total success rate
             currentTotalSuccessRate = Mathf.Min(totalSuccessRate, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
+        }
+
+        private bool IsPawnAlreadyBusy(Pawn pawn)
+        {
+            return pawn.CurJob != null && pawn.CurJob.def == JobDefOf.DoBill;
         }
 
         private void LogSurgeonStats(Pawn surgeon, string context)
