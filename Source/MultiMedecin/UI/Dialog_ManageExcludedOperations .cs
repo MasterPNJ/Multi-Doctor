@@ -23,7 +23,7 @@ namespace MultiDoctorSurgery.UI
             // Ensure settings and excludedOperations are initialized
             if (MultiDoctorSurgeryMod.settings == null)
             {
-                Log.Error("MultiDoctorSurgeryMod.settings is null. Ensure it is initialized correctly.");
+                Log.Error("[MultiDoctorSurgery] Settings are null. Ensure they are initialized correctly.");
                 return;
             }
 
@@ -72,17 +72,23 @@ namespace MultiDoctorSurgery.UI
                     bool isExcluded = MultiDoctorSurgeryMod.settings.excludedOperations.Contains(recipe.defName);
                     Rect rowRect = new Rect(0, rowY, scrollViewRect.width, 30f);
 
+                    bool originalState = isExcluded;
                     Widgets.CheckboxLabeled(rowRect, recipe.label, ref isExcluded);
-                    if (isExcluded)
+
+                    // Handle changes to the exclusion state
+                    if (isExcluded != originalState)
                     {
-                        if (!MultiDoctorSurgeryMod.settings.excludedOperations.Contains(recipe.defName))
+                        if (isExcluded)
                         {
                             MultiDoctorSurgeryMod.settings.excludedOperations.Add(recipe.defName);
                         }
-                    }
-                    else
-                    {
-                        MultiDoctorSurgeryMod.settings.excludedOperations.Remove(recipe.defName);
+                        else
+                        {
+                            MultiDoctorSurgeryMod.settings.excludedOperations.Remove(recipe.defName);
+                        }
+
+                        // Save changes to settings
+                        MultiDoctorSurgeryMod.settings.Write();
                     }
 
                     rowY += 30f;
@@ -90,7 +96,7 @@ namespace MultiDoctorSurgery.UI
             }
             catch (System.NullReferenceException ex)
             {
-                Log.Error("NullReferenceException in DoWindowContents: " + ex.Message);
+                Log.Error("[MultiDoctorSurgery] NullReferenceException in DoWindowContents: " + ex.Message);
             }
 
             Widgets.EndScrollView();
