@@ -26,19 +26,55 @@ namespace MultiDoctorSurgery
             };
             assistToil.tickAction = () =>
             {
-                if (!IsSurgeryOngoing() || !IsStillAssignedToAssist())
-                {
-                    // Call the method to distribute XP before ending the job
-                    AwardSurgeryExperience();
+                var patient = job.targetA.Thing as Pawn;
+                var medicalBill = job.bill as BillMedicalEx;
 
-                    // End the assistance job
-                    EndJobWith(JobCondition.Succeeded);
+                // Vérification de l'état du patient
+                /* // DEBUG LOG // 
+                if (patient == null)
+                {
+                    Log.Message("[AssistSurgeryLoop] Patient is null.");
                 }
                 else
                 {
-                    // Grant XP to assistants every tick while surgery is ongoing
-                    AwardTickExperience();
+                    if (patient.Dead)
+                    {
+                        Log.Message("[AssistSurgeryLoop] Patient is dead.");
+                    }
+                    else if (patient.Downed && !IsPatientUnderAnesthesia(patient))
+                    {
+                        Log.Message("[AssistSurgeryLoop] Patient is downed but not anesthetized.");
+                    }
                 }
+
+                if (medicalBill == null)
+                {
+                    Log.Message("[AssistSurgeryLoop] Medical bill is null.");
+                }
+                else
+                {
+                    if (!medicalBill.SurgeryStarted)
+                    {
+                        Log.Message("[AssistSurgeryLoop] Surgery has not started.");
+                    }
+                    if (!medicalBill.assignedDoctors.Contains(pawn))
+                    {
+                        Log.Message("[AssistSurgeryLoop] Assistant is no longer assigned to assist.");
+                    }
+                }
+                */
+
+                // Condition combinée
+                if (patient == null || patient.Dead || (patient.Downed && !IsPatientUnderAnesthesia(patient)) ||
+                    medicalBill == null || !medicalBill.SurgeryStarted || !medicalBill.assignedDoctors.Contains(pawn))
+                {
+                    AwardSurgeryExperience();
+                    EndJobWith(JobCondition.Incompletable);
+                    return;
+                }
+
+                // Accorder de l'expérience chaque tick pendant que la chirurgie est en cours
+                AwardTickExperience();
             };
             assistToil.defaultCompleteMode = ToilCompleteMode.Never;
 
@@ -54,6 +90,11 @@ namespace MultiDoctorSurgery
             yield return assistToil;
         }
 
+        private bool IsPatientUnderAnesthesia(Pawn patient)
+        {
+            return patient.health.hediffSet.HasHediff(HediffDefOf.Anesthetic);
+        }
+
         private bool IsSurgeryOngoing()
         {
             var medicalBill = job.bill as BillMedicalEx;
@@ -63,7 +104,13 @@ namespace MultiDoctorSurgery
         private bool IsStillAssignedToAssist()
         {
             var medicalBill = job.bill as BillMedicalEx;
-            return medicalBill != null && medicalBill.assignedDoctors.Contains(pawn);
+            var patient = job.targetA.Thing as Pawn;
+
+            return medicalBill != null &&
+                   patient != null &&
+                   !patient.Dead &&
+                   !patient.Downed &&
+                   medicalBill.assignedDoctors.Contains(pawn);
         }
 
         private void AwardTickExperience()
