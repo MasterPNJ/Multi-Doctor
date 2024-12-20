@@ -21,6 +21,8 @@ namespace MultiDoctorSurgery
 
         public List<string> excludedOperations = new List<string>();
 
+        public string currentPreset = "Default"; // Default preset
+
         public override void ExposeData()
         {
             Scribe_Values.Look(ref speedMultiplierPerDoctor, "speedMultiplierPerDoctor", 0.5f);
@@ -36,7 +38,19 @@ namespace MultiDoctorSurgery
 
             Scribe_Collections.Look(ref excludedOperations, "excludedOperations", LookMode.Value);
 
+            if (excludedOperations == null)
+            {
+                excludedOperations = new List<string>();
+            }
+
+            if (!excludedOperations.Contains("HarvestHemogenPack"))
+            {
+                excludedOperations.Add("HarvestHemogenPack");
+            }
+
             base.ExposeData();
+            Scribe_Values.Look(ref currentPreset, "currentPreset", "Default"); // Sauvegarde du preset actif
+            Scribe_Collections.Look(ref excludedOperations, "excludedOperations", LookMode.Value);
         }
     }
 }
