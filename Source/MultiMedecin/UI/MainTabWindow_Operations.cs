@@ -20,7 +20,9 @@ namespace MultiDoctorSurgery.UI
         public override void DoWindowContents(Rect inRect)
         {
 
-            List<BillMedicalEx> scheduledOperations = Find.Maps.SelectMany(map => map.mapPawns.FreeColonistsSpawned)
+            List<BillMedicalEx> scheduledOperations = Find.Maps
+                .SelectMany(map => map.mapPawns.AllPawnsSpawned
+                    .Where(p => p.IsColonist || p.IsPrisonerOfColony))
                 .SelectMany(pawn => pawn.BillStack.Bills)
                 .OfType<BillMedicalEx>()
                 .ToList();
