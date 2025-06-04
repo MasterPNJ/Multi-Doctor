@@ -4,6 +4,7 @@ using Verse.AI;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using MultiDoctorSurgery;
 
 namespace MultiDoctorSurgery.UI
 {
@@ -223,17 +224,17 @@ namespace MultiDoctorSurgery.UI
                 {
                     if (doctor == selectedSurgeon) continue;
 
-                    // Vérifie si le médecin ou ses propriétés sont nulles
+                    // Vï¿½rifie si le mï¿½decin ou ses propriï¿½tï¿½s sont nulles
                     if (doctor == null || doctor.health == null || (doctor.skills == null && !doctor.def.race.IsMechanoid))
                     {
                         Log.Warning($"[MultiDoctorSurgery] Skipping null or invalid doctor: {doctor?.Name?.ToStringShort ?? "null"}");
                         continue;
                     }
 
-                    // Récupère le niveau de compétence ou 0 pour les mécanoïdes
+                    // Rï¿½cupï¿½re le niveau de compï¿½tence ou 0 pour les mï¿½canoï¿½des
                     int doctorSkillLevel = doctor.def.race.IsMechanoid ? 0 : doctor.skills.GetSkill(requiredSkill)?.Level ?? 0;
 
-                    // Crée l'étiquette (label) pour affichage
+                    // Crï¿½e l'ï¿½tiquette (label) pour affichage
                     string label = doctor.def.race.IsMechanoid
                         ? $"{doctor.Name.ToStringShort} (Mechanoid)"
                         : $"{doctor.Name.ToStringShort} ({requiredSkill.label}: {doctorSkillLevel})";
@@ -245,7 +246,7 @@ namespace MultiDoctorSurgery.UI
 
                     Widgets.CheckboxLabeled(rowRect, label, ref newIsAssigned);
 
-                    // Met à jour la liste des assistants si l'état change
+                    // Met ï¿½ jour la liste des assistants si l'ï¿½tat change
                     if (newIsAssigned != isAssigned)
                     {
                         if (newIsAssigned && (bill.assignedDoctors.Count - 1) < (MultiDoctorSurgeryMod.settings.maxDoctors - 1))
@@ -281,7 +282,7 @@ namespace MultiDoctorSurgery.UI
                 }
 
                 // Assigning the bill to the lead surgeon
-                bill.SetPawnRestriction(selectedSurgeon);
+                Compat.SetPawnRestrictionSafe(bill, selectedSurgeon);
                 Close();
             }
             if (Widgets.ButtonText(new Rect(inRect.width / 2f, inRect.height - 35f, inRect.width / 2f, 35f), "AssignDoctors_Cancel".Translate()))
@@ -306,10 +307,10 @@ namespace MultiDoctorSurgery.UI
             {
                 var assistant = bill.assignedDoctors[i];
 
-                // Vérifie si c'est un mécanoïde
+                // Vï¿½rifie si c'est un mï¿½canoï¿½de
                 if (assistant.def.race.IsMechanoid)
                 {
-                    // Applique un bonus fixe ou spécifique aux mécanoïdes
+                    // Applique un bonus fixe ou spï¿½cifique aux mï¿½canoï¿½des
                     float mechSpeedBonus = MultiDoctorSurgeryMod.settings.mechSpeedBonus; // Exemple: bonus fixe
                     float mechSuccessBonus = MultiDoctorSurgeryMod.settings.mechSuccessBonus; // Exemple: bonus fixe
 
@@ -320,7 +321,7 @@ namespace MultiDoctorSurgery.UI
                 }
                 else
                 {
-                    // Utilise le niveau de compétence pour les humains
+                    // Utilise le niveau de compï¿½tence pour les humains
                     float skillLevel = assistant.skills.GetSkill(requiredSkill)?.Level ?? 0;
 
                     // Calcule les bonus pour les humains

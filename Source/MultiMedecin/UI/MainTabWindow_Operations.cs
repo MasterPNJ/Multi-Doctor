@@ -4,6 +4,7 @@ using Verse.AI;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using MultiDoctorSurgery;
 
 namespace MultiDoctorSurgery.UI
 {
@@ -20,7 +21,9 @@ namespace MultiDoctorSurgery.UI
         public override void DoWindowContents(Rect inRect)
         {
 
-            List<BillMedicalEx> scheduledOperations = Find.Maps.SelectMany(map => map.mapPawns.FreeColonistsSpawned)
+            List<BillMedicalEx> scheduledOperations = Find.Maps
+                .SelectMany(map => map.mapPawns.AllPawnsSpawned
+                    .Where(p => p.IsColonist || p.IsPrisonerOfColony))
                 .SelectMany(pawn => pawn.BillStack.Bills)
                 .OfType<BillMedicalEx>()
                 .ToList();
@@ -118,7 +121,7 @@ namespace MultiDoctorSurgery.UI
 
                         // Updating the surgeon
                         bill.surgeon = doctor;
-                        bill.SetPawnRestriction(doctor);
+                        Compat.SetPawnRestrictionSafe(bill, doctor);
 
                         // Ensure that the new surgeon is among the assigned doctors
                         if (!bill.assignedDoctors.Contains(doctor))
