@@ -30,6 +30,7 @@
 		<Compile Include="Settings.cs" />
 		<Compile Include="MyCustomJobDefs.cs" />
 		<Compile Include="BillMedicalEx.cs" />
+		<Compile Include="Compat.cs" />
 		<Compile Include="UI/Dialog_AssignDoctors.cs" />
 		<Compile Include="UI/Dialog_ManageExcludedOperations .cs" />
 		<Compile Include="UI/MainTabWindow_Operations.cs" />
