@@ -8,13 +8,27 @@ namespace MultiDoctorSurgery.Patches
     [HarmonyPatch(typeof(HealthCardUtility), "CreateSurgeryBill")]
     public static class Patch_HealthCardUtility_CreateSurgeryBill
     {
-        public static bool Prefix(Pawn medPawn, RecipeDef recipe, BodyPartRecord part, List<Thing> uniqueIngredients, bool sendMessages)
+        public static bool Prefix(Pawn medPawn, RecipeDef recipe, BodyPartRecord part, ref List<Thing> uniqueIngredients, bool sendMessages)
         {
             // Validate inputs
             if (medPawn == null || recipe == null)
             {
                 Log.Error("[MultiDoctorSurgery] Null reference in CreateSurgeryBill. medPawn or recipe is null.");
                 return true; // Let the base method handle the case
+            }
+
+            // Ensure settings are initialised
+            if (MultiDoctorSurgeryMod.settings == null)
+            {
+                Log.Error("[MultiDoctorSurgery] Settings not initialized. Falling back to vanilla bill creation.");
+                return true;
+            }
+
+            // Some mods create surgery bills before the pawn is spawned
+            if (medPawn.Map == null)
+            {
+                Log.Warning("[MultiDoctorSurgery] Pawn map is null, skipping custom interface.");
+                return true;
             }
 
             // Check if the recipe is for xenogerm implantation
@@ -30,6 +44,12 @@ namespace MultiDoctorSurgery.Patches
             {
                 // If the operation is excluded, allow the base game method to execute
                 return true;
+            }
+
+            // Safety: ensure the ingredients list is not null
+            if (uniqueIngredients == null)
+            {
+                uniqueIngredients = new List<Thing>();
             }
 
             if (recipe.Worker is Recipe_Surgery)
