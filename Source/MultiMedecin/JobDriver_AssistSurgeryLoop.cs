@@ -66,8 +66,14 @@ namespace MultiDoctorSurgery
 
                 // Condition combinée
                 if (patient == null || patient.Dead || (patient.Downed && !IsPatientUnderAnesthesia(patient)) ||
-                    medicalBill == null || !medicalBill.SurgeryStarted || !medicalBill.assignedDoctors.Contains(pawn))
+                    medicalBill == null || !medicalBill.SurgeryStarted ||
+                    !medicalBill.assignedDoctors.Contains(pawn) ||
+                    (patient != null && medicalBill != null && !patient.BillStack.Bills.Contains(medicalBill)))
                 {
+                    if (medicalBill != null)
+                    {
+                        medicalBill.SurgeryStarted = false;
+                    }
                     AwardSurgeryExperience();
                     EndJobWith(JobCondition.Incompletable);
                     return;
@@ -81,6 +87,11 @@ namespace MultiDoctorSurgery
             // Ensure AwardSurgeryExperience is called even if the job is interrupted
             assistToil.AddFinishAction(() =>
             {
+                var medicalBill = job.bill as BillMedicalEx;
+                if (medicalBill != null)
+                {
+                    medicalBill.SurgeryStarted = false;
+                }
                 if (IsSurgeryOngoing())
                 {
                     AwardSurgeryExperience();
