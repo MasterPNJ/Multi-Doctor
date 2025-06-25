@@ -114,6 +114,10 @@ namespace MultiDoctorSurgery.Patches
 
         private static void StartAssistantJobLoop(Pawn doctor, Pawn patient, BillMedicalEx medicalBill)
         {
+            if (doctor.workSettings != null && !doctor.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && !doctor.def.race.IsMechanoid)
+            {
+                return; // Skip if the pawn cannot perform medical work
+            }
             // Create a personalised job that keeps the assistant close to the patient
             Job job = JobMaker.MakeJob(MyCustomJobDefs.AssistSurgeryLoop, patient);
             job.bill = medicalBill; // Linking the surgery bill to the job
