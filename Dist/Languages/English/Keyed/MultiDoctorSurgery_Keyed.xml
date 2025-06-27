@@ -22,6 +22,9 @@
 	<OperationsTab_None>None</OperationsTab_None>
 	<ManageExcludedOperations>Manage Excluded Operations</ManageExcludedOperations>
 	<ExcludedOperations>Excluded Operations</ExcludedOperations>
+	<DefaultTeam_Button>Default Surgery Team</DefaultTeam_Button>
+	<FastOperation_Label>Fast Operation: {0}</FastOperation_Label>
+	<DefaultTeam_Title>Configure Default Surgery Team</DefaultTeam_Title>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>Multi-Doctor Surgery</MultiDoctorSurgery_SettingsCategory>

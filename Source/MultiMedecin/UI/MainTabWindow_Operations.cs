@@ -56,6 +56,20 @@ namespace MultiDoctorSurgery.UI
 
             Widgets.EndScrollView();
 
+            // Default team button on the lower left
+            if (Widgets.ButtonText(new Rect(10f, inRect.height - 40f, 200f, 35f), "DefaultTeam_Button".Translate()))
+            {
+                Find.WindowStack.Add(new Dialog_DefaultSurgeryTeam());
+            }
+
+            // Toggle fast operation button next to default team
+            string fastLabel = "FastOperation_Label".Translate(MultiDoctorSurgeryMod.settings.fastOperationEnabled ? "On" : "Off");
+            if (Widgets.ButtonText(new Rect(220f, inRect.height - 40f, 200f, 35f), fastLabel))
+            {
+                MultiDoctorSurgeryMod.settings.fastOperationEnabled = !MultiDoctorSurgeryMod.settings.fastOperationEnabled;
+                MultiDoctorSurgeryMod.settings.Write();
+            }
+
             // Add the button for managing excluded operations at the bottom
             if (Widgets.ButtonText(new Rect(inRect.width - 210f, inRect.height - 40f, 200f, 35f), "ManageExcludedOperations".Translate()))
             {
