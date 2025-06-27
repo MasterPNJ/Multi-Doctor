@@ -74,12 +74,11 @@ namespace MultiDoctorSurgery
                     {
                         medicalBill.SurgeryStarted = false;
                     }
-                    AwardSurgeryExperience();
                     EndJobWith(JobCondition.Incompletable);
                     return;
                 }
 
-                // Accorder de l'expérience chaque tick pendant que la chirurgie est en cours
+                // Award XP gradually while assisting
                 AwardTickExperience();
             };
             assistToil.defaultCompleteMode = ToilCompleteMode.Never;
@@ -87,14 +86,14 @@ namespace MultiDoctorSurgery
             // Ensure AwardSurgeryExperience is called even if the job is interrupted
             assistToil.AddFinishAction(() =>
             {
-                var medicalBill = job.bill as BillMedicalEx;
-                if (medicalBill != null)
-                {
-                    medicalBill.SurgeryStarted = false;
-                }
                 if (IsSurgeryOngoing())
                 {
                     AwardSurgeryExperience();
+                    var medicalBill = job.bill as BillMedicalEx;
+                    if (medicalBill != null)
+                    {
+                        medicalBill.SurgeryStarted = false;
+                    }
                 }
             });
 
