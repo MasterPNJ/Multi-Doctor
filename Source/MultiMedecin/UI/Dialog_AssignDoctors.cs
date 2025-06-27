@@ -51,6 +51,7 @@ namespace MultiDoctorSurgery.UI
                         && (p.IsColonist || (p.Faction != null && p.Faction == Faction.OfPlayer)) // Include paramedics or any pawn under player's control
                         && p.health != null && p.health.capacities != null // Ensure health and capacities exist
                         && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) // Ensure the pawn can manipulate
+                        && (p.def.race.IsMechanoid || (p.workSettings != null && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor))) // Must be able to doctor
                         && (p.skills != null || p.def.race.IsMechanoid)) // Include if the pawn has skills or is a mechanoid
             .ToList();
 

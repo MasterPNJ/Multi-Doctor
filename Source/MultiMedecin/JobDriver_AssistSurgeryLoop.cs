@@ -66,14 +66,19 @@ namespace MultiDoctorSurgery
 
                 // Condition combinée
                 if (patient == null || patient.Dead || (patient.Downed && !IsPatientUnderAnesthesia(patient)) ||
-                    medicalBill == null || !medicalBill.SurgeryStarted || !medicalBill.assignedDoctors.Contains(pawn))
+                    medicalBill == null || !medicalBill.SurgeryStarted ||
+                    !medicalBill.assignedDoctors.Contains(pawn) ||
+                    (patient != null && medicalBill != null && !patient.BillStack.Bills.Contains(medicalBill)))
                 {
-                    AwardSurgeryExperience();
+                    if (medicalBill != null)
+                    {
+                        medicalBill.SurgeryStarted = false;
+                    }
                     EndJobWith(JobCondition.Incompletable);
                     return;
                 }
 
-                // Accorder de l'expérience chaque tick pendant que la chirurgie est en cours
+                // Award XP gradually while assisting
                 AwardTickExperience();
             };
             assistToil.defaultCompleteMode = ToilCompleteMode.Never;
@@ -84,6 +89,11 @@ namespace MultiDoctorSurgery
                 if (IsSurgeryOngoing())
                 {
                     AwardSurgeryExperience();
+                    var medicalBill = job.bill as BillMedicalEx;
+                    if (medicalBill != null)
+                    {
+                        medicalBill.SurgeryStarted = false;
+                    }
                 }
             });
 
