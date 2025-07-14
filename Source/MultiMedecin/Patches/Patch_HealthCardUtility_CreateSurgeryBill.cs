@@ -8,7 +8,7 @@ namespace MultiDoctorSurgery.Patches
     [HarmonyPatch(typeof(HealthCardUtility), "CreateSurgeryBill")]
     public static class Patch_HealthCardUtility_CreateSurgeryBill
     {
-        public static bool Prefix(Pawn medPawn, RecipeDef recipe, BodyPartRecord part, ref List<Thing> uniqueIngredients, bool sendMessages)
+        public static bool Prefix(Pawn medPawn, RecipeDef recipe, BodyPartRecord part, ref List<Thing> uniqueIngredients, bool sendMessages, ref Bill_Medical __result)
         {
             // Validate inputs
             if (medPawn == null || recipe == null)
@@ -62,10 +62,11 @@ namespace MultiDoctorSurgery.Patches
                 if (medPawn.BillStack == null)
                 {
                     Log.Error($"[MultiDoctorSurgery] medPawn {medPawn.Name.ToStringShort} does not have a BillStack. Skipping.");
-                    return true; // Fallback to base method
+                    return true; // Fallback to base methodmedPawn.BillStack.AddBill(bill);
                 }
 
                 medPawn.BillStack.AddBill(bill);
+                __result = bill;
 
                 var team = Find.World.GetComponent<DefaultSurgeryTeamComponent>();
                 // If fast operation is enabled and a default team exists, assign it automatically

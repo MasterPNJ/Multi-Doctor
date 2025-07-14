@@ -300,6 +300,12 @@ namespace MultiDoctorSurgery.UI
             currentSpeedBonus = 1f; // Base speed multiplier
             currentSuccessRate = 0f; // Base success rate bonus
 
+            if (selectedSurgeon == null)
+            {
+                currentTotalSuccessRate = 0f;
+                return;
+            }
+
             // Get the base surgery success rate of the lead surgeon
             float baseSuccessRate = selectedSurgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance);
 
