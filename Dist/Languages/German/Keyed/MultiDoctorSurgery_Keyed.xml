@@ -22,6 +22,9 @@
 	<OperationsTab_None>Keiner</OperationsTab_None>
 	<ManageExcludedOperations>Ausgeschlossene Operationen verwalten</ManageExcludedOperations>
 	<ExcludedOperations>Ausgeschlossene Operationen</ExcludedOperations>
+	<DefaultTeam_Button>Standard-Operationsteam</DefaultTeam_Button>
+	<FastOperation_Label>(Beta) Schneller Betrieb: {0}</FastOperation_Label>
+	<DefaultTeam_Title>Standard-Operationsteam konfigurieren</DefaultTeam_Title>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>Mehrfacharzt-Chirurgie</MultiDoctorSurgery_SettingsCategory>

@@ -22,6 +22,9 @@
 	<OperationsTab_None>없음</OperationsTab_None>
 	<ManageExcludedOperations>제외된 수술 관리</ManageExcludedOperations>
 	<ExcludedOperations>제외된 수술</ExcludedOperations>
+	<DefaultTeam_Button>기본 수술 팀</DefaultTeam_Button>
+	<FastOperation_Label>(베타) 빠른 작동: {0}</FastOperation_Label>
+	<DefaultTeam_Title>기본 수술 팀 구성</DefaultTeam_Title>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>다중 의사 수술</MultiDoctorSurgery_SettingsCategory>

@@ -23,7 +23,7 @@
 	<ManageExcludedOperations>Manage Excluded Operations</ManageExcludedOperations>
 	<ExcludedOperations>Excluded Operations</ExcludedOperations>
 	<DefaultTeam_Button>Default Surgery Team</DefaultTeam_Button>
-	<FastOperation_Label>Fast Operation: {0}</FastOperation_Label>
+	<FastOperation_Label>(Beta) Fast Operation: {0}</FastOperation_Label>
 	<DefaultTeam_Title>Configure Default Surgery Team</DefaultTeam_Title>
 
 	<!-- Settings -->
