@@ -49,10 +49,11 @@ namespace MultiDoctorSurgery.UI
                 availableDoctors = new List<Pawn>();
             }
 
-            selectedSurgeon = MultiDoctorSurgeryMod.settings.defaultLeadSurgeon;
-            if (MultiDoctorSurgeryMod.settings.defaultAssistants != null)
+            var team = Find.World.GetComponent<DefaultSurgeryTeamComponent>();
+            selectedSurgeon = team.defaultLeadSurgeon;
+            if (team.defaultAssistants != null)
             {
-                selectedAssistants = new List<Pawn>(MultiDoctorSurgeryMod.settings.defaultAssistants);
+                selectedAssistants = new List<Pawn>(team.defaultAssistants);
             }
         }
 
@@ -166,9 +167,13 @@ namespace MultiDoctorSurgery.UI
             curY = inRect.height - 35f;
             if (Widgets.ButtonText(new Rect(0, curY, inRect.width / 2f, 35f), "AssignDoctors_Confirm".Translate()))
             {
-                MultiDoctorSurgeryMod.settings.defaultLeadSurgeon = selectedSurgeon;
-                MultiDoctorSurgeryMod.settings.defaultAssistants = selectedAssistants.Where(p => p != null).ToList();
-                MultiDoctorSurgeryMod.settings.Write();
+                var team = Find.World.GetComponent<DefaultSurgeryTeamComponent>();
+
+                team.defaultLeadSurgeon = selectedSurgeon;
+                team.defaultAssistants = selectedAssistants
+                    .Where(p => p != null)
+                    .ToList();
+
                 Close();
             }
             if (Widgets.ButtonText(new Rect(inRect.width / 2f, curY, inRect.width / 2f, 35f), "AssignDoctors_Cancel".Translate()))

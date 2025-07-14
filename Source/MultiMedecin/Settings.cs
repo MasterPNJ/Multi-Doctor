@@ -24,9 +24,11 @@ namespace MultiDoctorSurgery
         public string currentPreset = "Default"; // Default preset
 
         // Default team configuration
+        /*
         public Pawn defaultLeadSurgeon;
         public List<Pawn> defaultAssistants = new List<Pawn>();
         public bool fastOperationEnabled = false;
+        */
 
         public override void ExposeData()
         {
@@ -58,9 +60,11 @@ namespace MultiDoctorSurgery
             Scribe_Collections.Look(ref excludedOperations, "excludedOperations", LookMode.Value);
 
             // Default team
+            /*
             Scribe_References.Look(ref defaultLeadSurgeon, "defaultLeadSurgeon");
             Scribe_Collections.Look(ref defaultAssistants, "defaultAssistants", LookMode.Reference);
             Scribe_Values.Look(ref fastOperationEnabled, "fastOperationEnabled", false);
+            */
         }
     }
 }

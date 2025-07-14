@@ -67,13 +67,14 @@ namespace MultiDoctorSurgery.Patches
 
                 medPawn.BillStack.AddBill(bill);
 
+                var team = Find.World.GetComponent<DefaultSurgeryTeamComponent>();
                 // If fast operation is enabled and a default team exists, assign it automatically
-                if (MultiDoctorSurgeryMod.settings.fastOperationEnabled && MultiDoctorSurgeryMod.settings.defaultLeadSurgeon != null)
+                if (team.fastOperationEnabled && team.defaultLeadSurgeon != null)
                 {
-                    bill.surgeon = MultiDoctorSurgeryMod.settings.defaultLeadSurgeon;
+                    bill.surgeon = team.defaultLeadSurgeon;
                     bill.assignedDoctors.Clear();
-                    bill.assignedDoctors.Add(MultiDoctorSurgeryMod.settings.defaultLeadSurgeon);
-                    foreach (var p in MultiDoctorSurgeryMod.settings.defaultAssistants)
+                    bill.assignedDoctors.Add(team.defaultLeadSurgeon);
+                    foreach (var p in team.defaultAssistants)
                     {
                         if (p == null) continue;
                         if (bill.assignedDoctors.Count >= MultiDoctorSurgeryMod.settings.maxDoctors) break;
