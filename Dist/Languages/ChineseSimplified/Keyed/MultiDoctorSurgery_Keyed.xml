@@ -22,6 +22,9 @@
 	<OperationsTab_None>无</OperationsTab_None>
 	<ManageExcludedOperations>管理排除的手术</ManageExcludedOperations>
 	<ExcludedOperations>排除的手术</ExcludedOperations>
+	<DefaultTeam_Button>默认手术团队</DefaultTeam_Button>
+	<FastOperation_Label>(测试版) 快速运行: {0}</FastOperation_Label>
+	<DefaultTeam_Title>配置默认手术团队</DefaultTeam_Title>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>多医生手术</MultiDoctorSurgery_SettingsCategory>

@@ -22,6 +22,9 @@
 	<OperationsTab_None>Ninguno</OperationsTab_None>
 	<ManageExcludedOperations>Gestionar Operaciones Excluidas</ManageExcludedOperations>
 	<ExcludedOperations>Operaciones Excluidas</ExcludedOperations>
+	<DefaultTeam_Button>Equipo quirúrgico predeterminado</DefaultTeam_Button>
+	<FastOperation_Label>(Beta) Funcionamiento rápido: {0}</FastOperation_Label>
+	<DefaultTeam_Title>Configurar el equipo quirúrgico predeterminado</DefaultTeam_Title>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>Cirugía Multi-Médico</MultiDoctorSurgery_SettingsCategory>

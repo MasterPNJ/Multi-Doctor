@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
 		<AssemblyName>MultiMedecin</AssemblyName>
@@ -20,8 +20,8 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.5.4409" />
-		<PackageReference Include="Lib.Harmony" Version="2.3.5" />
+		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518" />
+		<PackageReference Include="Lib.Harmony" Version="2.3.6" />
 		<PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="11.0.5" />
 	</ItemGroup>
 	<ItemGroup>
@@ -31,11 +31,13 @@
 		<Compile Include="MyCustomJobDefs.cs" />
 		<Compile Include="BillMedicalEx.cs" />
 		<Compile Include="Compat.cs" />
+		<Compile Include="DefaultSurgeryTeamComponent.cs" />
 		<Compile Include="UI/Dialog_AssignDoctors.cs" />
 		<Compile Include="UI/Dialog_ManageExcludedOperations .cs" />
 		<Compile Include="UI/MainTabWindow_Operations.cs" />
 		<Compile Include="UI/Dialog_NamePreset.cs" />
 		<Compile Include="UI/Dialog_SelectPreset.cs" />
+		<Compile Include="UI/Dialog_DefaultSurgeryTeam.cs" />
 		<Compile Include="Patches/Patch_HealthCardUtility_CreateSurgeryBill.cs" />
 		<Compile Include="Patches/Patch_MakeNewToils.cs" />
 		<Compile Include="Patches/Patch_WorkSpeedMultiplier.cs" />

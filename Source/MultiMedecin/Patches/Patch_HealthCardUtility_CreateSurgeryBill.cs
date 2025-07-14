@@ -67,8 +67,26 @@ namespace MultiDoctorSurgery.Patches
 
                 medPawn.BillStack.AddBill(bill);
 
-                // Display the interface for assigning doctors
-                Find.WindowStack.Add(new UI.Dialog_AssignDoctors(medPawn, recipe, bill));
+                var team = Find.World.GetComponent<DefaultSurgeryTeamComponent>();
+                // If fast operation is enabled and a default team exists, assign it automatically
+                if (team.fastOperationEnabled && team.defaultLeadSurgeon != null)
+                {
+                    bill.surgeon = team.defaultLeadSurgeon;
+                    bill.assignedDoctors.Clear();
+                    bill.assignedDoctors.Add(team.defaultLeadSurgeon);
+                    foreach (var p in team.defaultAssistants)
+                    {
+                        if (p == null) continue;
+                        if (bill.assignedDoctors.Count >= MultiDoctorSurgeryMod.settings.maxDoctors) break;
+                        bill.assignedDoctors.Add(p);
+                    }
+                    Compat.SetPawnRestrictionSafe(bill, bill.surgeon);
+                }
+                else
+                {
+                    // Display the interface for assigning doctors
+                    Find.WindowStack.Add(new UI.Dialog_AssignDoctors(medPawn, recipe, bill));
+                }
 
                 // Prevent execution of the original method
                 return false;

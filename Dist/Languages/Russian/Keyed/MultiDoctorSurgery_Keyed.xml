@@ -22,6 +22,9 @@
 	<OperationsTab_None>Нет</OperationsTab_None>
 	<ManageExcludedOperations>Управление исключенными операциями</ManageExcludedOperations>
 	<ExcludedOperations>Исключенные операции</ExcludedOperations>
+	<DefaultTeam_Button>Команда хирургов по умолчанию</DefaultTeam_Button>
+	<FastOperation_Label>(Бета) Быстрая работа: {0}</FastOperation_Label>
+	<DefaultTeam_Title>Настроить стандартную хирургическую бригаду</DefaultTeam_Title>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>Многоврачебная хирургия</MultiDoctorSurgery_SettingsCategory>

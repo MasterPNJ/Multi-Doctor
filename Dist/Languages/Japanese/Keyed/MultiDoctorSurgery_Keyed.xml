@@ -22,6 +22,9 @@
 	<OperationsTab_None>なし</OperationsTab_None>
 	<ManageExcludedOperations>除外された手術を管理する</ManageExcludedOperations>
 	<ExcludedOperations>除外された手術</ExcludedOperations>
+	<DefaultTeam_Button>デフォルト手術チーム</DefaultTeam_Button>
+	<FastOperation_Label>(ベータ) 高速動作: {0}</FastOperation_Label>
+	<DefaultTeam_Title>デフォルトの手術チームを設定する</DefaultTeam_Title>
 
 	<!-- Settings -->
 	<MultiDoctorSurgery_SettingsCategory>複数医師の手術</MultiDoctorSurgery_SettingsCategory>
