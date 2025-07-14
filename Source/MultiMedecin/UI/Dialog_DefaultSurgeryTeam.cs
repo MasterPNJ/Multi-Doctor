@@ -14,6 +14,23 @@ namespace MultiDoctorSurgery.UI
         private Pawn selectedSurgeon;
         private List<Pawn> selectedAssistants = new List<Pawn>();
 
+        // Sorting system for doctors
+        private enum SortingMode { ByName, BySkill }
+        private SortingMode sortingMode = SortingMode.BySkill;
+        private bool isAscending = true;
+
+        private List<Pawn> GetSortedDoctors()
+        {
+            IEnumerable<Pawn> doctors = sortingMode == SortingMode.ByName
+                ? (isAscending
+                    ? availableDoctors.OrderBy(d => d.Name.ToStringShort)
+                    : availableDoctors.OrderByDescending(d => d.Name.ToStringShort))
+                : (isAscending
+                    ? availableDoctors.OrderBy(d => d.skills?.GetSkill(SkillDefOf.Medicine)?.Level ?? 0)
+                    : availableDoctors.OrderByDescending(d => d.skills?.GetSkill(SkillDefOf.Medicine)?.Level ?? 0));
+            return doctors.ToList();
+        }
+
         public Dialog_DefaultSurgeryTeam()
         {
             this.doCloseX = true;
@@ -49,23 +66,63 @@ namespace MultiDoctorSurgery.UI
             Text.Font = GameFont.Small;
             curY += 40f;
 
+            // Ensure assistant list doesn't contain invalid pawns or the lead surgeon
+            selectedAssistants.RemoveAll(p => p == null || p == selectedSurgeon || !availableDoctors.Contains(p));
+
+            // Sorting buttons similar to the assign doctor menu
+            if (Widgets.ButtonText(new Rect(0, curY, inRect.width / 2f, 25f), "AssignDoctors_SortByName".Translate()))
+            {
+                if (sortingMode == SortingMode.ByName)
+                {
+                    isAscending = !isAscending;
+                }
+                else
+                {
+                    sortingMode = SortingMode.ByName;
+                    isAscending = true;
+                }
+            }
+            if (Widgets.ButtonText(new Rect(inRect.width / 2f, curY, inRect.width / 2f, 25f), "AssignDoctors_SortBySkill".Translate()))
+            {
+                if (sortingMode == SortingMode.BySkill)
+                {
+                    isAscending = !isAscending;
+                }
+                else
+                {
+                    sortingMode = SortingMode.BySkill;
+                    isAscending = true;
+                }
+            }
+            curY += 35f;
+
             Widgets.Label(new Rect(0, curY, inRect.width, 25f), "AssignDoctors_SelectSurgeon".Translate());
             curY += 30f;
             Rect outRect = new Rect(0f, curY, inRect.width, 100f);
             Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, availableDoctors.Count * 35f);
             Widgets.BeginScrollView(outRect, ref surgeonScrollPosition, viewRect);
-            float y = 0f;
-            foreach (var doctor in availableDoctors)
+            try
             {
-                Rect row = new Rect(0, y, viewRect.width, 30f);
-                bool isSel = doctor == selectedSurgeon;
-                if (Widgets.RadioButtonLabeled(row, doctor.Name.ToStringShort, isSel))
+                float y = 0f;
+                var sortedDoctors = GetSortedDoctors();
+
+                foreach (var doctor in sortedDoctors)
                 {
-                    selectedSurgeon = doctor;
+                    Rect row = new Rect(0, y, viewRect.width, 30f);
+                    bool isSel = doctor == selectedSurgeon;
+                    string label = $"{doctor.Name.ToStringShort} ({SkillDefOf.Medicine.label}: {doctor.skills?.GetSkill(SkillDefOf.Medicine)?.Level ?? 0})";
+                    if (Widgets.RadioButtonLabeled(row, label, isSel))
+                    {
+                        selectedSurgeon = doctor;
+                        selectedAssistants.Remove(doctor); // Avoid duplicates
+                    }
+                    y += 35f;
                 }
-                y += 35f;
             }
-            Widgets.EndScrollView();
+            finally
+            {
+                Widgets.EndScrollView();
+            }
             curY += 110f;
 
             Widgets.Label(new Rect(0, curY, inRect.width, 25f), "AssignDoctors_SelectAssistants".Translate());
@@ -73,24 +130,38 @@ namespace MultiDoctorSurgery.UI
             outRect = new Rect(0f, curY, inRect.width, inRect.height - curY - 70f);
             viewRect = new Rect(0f, 0f, inRect.width - 16f, (availableDoctors.Count - 1) * 35f);
             Widgets.BeginScrollView(outRect, ref assistantScrollPosition, viewRect);
-            y = 0f;
-            foreach (var doctor in availableDoctors)
+            try
             {
-                if (doctor == selectedSurgeon) continue;
-                Rect row = new Rect(0, y, viewRect.width, 30f);
-                bool isAssigned = selectedAssistants.Contains(doctor);
-                bool newState = isAssigned;
-                Widgets.CheckboxLabeled(row, doctor.Name.ToStringShort, ref newState);
-                if (newState != isAssigned)
+                float y = 0f;
+                var sortedDoctors = GetSortedDoctors();
+
+                foreach (var doctor in sortedDoctors)
                 {
-                    if (newState && selectedAssistants.Count < MultiDoctorSurgeryMod.settings.maxDoctors - 1)
-                        selectedAssistants.Add(doctor);
-                    else if (!newState)
-                        selectedAssistants.Remove(doctor);
+                    if (doctor == selectedSurgeon) continue;
+                    Rect row = new Rect(0, y, viewRect.width, 30f);
+                    bool isAssigned = selectedAssistants.Contains(doctor);
+                    bool newState = isAssigned;
+                    string label = $"{doctor.Name.ToStringShort} ({SkillDefOf.Medicine.label}: {doctor.skills?.GetSkill(SkillDefOf.Medicine)?.Level ?? 0})";
+                    Widgets.CheckboxLabeled(row, label, ref newState);
+                    if (newState != isAssigned)
+                    {
+                        if (newState && selectedAssistants.Count < MultiDoctorSurgeryMod.settings.maxDoctors - 1)
+                        {
+                            if (!selectedAssistants.Contains(doctor))
+                                selectedAssistants.Add(doctor);
+                        }
+                        else if (!newState)
+                        {
+                            selectedAssistants.Remove(doctor);
+                        }
+                    }
+                    y += 35f;
                 }
-                y += 35f;
             }
-            Widgets.EndScrollView();
+            finally
+            {
+                Widgets.EndScrollView();
+            }
 
             curY = inRect.height - 35f;
             if (Widgets.ButtonText(new Rect(0, curY, inRect.width / 2f, 35f), "AssignDoctors_Confirm".Translate()))

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
 		<AssemblyName>MultiMedecin</AssemblyName>
@@ -20,8 +20,8 @@
 		</Reference>
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4488-beta" />
-		<PackageReference Include="Lib.Harmony" Version="2.3.5" />
+		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518" />
+		<PackageReference Include="Lib.Harmony" Version="2.3.6" />
 		<PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="11.0.5" />
 	</ItemGroup>
 	<ItemGroup>
