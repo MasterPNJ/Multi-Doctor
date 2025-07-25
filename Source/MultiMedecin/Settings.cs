@@ -14,7 +14,7 @@ namespace MultiDoctorSurgery
 
         // New fields for speed and success limits
         public float maxSpeedBonus = 1.95f; // Default to 95%
-        public float maxSuccessBonus = 0.98f; // Default to 98%
+        public float maxSuccessBonus = 2f;
 
         public float mechSpeedBonus = 0.5f; // Bonus fixe de vitesse pour les mécanoïdes assistants
         public float mechSuccessBonus = 0.30f; // Bonus fixe de réussite pour les mécanoïdes assistants
@@ -38,7 +38,7 @@ namespace MultiDoctorSurgery
 
             // Save/load new fields
             Scribe_Values.Look(ref maxSpeedBonus, "maxSpeedBonus", 1.95f);
-            Scribe_Values.Look(ref maxSuccessBonus, "maxSuccessBonus", 0.98f);
+            Scribe_Values.Look(ref maxSuccessBonus, "maxSuccessBonus", 1.8f);
 
             Scribe_Values.Look(ref mechSpeedBonus, "mechSpeedBonus", 0.5f);
             Scribe_Values.Look(ref mechSuccessBonus, "mechSuccessBonus", 0.30f);

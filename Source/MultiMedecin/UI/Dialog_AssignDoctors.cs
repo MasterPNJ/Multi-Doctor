@@ -372,6 +372,38 @@ namespace MultiDoctorSurgery.UI
             return Mathf.Min(speedBonus, MultiDoctorSurgeryMod.settings.maxSpeedBonus);
         }
 
+        public static float GetCurrentSuccessBonus(BillMedicalEx bill)
+        {
+            if (bill.assignedDoctors.Count == 0)
+            {
+                return 0f;
+            }
+
+            SkillDef requiredSkill = bill.recipe.workSkill ?? SkillDefOf.Medicine;
+            float successBonus = 0f;
+
+            for (int i = 1; i < bill.assignedDoctors.Count; i++)
+            {
+                Pawn assistant = bill.assignedDoctors[i];
+                if (assistant == null)
+                {
+                    continue;
+                }
+
+                if (assistant.def.race.IsMechanoid)
+                {
+                    successBonus += MultiDoctorSurgeryMod.settings.mechSuccessBonus;
+                }
+                else
+                {
+                    float skillLevel = assistant.skills?.GetSkill(requiredSkill)?.Level ?? 0f;
+                    successBonus += skillLevel * MultiDoctorSurgeryMod.settings.successRateMultiplier / 20f;
+                }
+            }
+
+            return Mathf.Min(successBonus, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
+        }
+
         private void CancelOngoingJobs()
         {
             // Cancel the work of the previous surgeon if he is operating

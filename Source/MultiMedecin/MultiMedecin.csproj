@@ -41,5 +41,6 @@
 		<Compile Include="Patches/Patch_HealthCardUtility_CreateSurgeryBill.cs" />
 		<Compile Include="Patches/Patch_MakeNewToils.cs" />
 		<Compile Include="Patches/Patch_WorkSpeedMultiplier.cs" />
+		<Compile Include="Patches/Patch_SurgerySuccessChance.cs" />
 	</ItemGroup>
 </Project>

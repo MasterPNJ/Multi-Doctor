@@ -40,7 +40,7 @@ namespace MultiDoctorSurgery
             settings.maxSpeedBonus = listingStandard.Slider(settings.maxSpeedBonus, 1f, 3f);
 
             listingStandard.Label("MultiDoctorSurgery_MaxSuccessBonus".Translate(settings.maxSuccessBonus.ToString("P")));
-            settings.maxSuccessBonus = listingStandard.Slider(settings.maxSuccessBonus, 0f, 1f);
+            settings.maxSuccessBonus = listingStandard.Slider(settings.maxSuccessBonus, 0f, 3f);
 
             if (Widgets.ButtonText(new Rect(inRect.x, inRect.y + 200f, 200f, 30f), "ManageExcludedOperations".Translate()))
             {
