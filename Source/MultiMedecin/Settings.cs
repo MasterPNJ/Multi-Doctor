@@ -23,6 +23,9 @@ namespace MultiDoctorSurgery
 
         public string currentPreset = "Default"; // Default preset
 
+        public bool sortBySkillDefault = true;   // true = compétence, false = nom
+        public bool sortAscendingDefault = false;  // true = ascendant, false = descendant
+
         // Default team configuration
         /*
         public Pawn defaultLeadSurgeon;
@@ -58,6 +61,8 @@ namespace MultiDoctorSurgery
             base.ExposeData();
             Scribe_Values.Look(ref currentPreset, "currentPreset", "Default"); // Sauvegarde du preset actif
             Scribe_Collections.Look(ref excludedOperations, "excludedOperations", LookMode.Value);
+            Scribe_Values.Look(ref sortBySkillDefault, "sortBySkillDefault", true);
+            Scribe_Values.Look(ref sortAscendingDefault, "sortAscendingDefault", false);
 
             // Default team
             /*
