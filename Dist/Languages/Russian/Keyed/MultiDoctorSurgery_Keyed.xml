@@ -12,6 +12,7 @@
 	<AssignDoctors_Cancel>Отмена</AssignDoctors_Cancel>
 	<AssignDoctors_SortByName>Сортировать по имени</AssignDoctors_SortByName>
 	<AssignDoctors_SortBySkill>Сортировать по навыкам</AssignDoctors_SortBySkill>
+	<AssignDoctors_DoctorEntry>{0} – Медицина: ({1})</AssignDoctors_DoctorEntry>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>Пациент</OperationsTab_Patient>

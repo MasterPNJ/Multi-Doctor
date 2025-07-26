@@ -29,10 +29,8 @@ namespace MultiDoctorSurgery.UI
         private float currentSuccessRate;
         private float currentTotalSuccessRate; // New variable to store total success rate
 
-        // Sorting mode and order for the doctor list
-        private enum SortingMode { ByName, BySkill }
-        private SortingMode sortingMode = SortingMode.BySkill;
-        private bool isAscending = true;
+        private bool sortBySkill = MultiDoctorSurgeryMod.settings.sortBySkillDefault;
+        private bool isAscending = MultiDoctorSurgeryMod.settings.sortAscendingDefault;
 
         public Dialog_AssignDoctors(Pawn patient, RecipeDef recipe, BillMedicalEx bill)
         {
@@ -98,27 +96,28 @@ namespace MultiDoctorSurgery.UI
             // Sorting buttons with toggleable order
             if (Widgets.ButtonText(new Rect(0, curY, inRect.width / 2f, 25f), "AssignDoctors_SortByName".Translate()))
             {
-                if (sortingMode == SortingMode.ByName)
-                {
-                    isAscending = !isAscending; // Toggle order if sorting mode is already by name
-                }
+                if (!sortBySkill)
+                    isAscending = !isAscending;
                 else
                 {
-                    sortingMode = SortingMode.ByName;
-                    isAscending = true; // Reset to ascending when switching sorting mode
+                    sortBySkill = false;
+                    isAscending = true;
                 }
+                MultiDoctorSurgeryMod.settings.sortBySkillDefault = sortBySkill;
+                MultiDoctorSurgeryMod.settings.sortAscendingDefault = isAscending;
             }
+
             if (Widgets.ButtonText(new Rect(inRect.width / 2f, curY, inRect.width / 2f, 25f), "AssignDoctors_SortBySkill".Translate()))
             {
-                if (sortingMode == SortingMode.BySkill)
-                {
-                    isAscending = !isAscending; // Toggle order if sorting mode is already by skill
-                }
+                if (sortBySkill)
+                    isAscending = !isAscending;
                 else
                 {
-                    sortingMode = SortingMode.BySkill;
-                    isAscending = true; // Reset to ascending when switching sorting mode
+                    sortBySkill = true;
+                    isAscending = false;
                 }
+                MultiDoctorSurgeryMod.settings.sortBySkillDefault = sortBySkill;
+                MultiDoctorSurgeryMod.settings.sortAscendingDefault = isAscending;
             }
             curY += 35f;
 
@@ -148,11 +147,17 @@ namespace MultiDoctorSurgery.UI
             Rect surgeonViewRect = new Rect(0f, 0f, inRect.width - 16f, availableDoctors.Count * 35f);
 
             // Sort doctors based on the selected sorting mode and order
-            var sortedDoctors = sortingMode == SortingMode.ByName
-            ? (isAscending ? availableDoctors.OrderBy(d => d.Name.ToStringShort) : availableDoctors.OrderByDescending(d => d.Name.ToStringShort))
-            : (isAscending
-                ? availableDoctors.OrderBy(d => d.def.race.IsMechanoid ? -1 : d.skills?.GetSkill(requiredSkill)?.Level ?? 0)
-                : availableDoctors.OrderByDescending(d => d.def.race.IsMechanoid ? -1 : d.skills?.GetSkill(requiredSkill)?.Level ?? 0));
+            IEnumerable<Pawn> sortedDoctors =
+            sortBySkill
+                ? (isAscending
+                    ? availableDoctors.OrderBy(d => d.def.race.IsMechanoid ? -1 :
+                                                 d.skills?.GetSkill(requiredSkill)?.Level ?? 0)
+                    : availableDoctors.OrderByDescending(d => d.def.race.IsMechanoid ? -1 :
+                                                          d.skills?.GetSkill(requiredSkill)?.Level ?? 0))
+                : (isAscending
+                    ? availableDoctors.OrderBy(d => d.Name.ToStringShort)
+                    : availableDoctors.OrderByDescending(d => d.Name.ToStringShort));
+
 
             // Log the sorted doctors for debugging
             //Log.Message($"[MultiDoctorSurgery] Sorted doctors: {string.Join(", ", sortedDoctors.Select(d => d.Name.ToStringShort))}");
@@ -300,6 +305,12 @@ namespace MultiDoctorSurgery.UI
             currentSpeedBonus = 1f; // Base speed multiplier
             currentSuccessRate = 0f; // Base success rate bonus
 
+            if (selectedSurgeon == null)
+            {
+                currentTotalSuccessRate = 0f;
+                return;
+            }
+
             // Get the base surgery success rate of the lead surgeon
             float baseSuccessRate = selectedSurgeon.GetStatValue(StatDefOf.MedicalSurgerySuccessChance);
 
@@ -364,6 +375,38 @@ namespace MultiDoctorSurgery.UI
             int assistantsCount = bill.assignedDoctors.Count - 1;
             float speedBonus = 1f + assistantsCount * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor;
             return Mathf.Min(speedBonus, MultiDoctorSurgeryMod.settings.maxSpeedBonus);
+        }
+
+        public static float GetCurrentSuccessBonus(BillMedicalEx bill)
+        {
+            if (bill.assignedDoctors.Count == 0)
+            {
+                return 0f;
+            }
+
+            SkillDef requiredSkill = bill.recipe.workSkill ?? SkillDefOf.Medicine;
+            float successBonus = 0f;
+
+            for (int i = 1; i < bill.assignedDoctors.Count; i++)
+            {
+                Pawn assistant = bill.assignedDoctors[i];
+                if (assistant == null)
+                {
+                    continue;
+                }
+
+                if (assistant.def.race.IsMechanoid)
+                {
+                    successBonus += MultiDoctorSurgeryMod.settings.mechSuccessBonus;
+                }
+                else
+                {
+                    float skillLevel = assistant.skills?.GetSkill(requiredSkill)?.Level ?? 0f;
+                    successBonus += skillLevel * MultiDoctorSurgeryMod.settings.successRateMultiplier / 20f;
+                }
+            }
+
+            return Mathf.Min(successBonus, MultiDoctorSurgeryMod.settings.maxSuccessBonus);
         }
 
         private void CancelOngoingJobs()

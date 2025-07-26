@@ -12,6 +12,7 @@
 	<AssignDoctors_Cancel>キャンセル</AssignDoctors_Cancel>
 	<AssignDoctors_SortByName>名前順に並べ替え</AssignDoctors_SortByName>
 	<AssignDoctors_SortBySkill>スキル順に並べ替え</AssignDoctors_SortBySkill>
+	<AssignDoctors_DoctorEntry>{0} – 医薬品： ({1})</AssignDoctors_DoctorEntry>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>患者</OperationsTab_Patient>

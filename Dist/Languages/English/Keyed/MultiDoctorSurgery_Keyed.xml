@@ -12,6 +12,7 @@
 	<AssignDoctors_Cancel>Cancel</AssignDoctors_Cancel>
 	<AssignDoctors_SortByName>Sort by Name</AssignDoctors_SortByName>
 	<AssignDoctors_SortBySkill>Sort by Skill</AssignDoctors_SortBySkill>
+	<AssignDoctors_DoctorEntry>{0} – Medicine: ({1})</AssignDoctors_DoctorEntry>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>Patient</OperationsTab_Patient>

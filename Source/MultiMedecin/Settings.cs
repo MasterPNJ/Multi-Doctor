@@ -14,7 +14,7 @@ namespace MultiDoctorSurgery
 
         // New fields for speed and success limits
         public float maxSpeedBonus = 1.95f; // Default to 95%
-        public float maxSuccessBonus = 0.98f; // Default to 98%
+        public float maxSuccessBonus = 2f;
 
         public float mechSpeedBonus = 0.5f; // Bonus fixe de vitesse pour les mécanoïdes assistants
         public float mechSuccessBonus = 0.30f; // Bonus fixe de réussite pour les mécanoïdes assistants
@@ -22,6 +22,9 @@ namespace MultiDoctorSurgery
         public List<string> excludedOperations = new List<string>();
 
         public string currentPreset = "Default"; // Default preset
+
+        public bool sortBySkillDefault = true;   // true = compétence, false = nom
+        public bool sortAscendingDefault = false;  // true = ascendant, false = descendant
 
         // Default team configuration
         /*
@@ -38,7 +41,7 @@ namespace MultiDoctorSurgery
 
             // Save/load new fields
             Scribe_Values.Look(ref maxSpeedBonus, "maxSpeedBonus", 1.95f);
-            Scribe_Values.Look(ref maxSuccessBonus, "maxSuccessBonus", 0.98f);
+            Scribe_Values.Look(ref maxSuccessBonus, "maxSuccessBonus", 1.8f);
 
             Scribe_Values.Look(ref mechSpeedBonus, "mechSpeedBonus", 0.5f);
             Scribe_Values.Look(ref mechSuccessBonus, "mechSuccessBonus", 0.30f);
@@ -58,6 +61,8 @@ namespace MultiDoctorSurgery
             base.ExposeData();
             Scribe_Values.Look(ref currentPreset, "currentPreset", "Default"); // Sauvegarde du preset actif
             Scribe_Collections.Look(ref excludedOperations, "excludedOperations", LookMode.Value);
+            Scribe_Values.Look(ref sortBySkillDefault, "sortBySkillDefault", true);
+            Scribe_Values.Look(ref sortAscendingDefault, "sortAscendingDefault", false);
 
             // Default team
             /*

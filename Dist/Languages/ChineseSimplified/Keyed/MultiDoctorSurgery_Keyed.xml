@@ -12,6 +12,7 @@
 	<AssignDoctors_Cancel>取消</AssignDoctors_Cancel>
 	<AssignDoctors_SortByName>按姓名排序</AssignDoctors_SortByName>
 	<AssignDoctors_SortBySkill>按技能排序</AssignDoctors_SortBySkill>
+	<AssignDoctors_DoctorEntry>{0} – 医药: ({1})</AssignDoctors_DoctorEntry>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>患者</OperationsTab_Patient>

@@ -12,6 +12,7 @@
 	<AssignDoctors_Cancel>취소</AssignDoctors_Cancel>
 	<AssignDoctors_SortByName>이름순 정렬</AssignDoctors_SortByName>
 	<AssignDoctors_SortBySkill>기술순 정렬</AssignDoctors_SortBySkill>
+	<AssignDoctors_DoctorEntry>{0} – 의약품: ({1})</AssignDoctors_DoctorEntry>
 
 	<!-- Main Tab Window Operations -->
 	<OperationsTab_Patient>환자</OperationsTab_Patient>

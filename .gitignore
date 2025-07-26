@@ -39,3 +39,4 @@ Dist/Dist.rar
 Dist/MultiDoctor.zip
 .env
 log.txt
+*.zip
