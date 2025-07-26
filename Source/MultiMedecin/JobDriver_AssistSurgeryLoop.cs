@@ -28,6 +28,7 @@ namespace MultiDoctorSurgery
             {
                 var patient = job.targetA.Thing as Pawn;
                 var medicalBill = job.bill as BillMedicalEx;
+                var surgeon = medicalBill?.surgeon;
 
                 // Vérification de l'état du patient
                 /* // DEBUG LOG // 
@@ -68,11 +69,17 @@ namespace MultiDoctorSurgery
                 if (patient == null || patient.Dead || (patient.Downed && !IsPatientUnderAnesthesia(patient)) ||
                     medicalBill == null || !medicalBill.SurgeryStarted ||
                     !medicalBill.assignedDoctors.Contains(pawn) ||
-                    (patient != null && medicalBill != null && !patient.BillStack.Bills.Contains(medicalBill)))
+                    (patient != null && medicalBill != null && !patient.BillStack.Bills.Contains(medicalBill)) || surgeon == null || surgeon.Dead || surgeon.CurJob == null || surgeon.CurJob.bill != medicalBill)
                 {
                     if (medicalBill != null)
                     {
                         medicalBill.SurgeryStarted = false;
+
+                        // If the lead surgeon died, remove the surgery bill to avoid endless job restarts
+                        if ((surgeon == null || surgeon.Dead) && patient != null && patient.BillStack?.Bills != null)
+                        {
+                            patient.BillStack.Bills.Remove(medicalBill);
+                        }
                     }
                     EndJobWith(JobCondition.Incompletable);
                     return;

@@ -42,5 +42,6 @@
 		<Compile Include="Patches/Patch_MakeNewToils.cs" />
 		<Compile Include="Patches/Patch_WorkSpeedMultiplier.cs" />
 		<Compile Include="Patches/Patch_SurgerySuccessChance.cs" />
+		<Compile Include="Patches/Patch_Pawn_Kill_ClearBills.cs" />
 	</ItemGroup>
 </Project>
