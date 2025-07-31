@@ -1,6 +1,7 @@
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using MultiDoctorSurgery;
 
 namespace MultiDoctorSurgery.Patches
 {
@@ -22,6 +23,15 @@ namespace MultiDoctorSurgery.Patches
                         billStack.Delete(billStack[i]);
                     }
                 }
+            }
+
+            // Disable fast surgery if the deceased was the default surgeon
+            var team = Find.World.GetComponent<DefaultSurgeryTeamComponent>();
+            if (team.fastOperationEnabled && team.defaultLeadSurgeon == __instance)
+            {
+                team.fastOperationEnabled = false;
+                team.defaultLeadSurgeon = null;
+                team.defaultAssistants.Clear();
             }
         }
     }
