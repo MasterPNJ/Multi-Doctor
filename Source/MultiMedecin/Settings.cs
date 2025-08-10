@@ -33,43 +33,52 @@ namespace MultiDoctorSurgery
         public bool fastOperationEnabled = false;
         */
 
+        public bool showMechanoidDoctors = true;
+
         public override void ExposeData()
         {
             Scribe_Values.Look(ref speedMultiplierPerDoctor, "speedMultiplierPerDoctor", 0.5f);
             Scribe_Values.Look(ref successRateMultiplier, "successRateMultiplier", 0.25f);
             Scribe_Values.Look(ref maxDoctors, "maxDoctors", 3);
 
-            // Save/load new fields
             Scribe_Values.Look(ref maxSpeedBonus, "maxSpeedBonus", 1.95f);
-            Scribe_Values.Look(ref maxSuccessBonus, "maxSuccessBonus", 1.8f);
+            Scribe_Values.Look(ref maxSuccessBonus, "maxSuccessBonus", 2f);
 
             Scribe_Values.Look(ref mechSpeedBonus, "mechSpeedBonus", 0.5f);
             Scribe_Values.Look(ref mechSuccessBonus, "mechSuccessBonus", 0.30f);
 
             Scribe_Collections.Look(ref excludedOperations, "excludedOperations", LookMode.Value);
 
-            if (excludedOperations == null)
-            {
-                excludedOperations = new List<string>();
-            }
-
-            if (!excludedOperations.Contains("HarvestHemogenPack"))
-            {
-                excludedOperations.Add("HarvestHemogenPack");
-            }
-
-            base.ExposeData();
-            Scribe_Values.Look(ref currentPreset, "currentPreset", "Default"); // Sauvegarde du preset actif
-            Scribe_Collections.Look(ref excludedOperations, "excludedOperations", LookMode.Value);
+            Scribe_Values.Look(ref currentPreset, "currentPreset", "Default");
             Scribe_Values.Look(ref sortBySkillDefault, "sortBySkillDefault", true);
             Scribe_Values.Look(ref sortAscendingDefault, "sortAscendingDefault", false);
 
-            // Default team
-            /*
-            Scribe_References.Look(ref defaultLeadSurgeon, "defaultLeadSurgeon");
-            Scribe_Collections.Look(ref defaultAssistants, "defaultAssistants", LookMode.Reference);
-            Scribe_Values.Look(ref fastOperationEnabled, "fastOperationEnabled", false);
-            */
+            Scribe_Values.Look(ref showMechanoidDoctors, "showMechanoidDoctors", true);
+
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                if (excludedOperations == null) excludedOperations = new List<string>();
+                EnsureDefaultExclusions();
+            }
+        }
+
+        private void EnsureDefaultExclusions()
+        {
+            void Add(string defName)
+            {
+                if (!string.IsNullOrEmpty(defName) && !excludedOperations.Contains(defName))
+                    excludedOperations.Add(defName);
+            }
+
+            Add("HarvestHemogenPack");
+            Add("ExtractHemogenPack");
+
+            foreach (var r in DefDatabase<RecipeDef>.AllDefsListForReading)
+            {
+                var workerName = r.workerClass?.Name ?? string.Empty;
+                if (r.defName.StartsWith("Administer") || workerName == "Recipe_AdministerIngestible")
+                    Add(r.defName);
+            }
         }
     }
 }

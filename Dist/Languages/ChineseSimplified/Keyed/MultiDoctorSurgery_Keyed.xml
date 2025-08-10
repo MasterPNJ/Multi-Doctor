@@ -34,6 +34,7 @@
 	<MultiDoctorSurgery_MaxDoctors>可分配的医生最大数量：{0}</MultiDoctorSurgery_MaxDoctors>
 	<MultiDoctorSurgery_MaxSpeedBonus>速度加成的最大限制：{0}</MultiDoctorSurgery_MaxSpeedBonus>
 	<MultiDoctorSurgery_MaxSuccessBonus>成功率的最大限制：{0}</MultiDoctorSurgery_MaxSuccessBonus>
+	<MultiDoctorSurgery_ShowMechanoidDoctors>在手术菜单中显示机械人</MultiDoctorSurgery_ShowMechanoidDoctors>
 
 
 </LanguageData>

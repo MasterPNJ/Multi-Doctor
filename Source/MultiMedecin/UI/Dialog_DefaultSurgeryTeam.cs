@@ -40,8 +40,18 @@ namespace MultiDoctorSurgery.UI
             var map = Find.CurrentMap;
             if (map != null)
             {
-                availableDoctors = map.mapPawns.FreeColonistsSpawned
-                    .Where(p => !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
+                bool showMechs = MultiDoctorSurgeryMod.settings.showMechanoidDoctors;
+
+                availableDoctors = map.mapPawns.AllPawns
+                    .Where(p => !p.Dead
+                                && !p.Downed
+                                && (p.IsColonist || (p.Faction != null && p.Faction == Faction.OfPlayer))
+                                && p.health != null && p.health.capacities != null
+                                && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)
+                                && (
+                                    (p.def.race.IsMechanoid && showMechs)
+                                    || (!p.def.race.IsMechanoid && p.workSettings != null && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor))
+                                ))
                     .ToList();
             }
             else

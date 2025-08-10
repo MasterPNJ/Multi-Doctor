@@ -34,6 +34,7 @@
 	<MultiDoctorSurgery_MaxDoctors>割り当て可能な医師の最大数：{0}</MultiDoctorSurgery_MaxDoctors>
 	<MultiDoctorSurgery_MaxSpeedBonus>速度ボーナスの最大限界: {0}</MultiDoctorSurgery_MaxSpeedBonus>
 	<MultiDoctorSurgery_MaxSuccessBonus>成功率の最大限界: {0}</MultiDoctorSurgery_MaxSuccessBonus>
+	<MultiDoctorSurgery_ShowMechanoidDoctors>手術メニューでメカノイドを表示する</MultiDoctorSurgery_ShowMechanoidDoctors>
 
 
 </LanguageData>

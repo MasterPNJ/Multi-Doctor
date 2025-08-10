@@ -1,7 +1,8 @@
 using HarmonyLib;
 using RimWorld;
-using Verse;
+using System;
 using System.Collections.Generic;
+using Verse;
 
 namespace MultiDoctorSurgery.Patches
 {
@@ -43,6 +44,14 @@ namespace MultiDoctorSurgery.Patches
                 MultiDoctorSurgeryMod.settings.excludedOperations.Contains(recipe.defName))
             {
                 // If the operation is excluded, allow the base game method to execute
+                return true;
+            }
+
+            // Hard-guard for hemogen & "Administer X" so we never open our dialog for them
+            if (recipe.defName.IndexOf("Hemogen", StringComparison.OrdinalIgnoreCase) >= 0
+                || recipe.defName.StartsWith("Administer")
+                || recipe.Worker?.GetType().Name == "Recipe_AdministerIngestible")
+            {
                 return true;
             }
 

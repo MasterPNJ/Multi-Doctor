@@ -34,5 +34,6 @@
 	<MultiDoctorSurgery_MaxDoctors>배정 가능한 의사의 최대 수: {0}</MultiDoctorSurgery_MaxDoctors>
 	<MultiDoctorSurgery_MaxSpeedBonus>최대 속도 보너스 제한: {0}</MultiDoctorSurgery_MaxSpeedBonus>
 	<MultiDoctorSurgery_MaxSuccessBonus>최대 성공률 제한: {0}</MultiDoctorSurgery_MaxSuccessBonus>
+	<MultiDoctorSurgery_ShowMechanoidDoctors>수술 메뉴에서 메카노이드를 표시하세요.</MultiDoctorSurgery_ShowMechanoidDoctors>
 
 </LanguageData>

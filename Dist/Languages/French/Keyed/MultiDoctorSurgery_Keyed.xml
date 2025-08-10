@@ -34,4 +34,5 @@
 	<MultiDoctorSurgery_MaxDoctors>Nombre maximal de médecins assignables : {0}</MultiDoctorSurgery_MaxDoctors>
 	<MultiDoctorSurgery_MaxSpeedBonus>Limite maximale de bonus de vitesse : {0}</MultiDoctorSurgery_MaxSpeedBonus>
 	<MultiDoctorSurgery_MaxSuccessBonus>Limite maximale de taux de réussite : {0}</MultiDoctorSurgery_MaxSuccessBonus>
+	<MultiDoctorSurgery_ShowMechanoidDoctors>Afficher les mécanoïdes dans le menu chirurgie</MultiDoctorSurgery_ShowMechanoidDoctors>
 </LanguageData>

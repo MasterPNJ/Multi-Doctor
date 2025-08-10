@@ -120,9 +120,20 @@ namespace MultiDoctorSurgery.UI
         {
             List<FloatMenuOption> options = new List<FloatMenuOption>();
 
-            var availableDoctors = bill.GiverPawn.Map.mapPawns.FreeColonistsSpawned
-                .Where(p => p != bill.GiverPawn && !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
-                .OrderByDescending(d => d.skills.GetSkill(SkillDefOf.Medicine).Level);
+            bool showMechs = MultiDoctorSurgeryMod.settings.showMechanoidDoctors;
+
+            var availableDoctors = bill.GiverPawn.Map.mapPawns.AllPawns
+                .Where(p => p != bill.GiverPawn
+                            && !p.Dead
+                            && !p.Downed
+                            && (p.IsColonist || (p.Faction != null && p.Faction == Faction.OfPlayer))
+                            && p.health != null && p.health.capacities != null
+                            && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)
+                            && (
+                                (p.def.race.IsMechanoid && showMechs)
+                                || (!p.def.race.IsMechanoid && p.workSettings != null && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor))
+                            ))
+                .OrderByDescending(d => d.skills?.GetSkill(SkillDefOf.Medicine)?.Level ?? 0);
 
             foreach (var doctor in availableDoctors)
             {

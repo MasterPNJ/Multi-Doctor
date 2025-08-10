@@ -41,17 +41,7 @@ namespace MultiDoctorSurgery.UI
             // Determine the required skill for the recipe
             this.requiredSkill = recipe.workSkill ?? SkillDefOf.Medicine; // Fallback to Medicine if workSkill is null
 
-            this.availableDoctors = patient.Map.mapPawns.AllPawns
-            .Where(p => p != null // Ensure the pawn is not null
-                        && p != patient // Exclude the patient
-                        && !p.Dead // Exclude dead pawns
-                        && !p.Downed // Exclude downed pawns
-                        && (p.IsColonist || (p.Faction != null && p.Faction == Faction.OfPlayer)) // Include paramedics or any pawn under player's control
-                        && p.health != null && p.health.capacities != null // Ensure health and capacities exist
-                        && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) // Ensure the pawn can manipulate
-                        && (p.def.race.IsMechanoid || (p.workSettings != null && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor))) // Must be able to doctor
-                        && (p.skills != null || p.def.race.IsMechanoid)) // Include if the pawn has skills or is a mechanoid
-            .ToList();
+            RefreshAvailableDoctors();
 
             // Log the available doctors for debugging
             //Log.Message($"[MultiDoctorSurgery] Available doctors for surgery: {string.Join(", ", availableDoctors.Select(d => d.Name.ToStringShort))}");
@@ -120,6 +110,38 @@ namespace MultiDoctorSurgery.UI
                 MultiDoctorSurgeryMod.settings.sortAscendingDefault = isAscending;
             }
             curY += 35f;
+
+            // Toggle: show/hide mechanoid doctors
+            bool showMechs = MultiDoctorSurgeryMod.settings.showMechanoidDoctors;
+            Rect mechRect = new Rect(0, curY, inRect.width, 25f);
+            Widgets.CheckboxLabeled(mechRect, "MultiDoctorSurgery_ShowMechanoidDoctors".Translate(), ref showMechs);
+
+            if (showMechs != MultiDoctorSurgeryMod.settings.showMechanoidDoctors)
+            {
+                MultiDoctorSurgeryMod.settings.showMechanoidDoctors = showMechs;
+
+                RefreshAvailableDoctors();
+
+                if (selectedSurgeon == null || !availableDoctors.Contains(selectedSurgeon))
+                {
+                    selectedSurgeon = availableDoctors
+                        .Where(d => !d.def.race.IsMechanoid && d.skills != null && d.skills.GetSkill(requiredSkill) != null)
+                        .OrderByDescending(d => d.skills.GetSkill(requiredSkill).Level)
+                        .FirstOrDefault();
+                }
+
+                bill.assignedDoctors.RemoveAll(p => p == null || !availableDoctors.Contains(p));
+                if (selectedSurgeon != null)
+                {
+                    bill.assignedDoctors.Remove(selectedSurgeon);
+                    bill.assignedDoctors.Insert(0, selectedSurgeon);
+                }
+
+                // Recompute bonuses
+                CalculateMultipliers();
+            }
+
+            curY += 30f;
 
             // Display speed and success rate multipliers
             Widgets.Label(new Rect(0, curY, inRect.width, 30f), $"Speed Bonus: {currentSpeedBonus:F2}");
@@ -370,11 +392,31 @@ namespace MultiDoctorSurgery.UI
             }
         }
 
-        public static float GetCurrentSpeedBonus(BillMedicalEx bill)
+        public static float GetCurrentSpeedMultiplier(BillMedicalEx bill)
         {
-            int assistantsCount = bill.assignedDoctors.Count - 1;
-            float speedBonus = 1f + assistantsCount * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor;
-            return Mathf.Min(speedBonus, MultiDoctorSurgeryMod.settings.maxSpeedBonus);
+            if (bill == null || bill.assignedDoctors == null || bill.assignedDoctors.Count <= 1)
+                return 1f;
+
+            float speed = 1f;
+            SkillDef requiredSkill = bill.recipe.workSkill ?? SkillDefOf.Medicine;
+
+            for (int i = 1; i < bill.assignedDoctors.Count; i++)
+            {
+                Pawn a = bill.assignedDoctors[i];
+                if (a == null) continue;
+
+                if (a.def.race.IsMechanoid)
+                {
+                    speed += MultiDoctorSurgeryMod.settings.mechSpeedBonus;
+                }
+                else
+                {
+                    float lvl = a.skills?.GetSkill(requiredSkill)?.Level ?? 0f;
+                    speed += lvl * MultiDoctorSurgeryMod.settings.speedMultiplierPerDoctor / 20f;
+                }
+            }
+
+            return Mathf.Min(speed, MultiDoctorSurgeryMod.settings.maxSpeedBonus);
         }
 
         public static float GetCurrentSuccessBonus(BillMedicalEx bill)
@@ -430,6 +472,29 @@ namespace MultiDoctorSurgery.UI
                     }
                 }
             }
+        }
+
+        private void RefreshAvailableDoctors()
+        {
+            bool showMechs = MultiDoctorSurgeryMod.settings.showMechanoidDoctors;
+
+            this.availableDoctors = patient.Map.mapPawns.AllPawns
+                .Where(p => p != null
+                            && p != patient
+                            && !p.Dead
+                            && !p.Downed
+                            && (p.IsColonist || (p.Faction != null && p.Faction == Faction.OfPlayer))
+                            && p.health != null && p.health.capacities != null
+                            && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)
+                            && (
+                                // mechanoids: only if toggle is ON
+                                (p.def.race.IsMechanoid && showMechs)
+                                ||
+                                // non-mechs must be allowed to do Doctor work
+                                (!p.def.race.IsMechanoid && p.workSettings != null && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor))
+                            )
+                      )
+                .ToList();
         }
     }
 }

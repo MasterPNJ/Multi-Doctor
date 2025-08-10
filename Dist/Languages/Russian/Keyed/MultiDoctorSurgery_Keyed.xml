@@ -34,6 +34,7 @@
 	<MultiDoctorSurgery_MaxDoctors>Максимальное количество назначаемых врачей: {0}</MultiDoctorSurgery_MaxDoctors>
 	<MultiDoctorSurgery_MaxSpeedBonus>Максимальный предел бонуса скорости: {0}</MultiDoctorSurgery_MaxSpeedBonus>
 	<MultiDoctorSurgery_MaxSuccessBonus>Максимальный предел успеха: {0}</MultiDoctorSurgery_MaxSuccessBonus>
+	<MultiDoctorSurgery_ShowMechanoidDoctors>Показать механоиды в меню хирургии</MultiDoctorSurgery_ShowMechanoidDoctors>
 
 
 </LanguageData>

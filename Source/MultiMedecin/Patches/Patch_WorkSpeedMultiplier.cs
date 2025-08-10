@@ -28,7 +28,7 @@ namespace MultiDoctorSurgery.Patches
                 if (medicalOperationSpeed != null && statDef == medicalOperationSpeed)
                 {
                     // Calculate the speed multiplier
-                    float speedMultiplier = Dialog_AssignDoctors.GetCurrentSpeedBonus(medicalBill);
+                    float speedMultiplier = Dialog_AssignDoctors.GetCurrentSpeedMultiplier(medicalBill);
 
                     // Log the stat value before applying the multiplier for verification
                     //Log.Message($"[Debug] Before applying multiplier - Pawn: {pawn.Name.ToStringShort}, Stat: {statDef.defName}, Value: {__result}");
