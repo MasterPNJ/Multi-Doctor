@@ -40,8 +40,10 @@ namespace MultiDoctorSurgery.UI
             var map = Find.CurrentMap;
             if (map != null)
             {
-                availableDoctors = map.mapPawns.FreeColonistsSpawned
-                    .Where(p => !p.Dead && !p.Downed && p.workSettings.WorkIsActive(WorkTypeDefOf.Doctor) && p.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation))
+                bool showMechs = MultiDoctorSurgeryMod.settings.showMechanoidDoctors;
+
+                availableDoctors = map.mapPawns.AllPawns
+                    .Where(p => SurgeryTeamUtility.IsDoctor(p, map) && (showMechs || !p.RaceProps.IsMechanoid))
                     .ToList();
             }
             else
@@ -111,7 +113,7 @@ namespace MultiDoctorSurgery.UI
                 {
                     Rect row = new Rect(0, y, viewRect.width, 30f);
                     bool isSel = doctor == selectedSurgeon;
-                    string label = $"{doctor.Name.ToStringShort} ({SkillDefOf.Medicine.label}: {doctor.skills?.GetSkill(SkillDefOf.Medicine)?.Level ?? 0})";
+                    string label = Dialog_AssignDoctors.DoctorLabel(doctor, SkillDefOf.Medicine);
                     if (Widgets.RadioButtonLabeled(row, label, isSel))
                     {
                         selectedSurgeon = doctor;
@@ -129,7 +131,7 @@ namespace MultiDoctorSurgery.UI
             Widgets.Label(new Rect(0, curY, inRect.width, 25f), "AssignDoctors_SelectAssistants".Translate());
             curY += 30f;
             outRect = new Rect(0f, curY, inRect.width, inRect.height - curY - 70f);
-            viewRect = new Rect(0f, 0f, inRect.width - 16f, (availableDoctors.Count - 1) * 35f);
+            viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(1, availableDoctors.Count - 1) * 35f);
             Widgets.BeginScrollView(outRect, ref assistantScrollPosition, viewRect);
             try
             {
@@ -142,7 +144,7 @@ namespace MultiDoctorSurgery.UI
                     Rect row = new Rect(0, y, viewRect.width, 30f);
                     bool isAssigned = selectedAssistants.Contains(doctor);
                     bool newState = isAssigned;
-                    string label = $"{doctor.Name.ToStringShort} ({SkillDefOf.Medicine.label}: {doctor.skills?.GetSkill(SkillDefOf.Medicine)?.Level ?? 0})";
+                    string label = Dialog_AssignDoctors.DoctorLabel(doctor, SkillDefOf.Medicine);
                     Widgets.CheckboxLabeled(row, label, ref newState);
                     if (newState != isAssigned)
                     {
@@ -167,11 +169,17 @@ namespace MultiDoctorSurgery.UI
             curY = inRect.height - 35f;
             if (Widgets.ButtonText(new Rect(0, curY, inRect.width / 2f, 35f), "AssignDoctors_Confirm".Translate()))
             {
+                if (!SurgeryTeamUtility.IsDoctor(selectedSurgeon, Find.CurrentMap))
+                {
+                    Messages.Message("AssignDoctors_InvalidTeam".Translate(), MessageTypeDefOf.RejectInput, false);
+                    return;
+                }
                 var team = Find.World.GetComponent<DefaultSurgeryTeamComponent>();
 
                 team.defaultLeadSurgeon = selectedSurgeon;
                 team.defaultAssistants = selectedAssistants
-                    .Where(p => p != null)
+                    .Where(p => p != selectedSurgeon && SurgeryTeamUtility.IsDoctor(p, Find.CurrentMap))
+                    .Distinct().Take(MultiDoctorSurgeryMod.settings.maxDoctors - 1)
                     .ToList();
 
                 Close();

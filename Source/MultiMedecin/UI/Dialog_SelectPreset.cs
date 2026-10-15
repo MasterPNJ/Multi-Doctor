@@ -1,4 +1,4 @@
-using RimWorld;
+ï»¿using RimWorld;
 using System;
 using System.IO;
 using System.Linq;
@@ -22,7 +22,7 @@ namespace MultiDoctorSurgery.UI
             this.forcePause = true;
             this.absorbInputAroundWindow = true;
 
-            // Récupérer les presets disponibles
+            // RÃ©cupÃ©rer les presets disponibles
             string configPath = GenFilePaths.ConfigFolderPath;
             availablePresets = Directory.GetFiles(configPath, "ExcludedOperations_*.xml")
                 .Select(Path.GetFileNameWithoutExtension)
@@ -34,7 +34,7 @@ namespace MultiDoctorSurgery.UI
         {
             // Titre
             Text.Font = GameFont.Medium;
-            Widgets.Label(new Rect(0, 0, inRect.width, 30f), "Select Preset");
+            Widgets.Label(new Rect(0, 0, inRect.width, 30f), "Preset_Select".Translate());
             Text.Font = GameFont.Small;
 
             // Liste des presets
@@ -59,15 +59,15 @@ namespace MultiDoctorSurgery.UI
 
                 // Zone de suppression (croix)
                 Rect deleteButtonRect = new Rect(scrollViewRect.width - 25f, curY + 5f, 20f, 20f);
-                if (Widgets.ButtonImage(deleteButtonRect, TexButton.CloseXSmall)) // Icône standard de croix de RimWorld
+                if (Widgets.ButtonImage(deleteButtonRect, TexButton.CloseXSmall)) // IcÃ´ne standard de croix de RimWorld
                 {
                     // Supprimer le fichier de preset
                     string configPath = Path.Combine(GenFilePaths.ConfigFolderPath, $"ExcludedOperations_{preset}.xml");
                     if (File.Exists(configPath))
                     {
                         File.Delete(configPath);
-                        Messages.Message($"Preset {preset} deleted.", MessageTypeDefOf.NegativeEvent, false);
-                        // Mettre à jour la liste des presets
+                        Messages.Message("Preset_Deleted".Translate(preset), MessageTypeDefOf.NegativeEvent, false);
+                        // Mettre Ã  jour la liste des presets
                         availablePresets = availablePresets.Where(p => p != preset).ToArray();
                     }
                 }

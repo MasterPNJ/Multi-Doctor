@@ -48,7 +48,6 @@ namespace MultiDoctorSurgery
             }
 
             listingStandard.End();
-            settings.Write();
         }
     }
 }

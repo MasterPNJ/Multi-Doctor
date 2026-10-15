@@ -40,3 +40,8 @@ Dist/MultiDoctor.zip
 .env
 log.txt
 *.zip
+artifacts/
+/docs
+/Tests
+/tools
+.github/workflows/build.yml

@@ -1,39 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
-	<!-- Main Button -->
-	<OperationsTab_Label>Операции</OperationsTab_Label>
-	<OperationsTab_Description>Просмотр и управление запланированными операциями.</OperationsTab_Description>
-
-	<!-- Dialog Assign Doctors -->
-	<AssignDoctors_Title>Назначить врачей для {0}</AssignDoctors_Title>
-	<AssignDoctors_SelectSurgeon>Выберите главного хирурга:</AssignDoctors_SelectSurgeon>
-	<AssignDoctors_SelectAssistants>Выберите помощников:</AssignDoctors_SelectAssistants>
-	<AssignDoctors_Confirm>Подтвердить</AssignDoctors_Confirm>
-	<AssignDoctors_Cancel>Отмена</AssignDoctors_Cancel>
-	<AssignDoctors_SortByName>Сортировать по имени</AssignDoctors_SortByName>
-	<AssignDoctors_SortBySkill>Сортировать по навыкам</AssignDoctors_SortBySkill>
-	<AssignDoctors_DoctorEntry>{0} – Медицина: ({1})</AssignDoctors_DoctorEntry>
-
-	<!-- Main Tab Window Operations -->
-	<OperationsTab_Patient>Пациент</OperationsTab_Patient>
-	<OperationsTab_Operation>Операция</OperationsTab_Operation>
-	<OperationsTab_Surgeon>Хирург</OperationsTab_Surgeon>
-	<OperationsTab_Doctors>Врачи</OperationsTab_Doctors>
-	<OperationsTab_ViewEdit>Просмотр/Редактирование</OperationsTab_ViewEdit>
-	<OperationsTab_None>Нет</OperationsTab_None>
-	<ManageExcludedOperations>Управление исключенными операциями</ManageExcludedOperations>
-	<ExcludedOperations>Исключенные операции</ExcludedOperations>
-	<DefaultTeam_Button>Команда хирургов по умолчанию</DefaultTeam_Button>
-	<FastOperation_Label>(Бета) Быстрая работа: {0}</FastOperation_Label>
-	<DefaultTeam_Title>Настроить стандартную хирургическую бригаду</DefaultTeam_Title>
-
-	<!-- Settings -->
-	<MultiDoctorSurgery_SettingsCategory>Многоврачебная хирургия</MultiDoctorSurgery_SettingsCategory>
-	<MultiDoctorSurgery_SpeedMultiplier>Множитель скорости за каждого назначенного врача: {0}</MultiDoctorSurgery_SpeedMultiplier>
-	<MultiDoctorSurgery_SuccessMultiplier>Множитель успеха за каждого назначенного врача: {0}</MultiDoctorSurgery_SuccessMultiplier>
-	<MultiDoctorSurgery_MaxDoctors>Максимальное количество назначаемых врачей: {0}</MultiDoctorSurgery_MaxDoctors>
-	<MultiDoctorSurgery_MaxSpeedBonus>Максимальный предел бонуса скорости: {0}</MultiDoctorSurgery_MaxSpeedBonus>
-	<MultiDoctorSurgery_MaxSuccessBonus>Максимальный предел успеха: {0}</MultiDoctorSurgery_MaxSuccessBonus>
-
-
+  <OperationsTab_Label>Операции</OperationsTab_Label>
+  <OperationsTab_Description>Просмотр и управление запланированными операциями.</OperationsTab_Description>
+  <AssignDoctors_Title>Назначить врачей для {0}</AssignDoctors_Title>
+  <AssignDoctors_SelectSurgeon>Выберите главного хирурга:</AssignDoctors_SelectSurgeon>
+  <AssignDoctors_SelectAssistants>Выберите помощников:</AssignDoctors_SelectAssistants>
+  <AssignDoctors_Confirm>Подтвердить</AssignDoctors_Confirm>
+  <AssignDoctors_Cancel>Отмена</AssignDoctors_Cancel>
+  <AssignDoctors_SortByName>Сортировать по имени</AssignDoctors_SortByName>
+  <AssignDoctors_SortBySkill>Сортировать по навыкам</AssignDoctors_SortBySkill>
+  <AssignDoctors_DoctorEntry>{0} – Медицина: ({1})</AssignDoctors_DoctorEntry>
+  <OperationsTab_Patient>Пациент</OperationsTab_Patient>
+  <OperationsTab_Operation>Операция</OperationsTab_Operation>
+  <OperationsTab_Surgeon>Хирург</OperationsTab_Surgeon>
+  <OperationsTab_Doctors>Врачи</OperationsTab_Doctors>
+  <OperationsTab_ViewEdit>Просмотр/Редактирование</OperationsTab_ViewEdit>
+  <OperationsTab_None>Нет</OperationsTab_None>
+  <ManageExcludedOperations>Управление исключенными операциями</ManageExcludedOperations>
+  <ExcludedOperations>Исключенные операции</ExcludedOperations>
+  <DefaultTeam_Button>Команда хирургов по умолчанию</DefaultTeam_Button>
+  <FastOperation_Label>(Бета) Быстрая работа: {0}</FastOperation_Label>
+  <DefaultTeam_Title>Настроить стандартную хирургическую бригаду</DefaultTeam_Title>
+  <MultiDoctorSurgery_SettingsCategory>Многоврачебная хирургия</MultiDoctorSurgery_SettingsCategory>
+  <MultiDoctorSurgery_SpeedMultiplier>Множитель скорости за каждого назначенного врача: {0}</MultiDoctorSurgery_SpeedMultiplier>
+  <MultiDoctorSurgery_SuccessMultiplier>Множитель успеха за каждого назначенного врача: {0}</MultiDoctorSurgery_SuccessMultiplier>
+  <MultiDoctorSurgery_MaxDoctors>Максимальное количество назначаемых врачей: {0}</MultiDoctorSurgery_MaxDoctors>
+  <MultiDoctorSurgery_MaxSpeedBonus>Максимальный предел бонуса скорости: {0}</MultiDoctorSurgery_MaxSpeedBonus>
+  <MultiDoctorSurgery_MaxSuccessBonus>Максимальный предел успеха: {0}</MultiDoctorSurgery_MaxSuccessBonus>
+  <MultiDoctorSurgery_ShowMechanoidDoctors>Показать механоиды в меню хирургии</MultiDoctorSurgery_ShowMechanoidDoctors>
+  <AssignDoctors_EstimatedSpeed>Ожидаемая скорость работы: x{0}</AssignDoctors_EstimatedSpeed>
+  <AssignDoctors_EstimatedSuccessBonus>Ожидаемый бонус к показателю хирурга: +{0}</AssignDoctors_EstimatedSuccessBonus>
+  <AssignDoctors_EstimateExplanation>При участии всех ассистентов. До расходования лекарств предполагается обычное лекарство.</AssignDoctors_EstimateExplanation>
+  <AssignDoctors_InvalidTeam>Выберите доступного квалифицированного хирурга на карте пациента.</AssignDoctors_InvalidTeam>
+  <AssignDoctors_NoDoctors>Нет доступных подходящих врачей.</AssignDoctors_NoDoctors>
+  <AssignDoctors_MechEntry>{0} (медицинский механоид)</AssignDoctors_MechEntry>
+  <MultiDoctorSurgery_On>Вкл.</MultiDoctorSurgery_On>
+  <MultiDoctorSurgery_Off>Выкл.</MultiDoctorSurgery_Off>
+  <Preset_Title>Название набора:</Preset_Title>
+  <Preset_Select>Выбрать набор</Preset_Select>
+  <Preset_Create>Создать набор</Preset_Create>
+  <Preset_Load>Загрузить набор</Preset_Load>
+  <Preset_Active>Набор: {0}</Preset_Active>
+  <Preset_Saved>Набор {0} сохранён.</Preset_Saved>
+  <Preset_Created>Набор {0} создан и выбран.</Preset_Created>
+  <Preset_Loaded>Набор {0} загружен.</Preset_Loaded>
+  <Preset_Deleted>Набор {0} удалён.</Preset_Deleted>
+  <Preset_InvalidName>Введите от 1 до 80 символов без символов пути к файлу.</Preset_InvalidName>
+  <Preset_Error>Не удалось прочитать или сохранить набор. Подробности в журнале.</Preset_Error>
+  <AssignDoctors_EstimatedSuccessChance>Ожидаемый успех операции: {0}</AssignDoctors_EstimatedSuccessChance>
+  <ExcludedOperations_AlwaysVanilla>Операции с гемогеном всегда используют систему базовой игры.</ExcludedOperations_AlwaysVanilla>
+  <MultiDoctorSurgery_SettingsUnavailable>Настройки мода недоступны.</MultiDoctorSurgery_SettingsUnavailable>
 </LanguageData>

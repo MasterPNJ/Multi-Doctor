@@ -1,37 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
-	<!-- Main Button -->
-	<OperationsTab_Label>Opérations</OperationsTab_Label>
-	<OperationsTab_Description>Voir et gérer les opérations programmées.</OperationsTab_Description>
-
-	<!-- Dialog Assign Doctors -->
-	<AssignDoctors_Title>Assigner les médecins pour {0}</AssignDoctors_Title>
-	<AssignDoctors_SelectSurgeon>Sélectionner le chirurgien principal :</AssignDoctors_SelectSurgeon>
-	<AssignDoctors_SelectAssistants>Sélectionner les médecins assistants :</AssignDoctors_SelectAssistants>
-	<AssignDoctors_Confirm>Confirmer</AssignDoctors_Confirm>
-	<AssignDoctors_Cancel>Annuler</AssignDoctors_Cancel>
-	<AssignDoctors_SortByName>Trier par nom</AssignDoctors_SortByName>
-	<AssignDoctors_SortBySkill>Trier par compétence</AssignDoctors_SortBySkill>
-	<AssignDoctors_DoctorEntry>{0} – Médecine : ({1})</AssignDoctors_DoctorEntry>
-
-	<!-- Main Tab Window Operations -->
-	<OperationsTab_Patient>Patient</OperationsTab_Patient>
-	<OperationsTab_Operation>Opération</OperationsTab_Operation>
-	<OperationsTab_Surgeon>Chirurgien</OperationsTab_Surgeon>
-	<OperationsTab_Doctors>Médecins</OperationsTab_Doctors>
-	<OperationsTab_ViewEdit>Voir/Modifier</OperationsTab_ViewEdit>
-	<OperationsTab_None>Aucun</OperationsTab_None>
-	<ManageExcludedOperations>Gérer les opérations exclues</ManageExcludedOperations>
-	<ExcludedOperations>Opérations exclues</ExcludedOperations>
-	<DefaultTeam_Button>Équipe chirurgicale par défaut</DefaultTeam_Button>
-	<FastOperation_Label>(Beta) Opération rapide: {0}</FastOperation_Label>
-	<DefaultTeam_Title>Configurer l'équipe chirurgicale par défaut</DefaultTeam_Title>
-
-	<!-- Settings -->
-	<MultiDoctorSurgery_SettingsCategory>Chirurgie Multi-Médecins</MultiDoctorSurgery_SettingsCategory>
-	<MultiDoctorSurgery_SpeedMultiplier>Multiplicateur de vitesse par médecin assigné : {0}</MultiDoctorSurgery_SpeedMultiplier>
-	<MultiDoctorSurgery_SuccessMultiplier>Multiplicateur de taux de réussite par médecin assigné : {0}</MultiDoctorSurgery_SuccessMultiplier>
-	<MultiDoctorSurgery_MaxDoctors>Nombre maximal de médecins assignables : {0}</MultiDoctorSurgery_MaxDoctors>
-	<MultiDoctorSurgery_MaxSpeedBonus>Limite maximale de bonus de vitesse : {0}</MultiDoctorSurgery_MaxSpeedBonus>
-	<MultiDoctorSurgery_MaxSuccessBonus>Limite maximale de taux de réussite : {0}</MultiDoctorSurgery_MaxSuccessBonus>
+  <OperationsTab_Label>Opérations</OperationsTab_Label>
+  <OperationsTab_Description>Voir et gérer les opérations programmées.</OperationsTab_Description>
+  <AssignDoctors_Title>Assigner les médecins pour {0}</AssignDoctors_Title>
+  <AssignDoctors_SelectSurgeon>Sélectionner le chirurgien principal :</AssignDoctors_SelectSurgeon>
+  <AssignDoctors_SelectAssistants>Sélectionner les médecins assistants :</AssignDoctors_SelectAssistants>
+  <AssignDoctors_Confirm>Confirmer</AssignDoctors_Confirm>
+  <AssignDoctors_Cancel>Annuler</AssignDoctors_Cancel>
+  <AssignDoctors_SortByName>Trier par nom</AssignDoctors_SortByName>
+  <AssignDoctors_SortBySkill>Trier par compétence</AssignDoctors_SortBySkill>
+  <AssignDoctors_DoctorEntry>{0} – Médecine : ({1})</AssignDoctors_DoctorEntry>
+  <OperationsTab_Patient>Patient</OperationsTab_Patient>
+  <OperationsTab_Operation>Opération</OperationsTab_Operation>
+  <OperationsTab_Surgeon>Chirurgien</OperationsTab_Surgeon>
+  <OperationsTab_Doctors>Médecins</OperationsTab_Doctors>
+  <OperationsTab_ViewEdit>Voir/Modifier</OperationsTab_ViewEdit>
+  <OperationsTab_None>Aucun</OperationsTab_None>
+  <ManageExcludedOperations>Gérer les opérations exclues</ManageExcludedOperations>
+  <ExcludedOperations>Opérations exclues</ExcludedOperations>
+  <DefaultTeam_Button>Équipe chirurgicale par défaut</DefaultTeam_Button>
+  <FastOperation_Label>(Beta) Opération rapide: {0}</FastOperation_Label>
+  <DefaultTeam_Title>Configurer l'équipe chirurgicale par défaut</DefaultTeam_Title>
+  <MultiDoctorSurgery_SettingsCategory>Chirurgie Multi-Médecins</MultiDoctorSurgery_SettingsCategory>
+  <MultiDoctorSurgery_SpeedMultiplier>Multiplicateur de vitesse par médecin assigné : {0}</MultiDoctorSurgery_SpeedMultiplier>
+  <MultiDoctorSurgery_SuccessMultiplier>Multiplicateur de taux de réussite par médecin assigné : {0}</MultiDoctorSurgery_SuccessMultiplier>
+  <MultiDoctorSurgery_MaxDoctors>Nombre maximal de médecins assignables : {0}</MultiDoctorSurgery_MaxDoctors>
+  <MultiDoctorSurgery_MaxSpeedBonus>Limite maximale de bonus de vitesse : {0}</MultiDoctorSurgery_MaxSpeedBonus>
+  <MultiDoctorSurgery_MaxSuccessBonus>Limite maximale de taux de réussite : {0}</MultiDoctorSurgery_MaxSuccessBonus>
+  <MultiDoctorSurgery_ShowMechanoidDoctors>Afficher les mécanoïdes dans le menu chirurgie</MultiDoctorSurgery_ShowMechanoidDoctors>
+  <AssignDoctors_EstimatedSpeed>Vitesse de travail estimée : x{0}</AssignDoctors_EstimatedSpeed>
+  <AssignDoctors_EstimatedSuccessBonus>Bonus estimé à la statistique du chirurgien : +{0}</AssignDoctors_EstimatedSuccessBonus>
+  <AssignDoctors_EstimateExplanation>Avec tous les assistants présents. Médicament standard supposé avant consommation.</AssignDoctors_EstimateExplanation>
+  <AssignDoctors_InvalidTeam>Choisissez un chirurgien disponible et qualifié sur la carte du patient.</AssignDoctors_InvalidTeam>
+  <AssignDoctors_NoDoctors>Aucun médecin admissible disponible.</AssignDoctors_NoDoctors>
+  <AssignDoctors_MechEntry>{0} (mécanoïde médical)</AssignDoctors_MechEntry>
+  <MultiDoctorSurgery_On>Activée</MultiDoctorSurgery_On>
+  <MultiDoctorSurgery_Off>Désactivée</MultiDoctorSurgery_Off>
+  <Preset_Title>Nom du préréglage :</Preset_Title>
+  <Preset_Select>Choisir un préréglage</Preset_Select>
+  <Preset_Create>Créer un préréglage</Preset_Create>
+  <Preset_Load>Charger un préréglage</Preset_Load>
+  <Preset_Active>Préréglage : {0}</Preset_Active>
+  <Preset_Saved>Préréglage {0} enregistré.</Preset_Saved>
+  <Preset_Created>Préréglage {0} créé et sélectionné.</Preset_Created>
+  <Preset_Loaded>Préréglage {0} chargé.</Preset_Loaded>
+  <Preset_Deleted>Préréglage {0} supprimé.</Preset_Deleted>
+  <Preset_InvalidName>Utilisez un nom de 1 à 80 caractères sans caractères de chemin de fichier.</Preset_InvalidName>
+  <Preset_Error>Impossible de lire ou d'écrire le préréglage. Consultez le journal.</Preset_Error>
+  <AssignDoctors_EstimatedSuccessChance>Réussite estimée de l’opération : {0}</AssignDoctors_EstimatedSuccessChance>
+  <ExcludedOperations_AlwaysVanilla>Les opérations liées à l’hémogène utilisent toujours le système du jeu de base.</ExcludedOperations_AlwaysVanilla>
+  <MultiDoctorSurgery_SettingsUnavailable>Les paramètres du mod sont indisponibles.</MultiDoctorSurgery_SettingsUnavailable>
 </LanguageData>

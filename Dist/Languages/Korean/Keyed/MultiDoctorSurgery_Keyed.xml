@@ -1,38 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
-	<!-- Main Button -->
-	<OperationsTab_Label>수술</OperationsTab_Label>
-	<OperationsTab_Description>예약된 수술을 보고 관리합니다.</OperationsTab_Description>
-
-	<!-- Dialog Assign Doctors -->
-	<AssignDoctors_Title>{0}에 배정할 의사를 선택하세요</AssignDoctors_Title>
-	<AssignDoctors_SelectSurgeon>주요 외과의를 선택하세요:</AssignDoctors_SelectSurgeon>
-	<AssignDoctors_SelectAssistants>보조 의사를 선택하세요:</AssignDoctors_SelectAssistants>
-	<AssignDoctors_Confirm>확인</AssignDoctors_Confirm>
-	<AssignDoctors_Cancel>취소</AssignDoctors_Cancel>
-	<AssignDoctors_SortByName>이름순 정렬</AssignDoctors_SortByName>
-	<AssignDoctors_SortBySkill>기술순 정렬</AssignDoctors_SortBySkill>
-	<AssignDoctors_DoctorEntry>{0} – 의약품: ({1})</AssignDoctors_DoctorEntry>
-
-	<!-- Main Tab Window Operations -->
-	<OperationsTab_Patient>환자</OperationsTab_Patient>
-	<OperationsTab_Operation>수술</OperationsTab_Operation>
-	<OperationsTab_Surgeon>외과의</OperationsTab_Surgeon>
-	<OperationsTab_Doctors>의사들</OperationsTab_Doctors>
-	<OperationsTab_ViewEdit>보기/편집</OperationsTab_ViewEdit>
-	<OperationsTab_None>없음</OperationsTab_None>
-	<ManageExcludedOperations>제외된 수술 관리</ManageExcludedOperations>
-	<ExcludedOperations>제외된 수술</ExcludedOperations>
-	<DefaultTeam_Button>기본 수술 팀</DefaultTeam_Button>
-	<FastOperation_Label>(베타) 빠른 작동: {0}</FastOperation_Label>
-	<DefaultTeam_Title>기본 수술 팀 구성</DefaultTeam_Title>
-
-	<!-- Settings -->
-	<MultiDoctorSurgery_SettingsCategory>다중 의사 수술</MultiDoctorSurgery_SettingsCategory>
-	<MultiDoctorSurgery_SpeedMultiplier>배정된 의사당 속도 배율: {0}</MultiDoctorSurgery_SpeedMultiplier>
-	<MultiDoctorSurgery_SuccessMultiplier>배정된 의사당 성공률 배율: {0}</MultiDoctorSurgery_SuccessMultiplier>
-	<MultiDoctorSurgery_MaxDoctors>배정 가능한 의사의 최대 수: {0}</MultiDoctorSurgery_MaxDoctors>
-	<MultiDoctorSurgery_MaxSpeedBonus>최대 속도 보너스 제한: {0}</MultiDoctorSurgery_MaxSpeedBonus>
-	<MultiDoctorSurgery_MaxSuccessBonus>최대 성공률 제한: {0}</MultiDoctorSurgery_MaxSuccessBonus>
-
+  <OperationsTab_Label>수술</OperationsTab_Label>
+  <OperationsTab_Description>예약된 수술을 보고 관리합니다.</OperationsTab_Description>
+  <AssignDoctors_Title>{0}에 배정할 의사를 선택하세요</AssignDoctors_Title>
+  <AssignDoctors_SelectSurgeon>주요 외과의를 선택하세요:</AssignDoctors_SelectSurgeon>
+  <AssignDoctors_SelectAssistants>보조 의사를 선택하세요:</AssignDoctors_SelectAssistants>
+  <AssignDoctors_Confirm>확인</AssignDoctors_Confirm>
+  <AssignDoctors_Cancel>취소</AssignDoctors_Cancel>
+  <AssignDoctors_SortByName>이름순 정렬</AssignDoctors_SortByName>
+  <AssignDoctors_SortBySkill>기술순 정렬</AssignDoctors_SortBySkill>
+  <AssignDoctors_DoctorEntry>{0} – 의약품: ({1})</AssignDoctors_DoctorEntry>
+  <OperationsTab_Patient>환자</OperationsTab_Patient>
+  <OperationsTab_Operation>수술</OperationsTab_Operation>
+  <OperationsTab_Surgeon>외과의</OperationsTab_Surgeon>
+  <OperationsTab_Doctors>의사들</OperationsTab_Doctors>
+  <OperationsTab_ViewEdit>보기/편집</OperationsTab_ViewEdit>
+  <OperationsTab_None>없음</OperationsTab_None>
+  <ManageExcludedOperations>제외된 수술 관리</ManageExcludedOperations>
+  <ExcludedOperations>제외된 수술</ExcludedOperations>
+  <DefaultTeam_Button>기본 수술 팀</DefaultTeam_Button>
+  <FastOperation_Label>(베타) 빠른 작동: {0}</FastOperation_Label>
+  <DefaultTeam_Title>기본 수술 팀 구성</DefaultTeam_Title>
+  <MultiDoctorSurgery_SettingsCategory>다중 의사 수술</MultiDoctorSurgery_SettingsCategory>
+  <MultiDoctorSurgery_SpeedMultiplier>배정된 의사당 속도 배율: {0}</MultiDoctorSurgery_SpeedMultiplier>
+  <MultiDoctorSurgery_SuccessMultiplier>배정된 의사당 성공률 배율: {0}</MultiDoctorSurgery_SuccessMultiplier>
+  <MultiDoctorSurgery_MaxDoctors>배정 가능한 의사의 최대 수: {0}</MultiDoctorSurgery_MaxDoctors>
+  <MultiDoctorSurgery_MaxSpeedBonus>최대 속도 보너스 제한: {0}</MultiDoctorSurgery_MaxSpeedBonus>
+  <MultiDoctorSurgery_MaxSuccessBonus>최대 성공률 제한: {0}</MultiDoctorSurgery_MaxSuccessBonus>
+  <MultiDoctorSurgery_ShowMechanoidDoctors>수술 메뉴에서 메카노이드를 표시하세요.</MultiDoctorSurgery_ShowMechanoidDoctors>
+  <AssignDoctors_EstimatedSpeed>예상 작업 속도: x{0}</AssignDoctors_EstimatedSpeed>
+  <AssignDoctors_EstimatedSuccessBonus>집도의 능력치 예상 보너스: +{0}</AssignDoctors_EstimatedSuccessBonus>
+  <AssignDoctors_EstimateExplanation>모든 보조 의사가 도착한 경우입니다. 약품 소비 전에는 일반 의약품을 가정합니다.</AssignDoctors_EstimateExplanation>
+  <AssignDoctors_InvalidTeam>환자와 같은 지도에 있는, 작업 가능하고 자격을 갖춘 집도의를 선택하세요.</AssignDoctors_InvalidTeam>
+  <AssignDoctors_NoDoctors>조건에 맞는 의사가 없습니다.</AssignDoctors_NoDoctors>
+  <AssignDoctors_MechEntry>{0} (의료 메카노이드)</AssignDoctors_MechEntry>
+  <MultiDoctorSurgery_On>켜짐</MultiDoctorSurgery_On>
+  <MultiDoctorSurgery_Off>꺼짐</MultiDoctorSurgery_Off>
+  <Preset_Title>프리셋 이름:</Preset_Title>
+  <Preset_Select>프리셋 선택</Preset_Select>
+  <Preset_Create>프리셋 만들기</Preset_Create>
+  <Preset_Load>프리셋 불러오기</Preset_Load>
+  <Preset_Active>프리셋: {0}</Preset_Active>
+  <Preset_Saved>프리셋 {0}을(를) 저장했습니다.</Preset_Saved>
+  <Preset_Created>프리셋 {0}을(를) 만들고 선택했습니다.</Preset_Created>
+  <Preset_Loaded>프리셋 {0}을(를) 불러왔습니다.</Preset_Loaded>
+  <Preset_Deleted>프리셋 {0}을(를) 삭제했습니다.</Preset_Deleted>
+  <Preset_InvalidName>파일 경로 문자를 제외하고 1~80자로 입력하세요.</Preset_InvalidName>
+  <Preset_Error>프리셋을 읽거나 저장할 수 없습니다. 자세한 내용은 로그를 확인하세요.</Preset_Error>
+  <AssignDoctors_EstimatedSuccessChance>예상 수술 성공률: {0}</AssignDoctors_EstimatedSuccessChance>
+  <ExcludedOperations_AlwaysVanilla>헤모젠 관련 수술은 항상 기본 게임의 시스템을 사용합니다.</ExcludedOperations_AlwaysVanilla>
+  <MultiDoctorSurgery_SettingsUnavailable>모드 설정을 사용할 수 없습니다.</MultiDoctorSurgery_SettingsUnavailable>
 </LanguageData>

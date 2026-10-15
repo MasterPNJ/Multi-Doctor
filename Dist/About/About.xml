@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ModMetaData>
   <name>Multi-Doctor Surgery</name>
-  <description>A mod that allows several doctors to be involved in an operation</description>
+  <description>Assign a lead surgeon and assistants to operations. Present assistants improve surgery speed and success and gain experience.</description>
   <packageId>MasterPNJ.MultiDoctor</packageId>
   <author>MasterPNJ</author>
-  <url></url>
+  <url>https://github.com/MasterPNJ/Multi-Doctor</url>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
   <supportedVersions>
     <li>1.5</li>
     <li>1.6</li>
+    <li>1.7</li>
   </supportedVersions>
 </ModMetaData>

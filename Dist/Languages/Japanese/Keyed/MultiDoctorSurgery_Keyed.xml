@@ -1,39 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
-	<!-- Main Button -->
-	<OperationsTab_Label>手術</OperationsTab_Label>
-	<OperationsTab_Description>予定された手術を表示および管理します。</OperationsTab_Description>
-
-	<!-- Dialog Assign Doctors -->
-	<AssignDoctors_Title>{0}の医師を割り当てる</AssignDoctors_Title>
-	<AssignDoctors_SelectSurgeon>主要な外科医を選択してください：</AssignDoctors_SelectSurgeon>
-	<AssignDoctors_SelectAssistants>助手の医師を選択してください：</AssignDoctors_SelectAssistants>
-	<AssignDoctors_Confirm>確認</AssignDoctors_Confirm>
-	<AssignDoctors_Cancel>キャンセル</AssignDoctors_Cancel>
-	<AssignDoctors_SortByName>名前順に並べ替え</AssignDoctors_SortByName>
-	<AssignDoctors_SortBySkill>スキル順に並べ替え</AssignDoctors_SortBySkill>
-	<AssignDoctors_DoctorEntry>{0} – 医薬品： ({1})</AssignDoctors_DoctorEntry>
-
-	<!-- Main Tab Window Operations -->
-	<OperationsTab_Patient>患者</OperationsTab_Patient>
-	<OperationsTab_Operation>手術</OperationsTab_Operation>
-	<OperationsTab_Surgeon>外科医</OperationsTab_Surgeon>
-	<OperationsTab_Doctors>医師</OperationsTab_Doctors>
-	<OperationsTab_ViewEdit>表示/編集</OperationsTab_ViewEdit>
-	<OperationsTab_None>なし</OperationsTab_None>
-	<ManageExcludedOperations>除外された手術を管理する</ManageExcludedOperations>
-	<ExcludedOperations>除外された手術</ExcludedOperations>
-	<DefaultTeam_Button>デフォルト手術チーム</DefaultTeam_Button>
-	<FastOperation_Label>(ベータ) 高速動作: {0}</FastOperation_Label>
-	<DefaultTeam_Title>デフォルトの手術チームを設定する</DefaultTeam_Title>
-
-	<!-- Settings -->
-	<MultiDoctorSurgery_SettingsCategory>複数医師の手術</MultiDoctorSurgery_SettingsCategory>
-	<MultiDoctorSurgery_SpeedMultiplier>割り当てられた医師1人あたりの速度倍率：{0}</MultiDoctorSurgery_SpeedMultiplier>
-	<MultiDoctorSurgery_SuccessMultiplier>割り当てられた医師1人あたりの成功率倍率：{0}</MultiDoctorSurgery_SuccessMultiplier>
-	<MultiDoctorSurgery_MaxDoctors>割り当て可能な医師の最大数：{0}</MultiDoctorSurgery_MaxDoctors>
-	<MultiDoctorSurgery_MaxSpeedBonus>速度ボーナスの最大限界: {0}</MultiDoctorSurgery_MaxSpeedBonus>
-	<MultiDoctorSurgery_MaxSuccessBonus>成功率の最大限界: {0}</MultiDoctorSurgery_MaxSuccessBonus>
-
-
+  <OperationsTab_Label>手術</OperationsTab_Label>
+  <OperationsTab_Description>予定された手術を表示および管理します。</OperationsTab_Description>
+  <AssignDoctors_Title>{0}の医師を割り当てる</AssignDoctors_Title>
+  <AssignDoctors_SelectSurgeon>主要な外科医を選択してください：</AssignDoctors_SelectSurgeon>
+  <AssignDoctors_SelectAssistants>助手の医師を選択してください：</AssignDoctors_SelectAssistants>
+  <AssignDoctors_Confirm>確認</AssignDoctors_Confirm>
+  <AssignDoctors_Cancel>キャンセル</AssignDoctors_Cancel>
+  <AssignDoctors_SortByName>名前順に並べ替え</AssignDoctors_SortByName>
+  <AssignDoctors_SortBySkill>スキル順に並べ替え</AssignDoctors_SortBySkill>
+  <AssignDoctors_DoctorEntry>{0} – 医薬品： ({1})</AssignDoctors_DoctorEntry>
+  <OperationsTab_Patient>患者</OperationsTab_Patient>
+  <OperationsTab_Operation>手術</OperationsTab_Operation>
+  <OperationsTab_Surgeon>外科医</OperationsTab_Surgeon>
+  <OperationsTab_Doctors>医師</OperationsTab_Doctors>
+  <OperationsTab_ViewEdit>表示/編集</OperationsTab_ViewEdit>
+  <OperationsTab_None>なし</OperationsTab_None>
+  <ManageExcludedOperations>除外された手術を管理する</ManageExcludedOperations>
+  <ExcludedOperations>除外された手術</ExcludedOperations>
+  <DefaultTeam_Button>デフォルト手術チーム</DefaultTeam_Button>
+  <FastOperation_Label>(ベータ) 高速動作: {0}</FastOperation_Label>
+  <DefaultTeam_Title>デフォルトの手術チームを設定する</DefaultTeam_Title>
+  <MultiDoctorSurgery_SettingsCategory>複数医師の手術</MultiDoctorSurgery_SettingsCategory>
+  <MultiDoctorSurgery_SpeedMultiplier>割り当てられた医師1人あたりの速度倍率：{0}</MultiDoctorSurgery_SpeedMultiplier>
+  <MultiDoctorSurgery_SuccessMultiplier>割り当てられた医師1人あたりの成功率倍率：{0}</MultiDoctorSurgery_SuccessMultiplier>
+  <MultiDoctorSurgery_MaxDoctors>割り当て可能な医師の最大数：{0}</MultiDoctorSurgery_MaxDoctors>
+  <MultiDoctorSurgery_MaxSpeedBonus>速度ボーナスの最大限界: {0}</MultiDoctorSurgery_MaxSpeedBonus>
+  <MultiDoctorSurgery_MaxSuccessBonus>成功率の最大限界: {0}</MultiDoctorSurgery_MaxSuccessBonus>
+  <MultiDoctorSurgery_ShowMechanoidDoctors>手術メニューでメカノイドを表示する</MultiDoctorSurgery_ShowMechanoidDoctors>
+  <AssignDoctors_EstimatedSpeed>推定作業速度：x{0}</AssignDoctors_EstimatedSpeed>
+  <AssignDoctors_EstimatedSuccessBonus>執刀医の能力値への推定ボーナス：+{0}</AssignDoctors_EstimatedSuccessBonus>
+  <AssignDoctors_EstimateExplanation>助手全員が到着している場合。薬の消費前は通常の医薬品を想定します。</AssignDoctors_EstimateExplanation>
+  <AssignDoctors_InvalidTeam>患者と同じマップにいる、作業可能で必要技能を満たす執刀医を選んでください。</AssignDoctors_InvalidTeam>
+  <AssignDoctors_NoDoctors>対応可能な医師がいません。</AssignDoctors_NoDoctors>
+  <AssignDoctors_MechEntry>{0}（医療メカノイド）</AssignDoctors_MechEntry>
+  <MultiDoctorSurgery_On>オン</MultiDoctorSurgery_On>
+  <MultiDoctorSurgery_Off>オフ</MultiDoctorSurgery_Off>
+  <Preset_Title>プリセット名：</Preset_Title>
+  <Preset_Select>プリセットを選択</Preset_Select>
+  <Preset_Create>プリセットを作成</Preset_Create>
+  <Preset_Load>プリセットを読み込む</Preset_Load>
+  <Preset_Active>プリセット：{0}</Preset_Active>
+  <Preset_Saved>プリセット「{0}」を保存しました。</Preset_Saved>
+  <Preset_Created>プリセット「{0}」を作成して選択しました。</Preset_Created>
+  <Preset_Loaded>プリセット「{0}」を読み込みました。</Preset_Loaded>
+  <Preset_Deleted>プリセット「{0}」を削除しました。</Preset_Deleted>
+  <Preset_InvalidName>ファイルパスに使う記号を含めず、1～80文字で入力してください。</Preset_InvalidName>
+  <Preset_Error>プリセットの読み込みまたは保存に失敗しました。詳細はログを確認してください。</Preset_Error>
+  <AssignDoctors_EstimatedSuccessChance>推定手術成功率：{0}</AssignDoctors_EstimatedSuccessChance>
+  <ExcludedOperations_AlwaysVanilla>ヘモゲン関連の手術には常に基本ゲームのシステムを使用します。</ExcludedOperations_AlwaysVanilla>
+  <MultiDoctorSurgery_SettingsUnavailable>MOD設定を利用できません。</MultiDoctorSurgery_SettingsUnavailable>
 </LanguageData>
