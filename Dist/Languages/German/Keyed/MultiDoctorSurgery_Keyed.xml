@@ -1,40 +1,53 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
-	<!-- Main Button -->
-	<OperationsTab_Label>Operationen</OperationsTab_Label>
-	<OperationsTab_Description>Geplante Operationen anzeigen und verwalten.</OperationsTab_Description>
-
-	<!-- Dialog Assign Doctors -->
-	<AssignDoctors_Title>Ärzte für {0} zuweisen</AssignDoctors_Title>
-	<AssignDoctors_SelectSurgeon>Wählen Sie den Hauptchirurgen aus:</AssignDoctors_SelectSurgeon>
-	<AssignDoctors_SelectAssistants>Assistenzärzte auswählen:</AssignDoctors_SelectAssistants>
-	<AssignDoctors_Confirm>Bestätigen</AssignDoctors_Confirm>
-	<AssignDoctors_Cancel>Abbrechen</AssignDoctors_Cancel>
-	<AssignDoctors_SortByName>Nach Name sortieren</AssignDoctors_SortByName>
-	<AssignDoctors_SortBySkill>Nach Fähigkeit sortieren</AssignDoctors_SortBySkill>
-	<AssignDoctors_DoctorEntry>{0} – Medizin: ({1})</AssignDoctors_DoctorEntry>
-
-	<!-- Main Tab Window Operations -->
-	<OperationsTab_Patient>Patient</OperationsTab_Patient>
-	<OperationsTab_Operation>Operation</OperationsTab_Operation>
-	<OperationsTab_Surgeon>Chirurg</OperationsTab_Surgeon>
-	<OperationsTab_Doctors>Ärzte</OperationsTab_Doctors>
-	<OperationsTab_ViewEdit>Anzeigen/Bearbeiten</OperationsTab_ViewEdit>
-	<OperationsTab_None>Keiner</OperationsTab_None>
-	<ManageExcludedOperations>Ausgeschlossene Operationen verwalten</ManageExcludedOperations>
-	<ExcludedOperations>Ausgeschlossene Operationen</ExcludedOperations>
-	<DefaultTeam_Button>Standard-Operationsteam</DefaultTeam_Button>
-	<FastOperation_Label>(Beta) Schneller Betrieb: {0}</FastOperation_Label>
-	<DefaultTeam_Title>Standard-Operationsteam konfigurieren</DefaultTeam_Title>
-
-	<!-- Settings -->
-	<MultiDoctorSurgery_SettingsCategory>Mehrfacharzt-Chirurgie</MultiDoctorSurgery_SettingsCategory>
-	<MultiDoctorSurgery_SpeedMultiplier>Geschwindigkeitsmultiplikator pro zugewiesenem Arzt: {0}</MultiDoctorSurgery_SpeedMultiplier>
-	<MultiDoctorSurgery_SuccessMultiplier>Erfolgsratemultiplikator pro zugewiesenem Arzt: {0}</MultiDoctorSurgery_SuccessMultiplier>
-	<MultiDoctorSurgery_MaxDoctors>Maximale Anzahl zuweisbarer Ärzte: {0}</MultiDoctorSurgery_MaxDoctors>
-	<MultiDoctorSurgery_MaxSpeedBonus>Maximales Geschwindigkeitsbonus-Limit: {0}</MultiDoctorSurgery_MaxSpeedBonus>
-	<MultiDoctorSurgery_MaxSuccessBonus>Maximales Erfolgsraten-Limit: {0}</MultiDoctorSurgery_MaxSuccessBonus>
-	<MultiDoctorSurgery_ShowMechanoidDoctors>Zeige Mechanoiden im Operationsmenü</MultiDoctorSurgery_ShowMechanoidDoctors>
-
-
+  <OperationsTab_Label>Operationen</OperationsTab_Label>
+  <OperationsTab_Description>Geplante Operationen anzeigen und verwalten.</OperationsTab_Description>
+  <AssignDoctors_Title>Ärzte für {0} zuweisen</AssignDoctors_Title>
+  <AssignDoctors_SelectSurgeon>Wählen Sie den Hauptchirurgen aus:</AssignDoctors_SelectSurgeon>
+  <AssignDoctors_SelectAssistants>Assistenzärzte auswählen:</AssignDoctors_SelectAssistants>
+  <AssignDoctors_Confirm>Bestätigen</AssignDoctors_Confirm>
+  <AssignDoctors_Cancel>Abbrechen</AssignDoctors_Cancel>
+  <AssignDoctors_SortByName>Nach Name sortieren</AssignDoctors_SortByName>
+  <AssignDoctors_SortBySkill>Nach Fähigkeit sortieren</AssignDoctors_SortBySkill>
+  <AssignDoctors_DoctorEntry>{0} – Medizin: ({1})</AssignDoctors_DoctorEntry>
+  <OperationsTab_Patient>Patient</OperationsTab_Patient>
+  <OperationsTab_Operation>Operation</OperationsTab_Operation>
+  <OperationsTab_Surgeon>Chirurg</OperationsTab_Surgeon>
+  <OperationsTab_Doctors>Ärzte</OperationsTab_Doctors>
+  <OperationsTab_ViewEdit>Anzeigen/Bearbeiten</OperationsTab_ViewEdit>
+  <OperationsTab_None>Keiner</OperationsTab_None>
+  <ManageExcludedOperations>Ausgeschlossene Operationen verwalten</ManageExcludedOperations>
+  <ExcludedOperations>Ausgeschlossene Operationen</ExcludedOperations>
+  <DefaultTeam_Button>Standard-Operationsteam</DefaultTeam_Button>
+  <FastOperation_Label>(Beta) Schneller Betrieb: {0}</FastOperation_Label>
+  <DefaultTeam_Title>Standard-Operationsteam konfigurieren</DefaultTeam_Title>
+  <MultiDoctorSurgery_SettingsCategory>Mehrfacharzt-Chirurgie</MultiDoctorSurgery_SettingsCategory>
+  <MultiDoctorSurgery_SpeedMultiplier>Geschwindigkeitsmultiplikator pro zugewiesenem Arzt: {0}</MultiDoctorSurgery_SpeedMultiplier>
+  <MultiDoctorSurgery_SuccessMultiplier>Erfolgsratemultiplikator pro zugewiesenem Arzt: {0}</MultiDoctorSurgery_SuccessMultiplier>
+  <MultiDoctorSurgery_MaxDoctors>Maximale Anzahl zuweisbarer Ärzte: {0}</MultiDoctorSurgery_MaxDoctors>
+  <MultiDoctorSurgery_MaxSpeedBonus>Maximales Geschwindigkeitsbonus-Limit: {0}</MultiDoctorSurgery_MaxSpeedBonus>
+  <MultiDoctorSurgery_MaxSuccessBonus>Maximales Erfolgsraten-Limit: {0}</MultiDoctorSurgery_MaxSuccessBonus>
+  <MultiDoctorSurgery_ShowMechanoidDoctors>Zeige Mechanoiden im Operationsmenü</MultiDoctorSurgery_ShowMechanoidDoctors>
+  <AssignDoctors_EstimatedSpeed>Geschätzte Arbeitsgeschwindigkeit: x{0}</AssignDoctors_EstimatedSpeed>
+  <AssignDoctors_EstimatedSuccessBonus>Geschätzter Bonus auf den Chirurgenwert: +{0}</AssignDoctors_EstimatedSuccessBonus>
+  <AssignDoctors_EstimateExplanation>Bei Anwesenheit aller Assistenten. Bis zum Verbrauch wird normale Medizin angenommen.</AssignDoctors_EstimateExplanation>
+  <AssignDoctors_InvalidTeam>Wählen Sie einen verfügbaren, qualifizierten Chirurgen auf der Karte des Patienten.</AssignDoctors_InvalidTeam>
+  <AssignDoctors_NoDoctors>Keine geeigneten Ärzte verfügbar.</AssignDoctors_NoDoctors>
+  <AssignDoctors_MechEntry>{0} (medizinischer Mechanoid)</AssignDoctors_MechEntry>
+  <MultiDoctorSurgery_On>Ein</MultiDoctorSurgery_On>
+  <MultiDoctorSurgery_Off>Aus</MultiDoctorSurgery_Off>
+  <Preset_Title>Name der Vorlage:</Preset_Title>
+  <Preset_Select>Vorlage auswählen</Preset_Select>
+  <Preset_Create>Vorlage erstellen</Preset_Create>
+  <Preset_Load>Vorlage laden</Preset_Load>
+  <Preset_Active>Vorlage: {0}</Preset_Active>
+  <Preset_Saved>Vorlage {0} gespeichert.</Preset_Saved>
+  <Preset_Created>Vorlage {0} erstellt und ausgewählt.</Preset_Created>
+  <Preset_Loaded>Vorlage {0} geladen.</Preset_Loaded>
+  <Preset_Deleted>Vorlage {0} gelöscht.</Preset_Deleted>
+  <Preset_InvalidName>Verwenden Sie 1 bis 80 Zeichen ohne Dateipfadzeichen.</Preset_InvalidName>
+  <Preset_Error>Vorlage konnte nicht gelesen oder gespeichert werden. Details stehen im Protokoll.</Preset_Error>
+  <AssignDoctors_EstimatedSuccessChance>Geschätzte Erfolgschance: {0}</AssignDoctors_EstimatedSuccessChance>
+  <ExcludedOperations_AlwaysVanilla>Hämogenoperationen verwenden immer das System des Basisspiels.</ExcludedOperations_AlwaysVanilla>
+  <MultiDoctorSurgery_SettingsUnavailable>Die Mod-Einstellungen sind nicht verfügbar.</MultiDoctorSurgery_SettingsUnavailable>
 </LanguageData>

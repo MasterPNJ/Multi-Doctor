@@ -1,0 +1,5 @@
+<?xml version='1.0' encoding='utf-8'?>
+<LanguageData>
+  <AssistSurgeryLoop.label>手術を補助する</AssistSurgeryLoop.label>
+  <AssistSurgeryLoop.reportString>手術を補助しています。</AssistSurgeryLoop.reportString>
+</LanguageData>

@@ -1,8 +1,7 @@
-using System;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using Verse;
-using RimWorld;
 
 namespace MultiDoctorSurgery
 {
@@ -11,28 +10,14 @@ namespace MultiDoctorSurgery
         public float speedMultiplierPerDoctor = 0.5f;
         public float successRateMultiplier = 0.25f;
         public int maxDoctors = 3;
-
-        // New fields for speed and success limits
-        public float maxSpeedBonus = 1.95f; // Default to 95%
+        public float maxSpeedBonus = 1.95f;
         public float maxSuccessBonus = 2f;
-
-        public float mechSpeedBonus = 0.5f; // Bonus fixe de vitesse pour les mécanoïdes assistants
-        public float mechSuccessBonus = 0.30f; // Bonus fixe de réussite pour les mécanoïdes assistants
-
-        public List<string> excludedOperations = new List<string>();
-
-        public string currentPreset = "Default"; // Default preset
-
-        public bool sortBySkillDefault = true;   // true = compétence, false = nom
-        public bool sortAscendingDefault = false;  // true = ascendant, false = descendant
-
-        // Default team configuration
-        /*
-        public Pawn defaultLeadSurgeon;
-        public List<Pawn> defaultAssistants = new List<Pawn>();
-        public bool fastOperationEnabled = false;
-        */
-
+        public float mechSpeedBonus = 0.5f;
+        public float mechSuccessBonus = 0.30f;
+        public List<string> excludedOperations = new List<string> { "ExtractHemogenPack", "HarvestHemogenPack" };
+        public string currentPreset = "Default";
+        public bool sortBySkillDefault = true;
+        public bool sortAscendingDefault;
         public bool showMechanoidDoctors = true;
 
         public override void ExposeData()
@@ -40,45 +25,40 @@ namespace MultiDoctorSurgery
             Scribe_Values.Look(ref speedMultiplierPerDoctor, "speedMultiplierPerDoctor", 0.5f);
             Scribe_Values.Look(ref successRateMultiplier, "successRateMultiplier", 0.25f);
             Scribe_Values.Look(ref maxDoctors, "maxDoctors", 3);
-
             Scribe_Values.Look(ref maxSpeedBonus, "maxSpeedBonus", 1.95f);
             Scribe_Values.Look(ref maxSuccessBonus, "maxSuccessBonus", 2f);
-
             Scribe_Values.Look(ref mechSpeedBonus, "mechSpeedBonus", 0.5f);
             Scribe_Values.Look(ref mechSuccessBonus, "mechSuccessBonus", 0.30f);
-
             Scribe_Collections.Look(ref excludedOperations, "excludedOperations", LookMode.Value);
-
             Scribe_Values.Look(ref currentPreset, "currentPreset", "Default");
             Scribe_Values.Look(ref sortBySkillDefault, "sortBySkillDefault", true);
             Scribe_Values.Look(ref sortAscendingDefault, "sortAscendingDefault", false);
-
             Scribe_Values.Look(ref showMechanoidDoctors, "showMechanoidDoctors", true);
-
-            if (Scribe.mode == LoadSaveMode.PostLoadInit)
-            {
-                if (excludedOperations == null) excludedOperations = new List<string>();
-                EnsureDefaultExclusions();
-            }
+            if (Scribe.mode != LoadSaveMode.PostLoadInit) return;
+            maxDoctors = Mathf.Clamp(maxDoctors, 1, 5);
+            speedMultiplierPerDoctor = Clamp(speedMultiplierPerDoctor, 0, 1, 0.5f);
+            successRateMultiplier = Clamp(successRateMultiplier, 0, 1, 0.25f);
+            maxSpeedBonus = Clamp(maxSpeedBonus, 1, 3, 1.95f);
+            maxSuccessBonus = Clamp(maxSuccessBonus, 0, 3, 2);
+            mechSpeedBonus = Clamp(mechSpeedBonus, 0, 1, 0.5f);
+            mechSuccessBonus = Clamp(mechSuccessBonus, 0, 1, 0.3f);
+            EnsureDefaultExclusions();
+            if (string.IsNullOrWhiteSpace(currentPreset)) currentPreset = "Default";
         }
 
-        private void EnsureDefaultExclusions()
+        public void EnsureDefaultExclusions()
         {
-            void Add(string defName)
-            {
-                if (!string.IsNullOrEmpty(defName) && !excludedOperations.Contains(defName))
-                    excludedOperations.Add(defName);
-            }
+            if (excludedOperations == null) excludedOperations = new List<string>();
+            foreach (var name in new[] { "ExtractHemogenPack", "HarvestHemogenPack" })
+                if (!excludedOperations.Contains(name)) excludedOperations.Add(name);
+        }
 
-            Add("HarvestHemogenPack");
-            Add("ExtractHemogenPack");
+        public static bool IsHemogenOperation(string name) =>
+            name?.IndexOf("Hemogen", StringComparison.OrdinalIgnoreCase) >= 0;
 
-            foreach (var r in DefDatabase<RecipeDef>.AllDefsListForReading)
-            {
-                var workerName = r.workerClass?.Name ?? string.Empty;
-                if (r.defName.StartsWith("Administer") || workerName == "Recipe_AdministerIngestible")
-                    Add(r.defName);
-            }
+        private static float Clamp(float value, float min, float max, float fallback)
+        {
+            return float.IsNaN(value) || float.IsInfinity(value) ? fallback : Mathf.Clamp(value, min, max);
         }
     }
 }

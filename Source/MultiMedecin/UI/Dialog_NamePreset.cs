@@ -1,4 +1,4 @@
-using RimWorld;
+ï»¿using RimWorld;
 using System;
 using UnityEngine;
 using Verse;
@@ -24,41 +24,41 @@ namespace MultiDoctorSurgery.UI
         {
             // Titre
             Text.Font = GameFont.Medium;
-            Widgets.Label(new Rect(0, 0, inRect.width, 30f), "Enter Preset Name:");
+            Widgets.Label(new Rect(0, 0, inRect.width, 30f), "Preset_Title".Translate());
             Text.Font = GameFont.Small;
 
             // Champ de texte pour le nom du preset
             presetName = Widgets.TextField(new Rect(0, 40f, inRect.width - 16f, 30f), presetName);
 
             // Boutons
-            if (Widgets.ButtonText(new Rect(0, 90f, inRect.width / 2f - 10f, 35f), "Confirm"))
+            if (Widgets.ButtonText(new Rect(0, 90f, inRect.width / 2f - 10f, 35f), "AssignDoctors_Confirm".Translate()))
             {
                 ConfirmPreset();
             }
-            if (Widgets.ButtonText(new Rect(inRect.width / 2f + 10f, 90f, inRect.width / 2f - 10f, 35f), "Cancel"))
+            if (Widgets.ButtonText(new Rect(inRect.width / 2f + 10f, 90f, inRect.width / 2f - 10f, 35f), "AssignDoctors_Cancel".Translate()))
             {
                 Close();
             }
 
-            // Gérer la touche Entrée pour confirmer
+            // GÃ©rer la touche EntrÃ©e pour confirmer
             if (Event.current.type == EventType.KeyDown && Event.current.keyCode == KeyCode.Return)
             {
                 ConfirmPreset();
-                Event.current.Use(); // Empêcher l'action par défaut de RimWorld
+                Event.current.Use(); // EmpÃªcher l'action par dÃ©faut de RimWorld
             }
         }
 
-        // Méthode pour confirmer la création du preset
+        // MÃ©thode pour confirmer la crÃ©ation du preset
         private void ConfirmPreset()
         {
-            if (!string.IsNullOrEmpty(presetName.Trim()))
+            if (OperationPresets.IsValidName(presetName.Trim()))
             {
                 onConfirmAction?.Invoke(presetName.Trim());
                 Close();
             }
             else
             {
-                Messages.Message("Preset name cannot be empty.", MessageTypeDefOf.RejectInput, false);
+                Messages.Message("Preset_InvalidName".Translate(), MessageTypeDefOf.RejectInput, false);
             }
         }
 

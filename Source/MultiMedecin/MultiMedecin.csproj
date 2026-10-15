@@ -1,47 +1,21 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
-		<TargetFramework>net472</TargetFramework>
-		<AssemblyName>MultiMedecin</AssemblyName>
-		<RootNamespace>MultiMedecin</RootNamespace>
-		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-	</PropertyGroup>
-	<ItemGroup>
-		<Reference Include="UnityEngine">
-			<HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.dll</HintPath>
-		</Reference>
-		<Reference Include="Assembly-CSharp">
-			<HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-		</Reference>
-		<Reference Include="0Harmony">
-			<HintPath>..\..\..\RimWorldWin64_Data\Managed\0Harmony.dll</HintPath>
-		</Reference>
-		<Reference Include="UnityEngine.CoreModule">
-			<HintPath>..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-		</Reference>
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Krafs.Rimworld.Ref" Version="1.6.4518" />
-		<PackageReference Include="Lib.Harmony" Version="2.3.6" />
-		<PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="11.0.5" />
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Include="MultiDoctorSurgeryMod.cs" />
-		<Compile Include="JobDriver_AssistSurgeryLoop.cs" />
-		<Compile Include="Settings.cs" />
-		<Compile Include="MyCustomJobDefs.cs" />
-		<Compile Include="BillMedicalEx.cs" />
-		<Compile Include="Compat.cs" />
-		<Compile Include="DefaultSurgeryTeamComponent.cs" />
-		<Compile Include="UI/Dialog_AssignDoctors.cs" />
-		<Compile Include="UI/Dialog_ManageExcludedOperations .cs" />
-		<Compile Include="UI/MainTabWindow_Operations.cs" />
-		<Compile Include="UI/Dialog_NamePreset.cs" />
-		<Compile Include="UI/Dialog_SelectPreset.cs" />
-		<Compile Include="UI/Dialog_DefaultSurgeryTeam.cs" />
-		<Compile Include="Patches/Patch_HealthCardUtility_CreateSurgeryBill.cs" />
-		<Compile Include="Patches/Patch_MakeNewToils.cs" />
-		<Compile Include="Patches/Patch_WorkSpeedMultiplier.cs" />
-		<Compile Include="Patches/Patch_SurgerySuccessChance.cs" />
-		<Compile Include="Patches/Patch_Pawn_Kill_ClearBills.cs" />
-	</ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>MultiMedecin</AssemblyName>
+    <RootNamespace>MultiDoctorSurgery</RootNamespace>
+    <RimWorldVersion Condition="'$(RimWorldVersion)' == ''">1.6</RimWorldVersion>
+    <RimWorldReferenceVersion Condition="'$(RimWorldVersion)' == '1.5'">1.5.4409</RimWorldReferenceVersion>
+    <RimWorldReferenceVersion Condition="'$(RimWorldReferenceVersion)' == ''">1.6.4850</RimWorldReferenceVersion>
+    <OutputPath>bin\$(Configuration)\$(RimWorldVersion)\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <Deterministic>true</Deterministic>
+    <DefaultItemExcludes>$(DefaultItemExcludes);obj/**;bin/**</DefaultItemExcludes>
+    <DefineConstants Condition="'$(RimWorldVersion)' == '1.5'">$(DefineConstants);RIMWORLD_1_5</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="$(RimWorldReferenceVersion)" PrivateAssets="all" />
+    <PackageReference Include="Lib.Harmony" Version="2.3.6" PrivateAssets="all" />
+  </ItemGroup>
 </Project>
