@@ -41,7 +41,7 @@ Dist/MultiDoctor.zip
 log.txt
 *.zip
 artifacts/
-*.md
+/docs
 /Tests
 /tools
 .github/workflows/build.yml
