@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using RimWorld;
@@ -21,6 +20,9 @@ namespace MultiDoctorSurgery.Patches
         }
 
         // Replace only construction. Keep all vanilla warnings, messages and other side effects.
+        // MSE2 must find the vanilla constructor before we replace it. Its separate
+        // Bill_MedicalLimbAware branch must remain intact for prosthesis operations.
+        [HarmonyAfter("MSE2.Harmony")]
         public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
         {
             var constructor = AccessTools.Constructor(typeof(Bill_Medical),
